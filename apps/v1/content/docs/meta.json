@@ -2,5 +2,5 @@
   "title": "docs",
   "description": "The documentation",
   "root": true,
-  "pages": ["index", "---section---", "my-page-1", "my-page-2"]
+  "pages": ["---Introduction---", "index", "my-page-1", "my-page-2"]
 }
