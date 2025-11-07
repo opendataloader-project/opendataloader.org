@@ -7,8 +7,9 @@ import { GitHubIcon } from "@/components/icons/github";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/tracking";
+import Link from "next/link";
 
-export function HomeHero() {
+export default function HomeHero() {
   return (
     <section id="top" className="relative">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
@@ -52,32 +53,23 @@ export function HomeHero() {
             Easily feed them into AI stacks like LLM, vector search, and RAG!
           </p>
           <div className="mt-8 flex flex-wrap gap-3 justify-center">
-            <Button
-              asChild
-              size="lg"
-              className="rounded-2xl bg-neutral-900 text-white shadow hover:opacity-90 dark:bg-white dark:text-neutral-900"
-            >
-              <a
+            <Button asChild size="lg" className="rounded-2xl">
+              <Link
                 href="/docs"
                 onClick={() => track("nav_get_started", { from: "hero" })}
               >
                 Get Started
-              </a>
+              </Link>
             </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="rounded-2xl border-neutral-300/60 bg-white text-neutral-900 shadow-sm hover:shadow dark:border-white/10 dark:bg-white/5 dark:text-white"
-            >
-              <a
+            <Button asChild size="lg" variant="outline" className="rounded-2xl">
+              <Link
                 href="https://github.com/opendataloader-project/opendataloader-pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => track("nav_github", { from: "hero" })}
               >
                 <GitHubIcon className="h-4 w-4" /> GitHub
-              </a>
+              </Link>
             </Button>
           </div>
         </motion.div>

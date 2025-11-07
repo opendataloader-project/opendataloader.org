@@ -1,9 +1,19 @@
-import { HomeHero } from "@/components/sections/home-hero";
+"use client";
+
+import HomeAbout from "@/components/sections/home-about";
+import HomeBenchmark from "@/components/sections/home-benchmark";
+import HomeContact from "@/components/sections/home-contact";
+import HomeFooter from "@/components/sections/home-footer";
+import HomeHero from "@/components/sections/home-hero";
 
 export default function HomePage() {
   return (
-    <main className="flex flex-1 items-center justify-center px-4 py-16 sm:px-8">
+    <div className="min-h-screen">
       <HomeHero />
-    </main>
+      <HomeAbout />
+      <HomeBenchmark />
+      <HomeContact />
+      <HomeFooter />
+    </div>
   );
 }
