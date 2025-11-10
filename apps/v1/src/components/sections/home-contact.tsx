@@ -6,8 +6,6 @@ import { track } from "@/lib/tracking";
 import Link from "next/link";
 
 export default function HomeContact() {
-  const CONTACT_EMAIL = "open.dataloader@hancom.com";
-
   return (
     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <Card className="border border-neutral-200/60 bg-white/50 py-4 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-neutral-900/40">

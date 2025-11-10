@@ -26,6 +26,11 @@ const FOOTER_LINKS: FooterNavLink[] = [
     external: true,
   },
   {
+    label: "Contact",
+    href: "/contact",
+    trackingId: "contact",
+  },
+  {
     label: "Privacy Policy",
     href: "/privacy-policy",
     trackingId: "privacy-policy",
