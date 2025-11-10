@@ -2,5 +2,23 @@
   "title": "docs",
   "description": "The documentation",
   "root": true,
-  "pages": ["---Introduction---", "index", "my-page-1", "my-page-2"]
+  "pages": [
+    "---Overview---",
+    "index",
+    "---Quick Start---",
+    "quick-start-python",
+    "quick-start-java",
+    "quick-start-nodejs",
+    "quick-start-docker",
+    "---Features---",
+    "ai-safety",
+    "---Development---",
+    "development-workflow",
+    "json-schema",
+    "---Community---",
+    "community",
+    "contributing",
+    "upcoming-roadmap.mdx",
+    "license"
+  ]
 }

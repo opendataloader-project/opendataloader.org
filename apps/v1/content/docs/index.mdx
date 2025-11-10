@@ -1,13 +1,34 @@
 ---
-title: Quick Start
-description: Getting Started with OpenDataLoader
+title: OpenDataLoader PDF
+description: Safe, local-first PDF conversion for AI workflows
 ---
 
-Welcome to the docs! You can start writing documents in `/content/docs`.
+OpenDataLoader PDF converts PDFs into JSON, Markdown, HTML, or annotated PDFs that are ready for LLMs, vector search, and RAG pipelines. It reconstructs layout (tables, lists, headers, images, reading order) using a fast heuristic engine that runs entirely on your machine with AI-safety enabled by default.
 
-## What is Next?
+## Preview
+
+Download the [annotated PDF sample](https://raw.githubusercontent.com/opendataloader-project/opendataloader-pdf/main/resources/1901.03003_annotated.pdf) and compare it to the [source PDF](https://arxiv.org/pdf/1901.03003) to see how detected structures overlay on each page.
+
+![Annotated PDF Preview](/figures/example_annotated_pdf.png)
+
+## Quick Start
+
+Pick the language binding that fits your stack—Python ships first-class support, with matching APIs for JavaScript/TypeScript and Java.
 
 <Cards>
-  <Card title="Learn more about Next.js" href="https://nextjs.org/docs" />
-  <Card title="Learn more about Fumadocs" href="https://fumadocs.dev" />
+  <Card title="Python" href="/docs/quick-start-python" />
+  <Card title="Java" href="/docs/quick-start-java" />
+  <Card title="Node.js" href="/docs/quick-start-nodejs" />
+  <Card title="Docker" href="/docs/quick-start-docker" />
 </Cards>
+
+Need the CLI, Docker image, or schema reference? Head to the operations section in the sidebar.
+
+## Key features
+
+- 🧾 Structured output as JSON, Markdown, HTML, or annotated PDFs
+- 🧩 Layout reconstruction for headings, tables, captions, and reading order
+- ⚡ High-throughput local processing with no GPU or network dependency
+- 🔒 Local-first privacy with optional Docker, CLI, or language bindings
+- 🛡️ Content filters that strip likely prompt-injection attempts automatically
+- 🖍️ Annotated PDF visualizations that highlight detected structures

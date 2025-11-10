@@ -1,0 +1,115 @@
+---
+title: Quick Start with Java
+description: Integrate OpenDataLoader PDF as a JVM dependency or CLI
+---
+
+Use the core Java library when you need full JVM control or want to embed PDF parsing inside existing Java services.
+
+## Requirements
+
+- Java 11+ available on the system `PATH`
+
+Verify Java once before installing:
+
+```bash
+java -version
+```
+
+## Dependency (Maven)
+
+```xml
+<dependency>
+  <groupId>org.opendataloader</groupId>
+  <artifactId>opendataloader-pdf-core</artifactId>
+  <version>1.1.3</version>
+</dependency>
+
+<repositories>
+  <repository>
+    <snapshots>
+      <enabled>true</enabled>
+    </snapshots>
+    <id>vera-dev</id>
+    <name>Vera development</name>
+    <url>https://artifactory.openpreservation.org/artifactory/vera-dev</url>
+  </repository>
+</repositories>
+```
+
+Check [Maven Central](https://search.maven.org/artifact/org.opendataloader/opendataloader-pdf-core) for the latest version.
+
+Sample Gradle and Maven projects live in [opendataloader-pdf-examples](https://github.com/opendataloader-project/opendataloader-pdf-examples).
+
+## Process a PDF
+
+```java
+import org.opendataloader.pdf.api.Config;
+import org.opendataloader.pdf.api.OpenDataLoaderPDF;
+
+public class Sample {
+    public static void main(String[] args) throws Exception {
+        Config config = new Config();
+        config.setOutputFolder("path/to/output");
+        config.setGeneratePDF(true);
+        config.setGenerateMarkdown(true);
+        config.setGenerateHtml(true);
+
+        OpenDataLoaderPDF.processFile("path/to/document.pdf", config);
+    }
+}
+```
+
+Adjust `Config` to toggle formats, annotated PDFs, HTML, or Markdown generation.
+
+### CLI usage
+
+Download CLI JAR from the [releases page](https://github.com/opendataloader-project/opendataloader-pdf/releases).
+
+and run the CLI:
+
+```bash
+java -jar opendataloader-pdf-cli-<VERSION>.jar \
+  --format json html pdf markdown \
+  path/to/document.pdf
+```
+
+This generates a JSON file with layout recognition results in the specified output folder. 
+Additionally, annotated PDF with recognized structures, Markdown and Html are generated if options `--pdf`, `--markdown` and `--html` are specified.
+
+By default all line breaks and hyphenation characters are removed, the Markdown does not include any images and does not use any HTML.
+
+The option `--keep-line-breaks` to preserve the original line breaks text content in JSON and Markdown output.
+The option `--content-safety-off` disables one or more content safety filters. Accepts a comma-separated list of filter names.
+The option `--markdown-with-html` enables use of HTML in Markdown, which may improve Markdown preview in processors that support HTML tags. 
+The option `--markdown-with-images` enables inclusion of image references into the output Markdown. 
+The option `--replace-invalid-chars` replaces invalid or unrecognized characters (e.g., �, \u0000) with the specified character.
+The option `--use-struct-tree` enables processing structure tree (disabled by default).
+The images are extracted from PDF as individual files and stored in a subfolder next to the Markdown output.
+
+#### Available options:
+
+```bash
+-o,--output-dir <arg>           Specifies the output directory for generated files
+-p,--password <arg>             Specifies the password for an encrypted PDF
+-f,--format <arg>               List of output formats to generate (json, text, html, pdf, markdown, markdown-with-html, markdown-with-images). Default: json
+-q,--quiet                      Suppresses console logging output
+--content-safety-off <arg>      Disables one or more content safety filters. Accepts a list of filter names. Arguments: all, hidden-text, off-page, tiny, hidden-ocg
+--keep-line-breaks              Preserves original line breaks in the extracted text
+--replace-invalid-chars <arg>   Replaces invalid or unrecognized characters (e.g., �, \u0000) with the specified character
+--use-struct-tree               Enables processing structure tree (disabled by default)
+```
+
+The legacy options (for backward compatibility):
+
+```bash
+--no-json                       Disables the JSON output format
+--html                          Sets the data extraction output format to HTML
+--pdf                           Generates a new PDF file where the extracted layout data is visualized as annotations
+--markdown                      Sets the data extraction output format to Markdown
+--markdown-with-html            Sets the data extraction output format to Markdown with rendering complex elements like tables as HTML for better structure
+--markdown-with-images          Sets the data extraction output format to Markdown with extracting images from the PDF and includes them as links
+```
+
+## API docs
+
+Full Javadoc is published at [javadoc.io](https://javadoc.io/doc/org.opendataloader/opendataloader-pdf-core/latest/).

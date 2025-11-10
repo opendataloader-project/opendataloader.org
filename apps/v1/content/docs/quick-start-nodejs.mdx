@@ -1,0 +1,76 @@
+---
+title: Quick Start with Node.js
+description: Use the @opendataloader/pdf package from TypeScript or JavaScript
+---
+
+The TypeScript package mirrors the Python API and exposes both a programmatic helper and a CLI (`npx @opendataloader/pdf`).
+
+## Requirements
+
+- Node.js 18 or later
+- Java 11+ available on the system `PATH`
+
+Verify Java once before installing:
+
+```bash
+java -version
+```
+
+## Install
+
+```bash
+npm install @opendataloader/pdf
+```
+
+## Convert from TypeScript
+
+```typescript
+import { convert } from "@opendataloader/pdf";
+
+async function main() {
+  await convert(["path/to/document.pdf", "path/to/folder"], {
+    outputDir: "path/to/output",
+    format: ["json", "html", "pdf", "markdown"],
+  });
+}
+
+main().catch((error) => {
+  console.error("Error processing PDF:", error);
+});
+```
+
+### CLI usage
+
+```bash
+npx @opendataloader/pdf path/to/document.pdf path/to/folder \
+  -o path/to/output \
+  -f json html pdf markdown
+```
+
+or install globally for repeated use:
+
+```bash
+npm install -g @opendataloader/pdf
+```
+
+```bash
+opendataloader-pdf path/to/document.pdf -o path/to/output
+```
+
+## `convert()` options
+
+| Property                      | Type       | Default     | Description                                                                                               |
+| ----------------------------- | ---------- | ----------- | --------------------------------------------------------------------------------------------------------- |
+| `inputPaths`                  | `string[]` | —           | One or more file paths or directories to process.                                                         |
+| `options.outputDir`           | `string`   | `undefined` | Directory for generated outputs.                                                                          |
+| `options.password`            | `string`   | `undefined` | Password for encrypted PDFs.                                                                              |
+| `options.format`              | `string[]` | `undefined` | Output formats (`json`, `text`, `html`, `pdf`, `markdown`, `markdown-with-html`, `markdown-with-images`). |
+| `options.quiet`               | `boolean`  | `false`     | Suppress CLI logging output.                                                                              |
+| `options.contentSafetyOff`    | `string[]` | `undefined` | Disable specific safety filters (`all`, `hidden-text`, `off-page`, `tiny`, `hidden-ocg`).                 |
+| `options.keepLineBreaks`      | `boolean`  | `false`     | Preserve line breaks in text output.                                                                      |
+| `options.replaceInvalidChars` | `string`   | `undefined` | Replacement character for invalid or unrecognized characters.                                             |
+
+## Related docs
+
+- Dive into available flags in the [CLI reference](./cli-reference).
+- Validate what each output field means via the [JSON schema](./json-schema).

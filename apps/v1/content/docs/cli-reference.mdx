@@ -1,0 +1,69 @@
+---
+title: CLI Reference
+description: Flags and entrypoints for the OpenDataLoader PDF command line
+---
+
+The CLI offers the same functionality regardless of whether you invoke it through the Python package, the `@opendataloader/pdf` wrapper, or the standalone Java JAR. Pick the entrypoint that matches how you installed the tool.
+
+## Entrypoints
+
+**Python / global install**
+
+```bash
+opendataloader-pdf path/to/document.pdf path/to/folder \
+  -o path/to/output \
+  -f json html pdf markdown
+```
+
+**Node.js**
+
+```bash
+npx @opendataloader/pdf path/to/document.pdf path/to/folder \
+  -o path/to/output \
+  -f json html pdf markdown
+```
+
+**Standalone JAR**
+
+```bash
+java -jar opendataloader-pdf-cli-<VERSION>.jar \
+  --format json html pdf markdown \
+  path/to/document.pdf
+```
+
+## Core options
+
+```
+  -o, --output-dir <path>             Directory where outputs are written
+  -p, --password <password>           Password for encrypted PDFs
+  -f, --format <value...>             Output formats to generate (json, text, html, pdf,
+                                     markdown, markdown-with-html, markdown-with-images)
+  -q, --quiet                         Suppress CLI logging output
+      --content-safety-off <mode...>  Disable one or more content safety filters (all,
+                                     hidden-text, off-page, tiny, hidden-ocg)
+      --keep-line-breaks              Preserve line breaks in text output
+      --replace-invalid-chars <c>     Replacement character for invalid or unrecognized
+                                     characters
+  -h, --help                          Show usage information
+```
+
+### Legacy aliases (still supported)
+
+```
+--no-json
+--html
+--pdf
+--markdown
+--markdown-with-html
+--markdown-with-images
+```
+
+## Safety filters
+
+`--content-safety-off` accepts a comma-separated list and removes only the specified filters. Read [AI Safety](./ai-safety) for exact behavior before disabling protections.
+
+## Output tips
+
+- `json` files contain the full hierarchical layout; consult the [JSON schema](./json-schema).
+- `markdown-with-images` stores extracted images next to the Markdown file.
+- Annotated PDFs highlight detected structures; combine with the Docker image to preview results quickly.
