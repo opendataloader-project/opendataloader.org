@@ -11,6 +11,10 @@ export const linkItems: LinkItemType[] = [
     active: "nested-url",
   },
   {
+    text: "Showcase",
+    url: "/showcase",
+  },
+  {
     text: "Javadocs",
     url: "https://javadoc.io/doc/org.opendataloader/opendataloader-pdf-core/latest",
     external: true,
