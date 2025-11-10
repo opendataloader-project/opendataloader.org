@@ -56,7 +56,7 @@ export default function HomeHero() {
             <Button asChild size="lg" className="rounded-2xl">
               <Link
                 href="/docs"
-                onClick={() => track("nav_get_started", { from: "hero" })}
+                onClick={() => track("nav_get_started", { from: "home-hero" })}
               >
                 Get Started
               </Link>
@@ -66,7 +66,7 @@ export default function HomeHero() {
                 href="https://github.com/opendataloader-project/opendataloader-pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => track("nav_github", { from: "hero" })}
+                onClick={() => track("nav_github", { from: "home-hero" })}
               >
                 <GitHubIcon className="h-4 w-4" /> GitHub
               </Link>

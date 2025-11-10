@@ -25,19 +25,19 @@ export async function POST(request: Request) {
           error:
             "First name, business email, and details are required to submit the form.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!CONTACT_FROM || !resend) {
       console.error(
-        "Missing email configuration. CONTACT_EMAIL_FROM and RESEND_API_KEY must be set."
+        "Missing email configuration. CONTACT_EMAIL_FROM and RESEND_API_KEY must be set.",
       );
       return NextResponse.json(
         {
           error: "Email service is not configured. Please try again later.",
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
       console.error("Resend API error", resendError);
       return NextResponse.json(
         { error: "Failed to send your message. Please try again later." },
-        { status: 502 }
+        { status: 502 },
       );
     }
 
@@ -80,7 +80,7 @@ export async function POST(request: Request) {
     console.error("Contact form submission failed", error);
     return NextResponse.json(
       { error: "Something went wrong while submitting the form." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

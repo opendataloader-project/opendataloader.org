@@ -26,6 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { track } from "@/lib/tracking";
 
 type SubmissionState = "idle" | "submitting" | "success" | "error";
 
@@ -81,7 +82,7 @@ export function ContactForm() {
       setMessage(
         error instanceof Error
           ? error.message
-          : "Something went wrong. Please try again."
+          : "Something went wrong. Please try again.",
       );
     } finally {
       setStatus((current) => (current === "submitting" ? "idle" : current));
@@ -182,6 +183,7 @@ export function ContactForm() {
               type="submit"
               className="w-full sm:w-auto"
               disabled={isSubmitting}
+              onClick={() => track("submit_contact", { from: "contact" })}
             >
               {isSubmitting ? "Sending..." : "Submit"}
             </Button>

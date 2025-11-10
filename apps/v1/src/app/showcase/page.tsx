@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PlayCircle } from "lucide-react";
+import { track } from "@/lib/tracking";
 
 const highlights = [
   {
@@ -83,7 +84,12 @@ export default function ShowcasePage() {
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg" className="rounded-2xl">
+              <Button
+                asChild
+                size="lg"
+                className="rounded-2xl"
+                onClick={() => track("nav-try-demo", { from: "showcase" })}
+              >
                 <Link href="/studio-lite">
                   <PlayCircle className="h-4 w-4" />
                   Try Demo
@@ -94,6 +100,9 @@ export default function ShowcasePage() {
                 size="lg"
                 variant="outline"
                 className="rounded-2xl"
+                onClick={() =>
+                  track("nav-contact-hancom", { from: "showcase" })
+                }
               >
                 <Link href="https://www.hancom.com/en/support/csCenter/contactUs">
                   Contact HANCOM
