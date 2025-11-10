@@ -11,6 +11,10 @@ export const linkItems: LinkItemType[] = [
     active: "nested-url",
   },
   {
+    text: "Contact",
+    url: "/contact",
+  },
+  {
     type: "icon",
     url: "https://github.com/opendataloader-project/opendataloader-pdf",
     text: "Github",
