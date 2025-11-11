@@ -1,135 +1,65 @@
-# Turborepo starter
+# OpenDataLoader.org
 
-This Turborepo starter is maintained by the Turborepo core team.
+This repository hosts the public website and documentation for OpenDataLoader. It is a Turborepo workspace whose only app today is `apps/v1`, a Next.js 16 site that renders marketing pages plus the Fumadocs-powered docs experience under `/docs`.
 
-## Using this example
+## What lives where
 
-Run the following command:
+| Path                                | Purpose                                                                                                        |
+| ----------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `apps/v1/src/app`                   | Next.js App Router routes such as `/`, `/contact`, `/docs`, `/showcase`, API routes, and global layout assets. |
+| `apps/v1/content/docs`              | Source-of-truth MDX pages that Fumadocs ingests. Each file maps directly to `/docs/:slug`.                     |
+| `apps/v1/public`                    | Static assets. Use `public/figures` for images referenced inside docs.                                         |
+| `apps/v1/source.config.ts`          | Fumadocs `defineDocs` config that points at `content/docs`.                                                    |
+| `turbo.json`, `pnpm-workspace.yaml` | Workspace orchestration for builds, linting, and dependency sharing.                                           |
 
-```sh
-npx create-turbo@latest
-```
+## Developer onboarding (core engineers)
 
-## What's inside?
+- **Prerequisites**
+  - Node.js ≥ 18 (match `.nvmrc` if present) and `pnpm@9` (`corepack enable pnpm` keeps versions consistent).
+  - Optional: `turbo` installed globally for faster local runs (`pnpm add -g turbo`).
+- **Install once**
+  ```bash
+  pnpm install
+  ```
+- **Daily commands**
+  - `pnpm dev --filter v1` — runs the Next.js dev server with the docs, marketing pages, and API routes.
+  - `pnpm build --filter v1` — production build. CI runs `pnpm build` from the repo root which fans out via Turborepo.
+  - `pnpm lint --filter v1` and `pnpm format` — keep ESLint + Prettier happy before opening PRs.
+- **Environment variables**
+  - Only one secret is required locally today: `RESEND_API_KEY` for the `/api/contact` route (`apps/v1/src/app/api/contact/route.ts`). Without it, contact form submissions will fail; guard the UI or disable the route while developing if you do not have a key.
+  - Add any new secrets to `.env.local` and document them in this README under this section.
+- **Testing checklist before opening a PR**
+  - Run `pnpm dev --filter v1` and exercise the pages you touched, especially `/docs`, `/contact`, and `/showcase`.
+  - Run `pnpm lint --filter v1`.
+  - If you changed MDX or assets, confirm images resolve from `apps/v1/public`.
 
-This Turborepo includes the following packages/apps:
+## Fumadocs authoring (non‑developer managers)
 
-### Apps and Packages
+You only need basic Markdown knowledge to keep docs up to date. Everything lives under `apps/v1/content/docs`.
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
-```
-
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+- **Add or edit a page**
+  1. Duplicate an existing file (for example `apps/v1/content/docs/quick-start-python.mdx`) and rename it with a URL-friendly slug (e.g., `pricing.mdx` → `/docs/pricing`).
+  2. Update the frontmatter block at the top:
+     ```mdx
+     ---
+     title: Short headline shown in the sidebar
+     description: One sentence summary used in SEO and cards
+     ---
+     ```
+  3. Write content in Markdown. MDX lets you embed React components such as `<Cards>` or `<Callout>` if needed; existing examples in the folder provide copy‑and‑paste starter blocks.
+- **Keep the navigation in sync**
+  - `apps/v1/content/docs/meta.json` controls sidebar groupings. Add the new slug (without `.mdx`) in the right section. Lines starting with `---Heading---` are visual dividers, not pages.
+  - The order of entries in `meta.json` is the order shown in the sidebar.
+- **Reuse assets**
+  - Place screenshots or diagrams in `apps/v1/public/figures` and reference them with root-relative paths, for example `![Diagram](/figures/architecture.png)`. The site deploy pipeline automatically fingerprints and serves them.
+- **Linking tips**
+  - Prefer relative links such as `[JSON schema](./json-schema)`; Fumadocs resolves them automatically (`apps/v1/src/app/docs/[[...slug]]/page.tsx` wires this up via `createRelativeLink`).
+  - External links should include `https://` and will open in a new tab by default.
+- **Preview options**
+  - If you are comfortable running commands: `pnpm dev --filter v1`, then open `http://localhost:3000/docs`.
+  - Otherwise, edit the MDX file on GitHub, create a pull request, and use the autogenerated Vercel preview link to review the rendered page before merging.
+- **Publishing checklist**
+  - Confirm the page title and description are populated.
+  - Scan the sidebar to be sure the new page is listed once.
+  - Check that any code blocks declare their language (`bash, `ts) for syntax highlighting.
+  - Ask an engineer to merge once the preview looks good; deployments are automated via the main branch.
