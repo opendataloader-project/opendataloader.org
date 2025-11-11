@@ -3,7 +3,7 @@
 import type { ComponentProps, FormEvent } from "react";
 import { useState } from "react";
 import Link from "next/link";
-import { AlertCircle, CheckCircle2, ShieldCheck } from "lucide-react";
+import { AlertCircle, CheckCircle2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,6 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Checkbox } from "@/components/ui/checkbox";
 import { track } from "@/lib/tracking";
 
 type SubmissionState = "idle" | "submitting" | "success" | "error";
@@ -33,9 +34,15 @@ type SubmissionState = "idle" | "submitting" | "success" | "error";
 export function ContactForm() {
   const [status, setStatus] = useState<SubmissionState>("idle");
   const [message, setMessage] = useState<string | null>(null);
+  const [privacyConsent, setPrivacyConsent] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!privacyConsent) {
+      setStatus("error");
+      setMessage("Please agree to the Privacy Policy before submitting.");
+      return;
+    }
     setStatus("submitting");
     setMessage(null);
 
@@ -53,6 +60,7 @@ export function ContactForm() {
       jobTitle: readField("jobTitle"),
       company: readField("company"),
       details: readField("details"),
+      privacyConsent,
     };
 
     try {
@@ -76,6 +84,7 @@ export function ContactForm() {
       setStatus("success");
       setMessage("Thanks! Your message has been sent.");
       form.reset();
+      setPrivacyConsent(false);
     } catch (error) {
       console.error("Contact form submission error", error);
       setStatus("error");
@@ -153,24 +162,38 @@ export function ContactForm() {
             />
           </FieldSet>
 
-          <Alert className="bg-primary/5 border-primary/20">
-            <ShieldCheck className="text-primary" />
-            <AlertTitle>Privacy-first support</AlertTitle>
-            <AlertDescription>
-              <p>
-                OpenDataLoader collects the details above solely to respond to
-                your request. Data is retained for up to 12 months or deleted
-                immediately upon withdrawal of consent. Read the{" "}
+          <Field orientation="horizontal" className="items-start gap-3">
+            <Checkbox
+              id="privacyConsent"
+              name="privacyConsent"
+              checked={privacyConsent}
+              onCheckedChange={(checked) => setPrivacyConsent(checked === true)}
+              aria-required="true"
+              aria-invalid={
+                status === "error" && !privacyConsent ? "true" : undefined
+              }
+              className="mt-1"
+            />
+            <FieldContent className="gap-1.5">
+              <FieldLabel
+                htmlFor="privacyConsent"
+                className="text-sm font-medium leading-tight"
+              >
+                I agree to the Privacy Policy{}
+                <span className="text-destructive"> *</span>
+              </FieldLabel>
+              <FieldDescription>
+                I have reviewed how my information is processed and stored.{" "}
                 <Link
                   href="/privacy-policy"
                   className="text-primary underline-offset-2 hover:underline"
                 >
                   Privacy Policy
-                </Link>{" "}
-                for the full notice.
-              </p>
-            </AlertDescription>
-          </Alert>
+                </Link>
+                .
+              </FieldDescription>
+            </FieldContent>
+          </Field>
         </CardContent>
 
         <CardFooter className="flex flex-col gap-4">
