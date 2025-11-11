@@ -28,6 +28,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "https://opendataloader.org/",
+    siteName: "OpenDataLoader",
     title: "OpenDataLoader",
     description: siteDescription,
     images: [
