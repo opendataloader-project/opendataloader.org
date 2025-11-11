@@ -1,126 +1,17 @@
 // @ts-nocheck -- skip type checking
-import * as d_docs_12 from "../content/docs/upcoming-roadmap.mdx?collection=docs";
-import * as d_docs_11 from "../content/docs/tagged-pdf.mdx?collection=docs";
-import * as d_docs_10 from "../content/docs/quick-start-python.mdx?collection=docs";
-import * as d_docs_9 from "../content/docs/quick-start-nodejs.mdx?collection=docs";
-import * as d_docs_8 from "../content/docs/quick-start-java.mdx?collection=docs";
-import * as d_docs_7 from "../content/docs/quick-start-docker.mdx?collection=docs";
-import * as d_docs_6 from "../content/docs/license.mdx?collection=docs";
-import * as d_docs_5 from "../content/docs/json-schema.mdx?collection=docs";
-import * as d_docs_4 from "../content/docs/index.mdx?collection=docs";
-import * as d_docs_3 from "../content/docs/development-workflow.mdx?collection=docs";
-import * as d_docs_2 from "../content/docs/contributing.mdx?collection=docs";
-import * as d_docs_1 from "../content/docs/community.mdx?collection=docs";
-import * as d_docs_0 from "../content/docs/ai-safety.mdx?collection=docs";
-import { _runtime } from "fumadocs-mdx/runtime/next";
-import * as _source from "../source.config";
-export const docs = _runtime.docs<typeof _source.docs>(
-  [
-    {
-      info: { path: "ai-safety.mdx", fullPath: "content/docs/ai-safety.mdx" },
-      data: d_docs_0,
-    },
-    {
-      info: { path: "community.mdx", fullPath: "content/docs/community.mdx" },
-      data: d_docs_1,
-    },
-    {
-      info: {
-        path: "contributing.mdx",
-        fullPath: "content/docs/contributing.mdx",
-      },
-      data: d_docs_2,
-    },
-    {
-      info: {
-        path: "development-workflow.mdx",
-        fullPath: "content/docs/development-workflow.mdx",
-      },
-      data: d_docs_3,
-    },
-    {
-      info: { path: "index.mdx", fullPath: "content/docs/index.mdx" },
-      data: d_docs_4,
-    },
-    {
-      info: {
-        path: "json-schema.mdx",
-        fullPath: "content/docs/json-schema.mdx",
-      },
-      data: d_docs_5,
-    },
-    {
-      info: { path: "license.mdx", fullPath: "content/docs/license.mdx" },
-      data: d_docs_6,
-    },
-    {
-      info: {
-        path: "quick-start-docker.mdx",
-        fullPath: "content/docs/quick-start-docker.mdx",
-      },
-      data: d_docs_7,
-    },
-    {
-      info: {
-        path: "quick-start-java.mdx",
-        fullPath: "content/docs/quick-start-java.mdx",
-      },
-      data: d_docs_8,
-    },
-    {
-      info: {
-        path: "quick-start-nodejs.mdx",
-        fullPath: "content/docs/quick-start-nodejs.mdx",
-      },
-      data: d_docs_9,
-    },
-    {
-      info: {
-        path: "quick-start-python.mdx",
-        fullPath: "content/docs/quick-start-python.mdx",
-      },
-      data: d_docs_10,
-    },
-    {
-      info: { path: "tagged-pdf.mdx", fullPath: "content/docs/tagged-pdf.mdx" },
-      data: d_docs_11,
-    },
-    {
-      info: {
-        path: "upcoming-roadmap.mdx",
-        fullPath: "content/docs/upcoming-roadmap.mdx",
-      },
-      data: d_docs_12,
-    },
-  ],
-  [
-    {
-      info: { path: "meta.json", fullPath: "content/docs/meta.json" },
-      data: {
-        title: "docs",
-        pages: [
-          "---Overview---",
-          "index",
-          "---Quick Start---",
-          "quick-start-python",
-          "quick-start-java",
-          "quick-start-nodejs",
-          "quick-start-docker",
-          "---Features---",
-          "ai-safety",
-          "tagged-pdf",
-          "---Development---",
-          "development-workflow",
-          "json-schema",
-          "---Community---",
-          "community",
-          "contributing",
-          "upcoming-roadmap.mdx",
-          "license",
-        ],
-        description: "The documentation",
-        root: true,
-      },
-    },
-  ],
-);
+import * as d_docs_12 from "../content/docs/upcoming-roadmap.mdx?collection=docs"
+import * as d_docs_11 from "../content/docs/tagged-pdf.mdx?collection=docs"
+import * as d_docs_10 from "../content/docs/quick-start-python.mdx?collection=docs"
+import * as d_docs_9 from "../content/docs/quick-start-nodejs.mdx?collection=docs"
+import * as d_docs_8 from "../content/docs/quick-start-java.mdx?collection=docs"
+import * as d_docs_7 from "../content/docs/quick-start-docker.mdx?collection=docs"
+import * as d_docs_6 from "../content/docs/license.mdx?collection=docs"
+import * as d_docs_5 from "../content/docs/json-schema.mdx?collection=docs"
+import * as d_docs_4 from "../content/docs/index.mdx?collection=docs"
+import * as d_docs_3 from "../content/docs/development-workflow.mdx?collection=docs"
+import * as d_docs_2 from "../content/docs/contributing.mdx?collection=docs"
+import * as d_docs_1 from "../content/docs/community.mdx?collection=docs"
+import * as d_docs_0 from "../content/docs/ai-safety.mdx?collection=docs"
+import { _runtime } from "fumadocs-mdx/runtime/next"
+import * as _source from "../source.config"
+export const docs = _runtime.docs<typeof _source.docs>([{ info: {"path":"ai-safety.mdx","fullPath":"content/docs/ai-safety.mdx"}, data: d_docs_0 }, { info: {"path":"community.mdx","fullPath":"content/docs/community.mdx"}, data: d_docs_1 }, { info: {"path":"contributing.mdx","fullPath":"content/docs/contributing.mdx"}, data: d_docs_2 }, { info: {"path":"development-workflow.mdx","fullPath":"content/docs/development-workflow.mdx"}, data: d_docs_3 }, { info: {"path":"index.mdx","fullPath":"content/docs/index.mdx"}, data: d_docs_4 }, { info: {"path":"json-schema.mdx","fullPath":"content/docs/json-schema.mdx"}, data: d_docs_5 }, { info: {"path":"license.mdx","fullPath":"content/docs/license.mdx"}, data: d_docs_6 }, { info: {"path":"quick-start-docker.mdx","fullPath":"content/docs/quick-start-docker.mdx"}, data: d_docs_7 }, { info: {"path":"quick-start-java.mdx","fullPath":"content/docs/quick-start-java.mdx"}, data: d_docs_8 }, { info: {"path":"quick-start-nodejs.mdx","fullPath":"content/docs/quick-start-nodejs.mdx"}, data: d_docs_9 }, { info: {"path":"quick-start-python.mdx","fullPath":"content/docs/quick-start-python.mdx"}, data: d_docs_10 }, { info: {"path":"tagged-pdf.mdx","fullPath":"content/docs/tagged-pdf.mdx"}, data: d_docs_11 }, { info: {"path":"upcoming-roadmap.mdx","fullPath":"content/docs/upcoming-roadmap.mdx"}, data: d_docs_12 }], [{"info":{"path":"meta.json","fullPath":"content/docs/meta.json"},"data":{"title":"docs","pages":["---Overview---","index","---Quick Start---","quick-start-python","quick-start-java","quick-start-nodejs","quick-start-docker","---Features---","ai-safety","tagged-pdf","---Development---","development-workflow","json-schema","---Community---","community","contributing","upcoming-roadmap.mdx","license"],"description":"The documentation","root":true}}])

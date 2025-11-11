@@ -1,23 +1,10 @@
 "use client";
 
 import { useMemo, type ReactNode } from "react";
-import Link from "next/link";
 import { useTheme } from "next-themes";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  LabelList,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
-import type { TooltipContentProps } from "recharts";
 
+import { MetricBarChart } from "@/components/charts/metric-bar-chart";
 import { Section } from "@/components/section";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -32,7 +19,12 @@ import {
   renderScoreLabel,
   renderSecondsLabel,
 } from "@/lib/chart-format";
-import { track } from "@/lib/tracking";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 
 const barData = [
   {
@@ -64,133 +56,7 @@ const engineLabelMap: Record<string, string> = {
   markitdown: "MarkItDown",
 };
 
-type LabelRenderer = typeof renderScoreLabel;
-
-type ChartDatum = {
-  engine: string;
-  overall?: number;
-  elapsed_per_doc?: number;
-};
-
-interface MetricBarChartProps {
-  chartId: string;
-  data: ChartDatum[];
-  dataKey: "overall" | "elapsed_per_doc";
-  domain: [number, number] | [number, string];
-  valueFormatter: (value: number | string) => string;
-  tooltipLabel: string;
-  tooltipValueFormatter: (value: number | string) => string;
-  labelRenderer: LabelRenderer;
-  cursorFill: string;
-  barSize?: number;
-  getCellColors: (engine: string) => {
-    fill: string;
-    stroke: string;
-    strokeWidth?: number;
-  };
-  gradientDefs?: ReactNode;
-  isDark: boolean;
-}
-
-const MetricBarChart = ({
-  chartId,
-  data,
-  dataKey,
-  domain,
-  valueFormatter,
-  tooltipLabel,
-  tooltipValueFormatter,
-  labelRenderer,
-  cursorFill,
-  barSize = 36,
-  getCellColors,
-  gradientDefs,
-  isDark,
-}: MetricBarChartProps) => {
-  const tooltipContent = ({
-    active,
-    payload,
-    label,
-  }: TooltipContentProps<number, string>) => {
-    if (!active || !payload?.length) {
-      return null;
-    }
-
-    const value = payload[0]?.value ?? 0;
-
-    return (
-      <div className="rounded-md border bg-background px-3 py-2 text-xs shadow-lg sm:text-sm">
-        <p className="font-semibold text-foreground">
-          {engineLabelMap[label as string] ?? label}
-        </p>
-        <p className="text-muted-foreground">
-          {tooltipLabel} {tooltipValueFormatter(value)}
-        </p>
-      </div>
-    );
-  };
-
-  return (
-    <div className="h-[280px] w-full min-h-[260px] sm:h-80">
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          data={data}
-          barCategoryGap={16}
-          margin={{ top: 10, right: 8, left: 0, bottom: 10 }}
-          onClick={() => track("benchmark_chart_interact", { metric: dataKey })}
-        >
-          {gradientDefs}
-          <CartesianGrid
-            strokeDasharray="4 4"
-            stroke="currentColor"
-            opacity={0.08}
-          />
-          <XAxis
-            dataKey="engine"
-            tick={{
-              fontSize: 12,
-              fill: isDark ? "#d1d5db" : "#4b5563",
-            }}
-            tickFormatter={(value) => {
-              const key = String(value);
-              return engineLabelMap[key] ?? key;
-            }}
-            tickLine={false}
-            axisLine={false}
-            angle={-20}
-            textAnchor={"end"}
-            interval={0}
-            height={60}
-            stroke={isDark ? "#aaa" : "#333"}
-          />
-          <YAxis
-            tick={{ fontSize: 11, fill: isDark ? "#d1d5db" : "#4b5563" }}
-            tickLine={false}
-            axisLine={false}
-            domain={domain}
-            tickFormatter={valueFormatter}
-          />
-          <Tooltip cursor={{ fill: cursorFill }} content={tooltipContent} />
-          <Bar
-            dataKey={dataKey}
-            name={tooltipLabel}
-            radius={[8, 8, 0, 0]}
-            barSize={barSize}
-          >
-            <LabelList
-              dataKey={dataKey}
-              content={(props) => labelRenderer(props)}
-            />
-            {data.map((entry) => {
-              const styles = getCellColors(entry.engine);
-              return <Cell key={`${chartId}-${entry.engine}`} {...styles} />;
-            })}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
-  );
-};
+const formatEngineLabel = (value: string) => engineLabelMap[value] ?? value;
 
 const ChartCard = ({
   title,
@@ -257,39 +123,15 @@ export default function HomeBenchmark() {
               getCellColors={(engine) => ({
                 fill:
                   engine === highlightTarget
-                    ? "url(#overallHighlight)"
-                    : "url(#overallDefault)",
+                    ? "rgba(236,72,153,0.9)"
+                    : "rgba(99,102,241,0.9)",
                 stroke:
                   engine === highlightTarget
-                    ? "rgba(236,72,153,0.6)"
+                    ? "rgba(236,72,153,1)"
                     : "rgba(99,102,241,0.4)",
-                strokeWidth: engine === highlightTarget ? 2 : 1,
               })}
-              gradientDefs={
-                <defs>
-                  <linearGradient
-                    id="overallDefault"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.95} />
-                    <stop offset="100%" stopColor="#6366f1" stopOpacity={0.9} />
-                  </linearGradient>
-                  <linearGradient
-                    id="overallHighlight"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop offset="0%" stopColor="#f472b6" stopOpacity={0.95} />
-                    <stop offset="100%" stopColor="#ec4899" stopOpacity={0.9} />
-                  </linearGradient>
-                </defs>
-              }
               isDark={isDark}
+              formatEngineLabel={formatEngineLabel}
             />
           </ChartCard>
           <ChartCard
@@ -306,43 +148,50 @@ export default function HomeBenchmark() {
               tooltipValueFormatter={formatSeconds}
               labelRenderer={renderSecondsLabel}
               cursorFill={
-                isDark ? "rgba(56,189,248,0.15)" : "rgba(14,165,233,0.08)"
+                isDark ? "rgba(124,58,237,0.15)" : "rgba(59,130,246,0.08)"
               }
               barSize={40}
               getCellColors={(engine) => ({
                 fill:
                   engine === highlightTarget
-                    ? "rgba(14,165,233,0.9)"
-                    : "rgba(14,165,233,0.65)",
+                    ? "rgba(236,72,153,0.8)"
+                    : "rgba(99,102,241,0.8)",
                 stroke:
                   engine === highlightTarget
-                    ? "rgba(14,165,233,1)"
-                    : "rgba(14,165,233,0.4)",
-                strokeWidth: engine === highlightTarget ? 2 : 1,
+                    ? "rgba(236,72,153,1)"
+                    : "rgba(99,102,241,1)",
               })}
               isDark={isDark}
+              formatEngineLabel={formatEngineLabel}
             />
           </ChartCard>
         </div>
         <div className="mt-12 flex flex-wrap justify-center gap-3">
-          <Button asChild size="lg" className="rounded-2xl">
-            <Link
-              href="/docs"
-              onClick={() => track("nav_docs", { from: "home-benchmark" })}
-            >
-              Learn More
-            </Link>
-          </Button>
-          <Button asChild size="lg" variant="outline" className="rounded-2xl">
-            <Link
-              href="https://github.com/opendataloader-project/opendataloader-dp-bench"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => track("nav_github", { from: "home-benchmark" })}
-            >
-              <GitHubIcon className="h-4 w-4" /> GitHub
-            </Link>
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div>
+                <Button size="lg" className="rounded-2xl" disabled>
+                  Learn More
+                </Button>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>Upcoming in November 2025</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="rounded-2xl"
+                  disabled
+                >
+                  <GitHubIcon className="h-4 w-4" /> GitHub
+                </Button>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>Upcoming in November 2025</TooltipContent>
+          </Tooltip>
         </div>
       </div>
     </Section>
