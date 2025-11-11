@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+
 import Link from "next/link";
 
 import { Section } from "@/components/section";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -12,8 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { PlayCircle } from "lucide-react";
-import { track } from "@/lib/tracking";
+import { ShowcaseCtaButtons } from "@/app/showcase/showcase-cta";
 
 const highlights = [
   {
@@ -83,32 +82,7 @@ export default function ShowcasePage() {
                 operator-ready workspace.
               </p>
             </div>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Button
-                asChild
-                size="lg"
-                className="rounded-2xl"
-                onClick={() => track("nav-try-demo", { from: "showcase" })}
-              >
-                <Link href="/studio-lite">
-                  <PlayCircle className="h-4 w-4" />
-                  Try Demo
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="rounded-2xl"
-                onClick={() =>
-                  track("nav-contact-hancom", { from: "showcase" })
-                }
-              >
-                <Link href="https://www.hancom.com/en/support/csCenter/contactUs">
-                  Contact HANCOM
-                </Link>
-              </Button>
-            </div>
+            <ShowcaseCtaButtons />
           </div>
           <div className="border border-neutral-200 bg-background/90 shadow-xl shadow-black/5 dark:border-neutral-800 dark:bg-neutral-900/60">
             <Image
