@@ -105,7 +105,7 @@ export default function HomeBenchmark() {
         <div className="grid gap-6 lg:grid-cols-2">
           <ChartCard
             title="Overall Accuracy"
-            description="Higher is better. It is important for accurate processing of document structure, tables, reading order, etc."
+            description="A higher score reflects better accuracy. This metric plays a key role in processing document structure, tables, reading order, and similar elements."
           >
             <MetricBarChart
               chartId="overall"
@@ -136,7 +136,7 @@ export default function HomeBenchmark() {
           </ChartCard>
           <ChartCard
             title="Average Time"
-            description="Lower is better. It is important for fast processing of large scale document sets."
+            description="A lower value means faster performance. This metric is especially important when processing large-scale document sets efficiently."
           >
             <MetricBarChart
               chartId="elapsed"
