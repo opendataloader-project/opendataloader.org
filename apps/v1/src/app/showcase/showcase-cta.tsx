@@ -17,7 +17,7 @@ export function ShowcaseCtaButtons() {
       >
         <Link href="/studio-lite">
           <PlayCircle className="h-4 w-4" />
-          Try Demo
+          Try Studio
         </Link>
       </Button>
       <Button
@@ -27,9 +27,7 @@ export function ShowcaseCtaButtons() {
         className="rounded-2xl"
         onClick={() => track("nav-contact-hancom", { from: "showcase" })}
       >
-        <Link href="https://www.hancom.com/en/support/csCenter/contactUs">
-          Contact HANCOM
-        </Link>
+        <Link href="/contact">Contact</Link>
       </Button>
     </div>
   );
