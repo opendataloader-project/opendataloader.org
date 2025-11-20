@@ -19,11 +19,6 @@ export const linkItems: LinkItemType[] = [
     url: "/showcase",
   },
   {
-    text: "Javadocs",
-    url: "https://javadoc.io/doc/org.opendataloader/opendataloader-pdf-core/latest",
-    external: true,
-  },
-  {
     text: "Contact",
     url: "/contact",
   },

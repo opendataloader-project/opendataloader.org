@@ -20,10 +20,9 @@ const FOOTER_LINKS: FooterNavLink[] = [
     external: true,
   },
   {
-    label: "Javadocs",
-    href: "https://javadoc.io/doc/org.opendataloader/opendataloader-pdf-core/latest",
-    trackingId: "javadocs",
-    external: true,
+    label: "Demo",
+    href: "/demo",
+    trackingId: "demo",
   },
   {
     label: "Contact",
