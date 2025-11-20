@@ -11,6 +11,10 @@ export const linkItems: LinkItemType[] = [
     active: "nested-url",
   },
   {
+    text: "Demo",
+    url: "/demo",
+  },
+  {
     text: "Showcase",
     url: "/showcase",
   },
