@@ -1,4 +1,4 @@
-import { createPluginRegistration } from "@embedpdf/core";
+import { createPluginRegistration, PluginRegistry } from "@embedpdf/core";
 import { EmbedPDF } from "@embedpdf/core/react";
 import { usePdfiumEngine } from "@embedpdf/engines/react";
 import {
@@ -10,7 +10,10 @@ import {
   InteractionManagerPluginPackage,
   PagePointerProvider,
 } from "@embedpdf/plugin-interaction-manager/react";
-import { LoaderPluginPackage } from "@embedpdf/plugin-loader/react";
+import {
+  LoaderCapability,
+  LoaderPluginPackage,
+} from "@embedpdf/plugin-loader/react";
 import {
   RenderLayer,
   RenderPluginPackage,
@@ -36,36 +39,45 @@ type PDFViewerProps = {
   url: string;
 };
 
+const plugins = [
+  createPluginRegistration(LoaderPluginPackage),
+  createPluginRegistration(ViewportPluginPackage),
+  createPluginRegistration(ScrollPluginPackage),
+  createPluginRegistration(RenderPluginPackage),
+  createPluginRegistration(InteractionManagerPluginPackage),
+  createPluginRegistration(SelectionPluginPackage),
+  createPluginRegistration(HistoryPluginPackage),
+  createPluginRegistration(AnnotationPluginPackage, {
+    annotationAuthor: "opendataloader.org",
+  }),
+  createPluginRegistration(ZoomPluginPackage, {
+    defaultZoomLevel: ZoomMode.FitPage,
+  }),
+];
+
 export const PDFViewer = ({ id, url }: PDFViewerProps) => {
   const { engine, isLoading } = usePdfiumEngine();
-
   if (isLoading || !engine) {
     return <div>Loading PDF Engine...</div>;
   }
 
-  const plugins = [
-    createPluginRegistration(LoaderPluginPackage, {
-      loadingOptions: {
-        type: "url",
-        pdfFile: { id, url },
+  const onInitialized = async (registry: PluginRegistry) => {
+    console.log("PDF Viewer initialized");
+
+    const loaderProvider = registry.getCapabilityProvider(
+      "loader"
+    ) as Readonly<LoaderCapability> | null;
+    loaderProvider?.loadDocument({
+      type: "url",
+      pdfFile: {
+        id,
+        url,
       },
-    }),
-    createPluginRegistration(ViewportPluginPackage),
-    createPluginRegistration(ScrollPluginPackage),
-    createPluginRegistration(RenderPluginPackage),
-    createPluginRegistration(InteractionManagerPluginPackage),
-    createPluginRegistration(SelectionPluginPackage),
-    createPluginRegistration(HistoryPluginPackage),
-    createPluginRegistration(AnnotationPluginPackage, {
-      annotationAuthor: "opendataloader.org",
-    }),
-    createPluginRegistration(ZoomPluginPackage, {
-      defaultZoomLevel: ZoomMode.FitPage,
-    }),
-  ];
+    });
+  };
 
   return (
-    <EmbedPDF engine={engine} plugins={plugins}>
+    <EmbedPDF engine={engine} plugins={plugins} onInitialized={onInitialized}>
       <div className="flex h-full flex-col bg-foreground/10">
         <div className="p-2 flex justify-end">
           <Toolbar />
