@@ -2,8 +2,7 @@ const SAMPLE_START = BigInt("01030000000000");
 const SAMPLE_TOTAL = 201;
 const VERCEL_BLOB_BASE =
   "https://ysmaetzypmnjyfbz.public.blob.vercel-storage.com";
-const THUMB_BASE =
-  "https://github.com/opendataloader-project/opendataloader-sample/raw/refs/heads/main/pdfs_thumbnail";
+const THUMB_BASE = `${VERCEL_BLOB_BASE}/samples/pdfs_thumbnail`;
 const ORIGINAL_PDF_BASE = `${VERCEL_BLOB_BASE}/samples/pdfs`;
 const ANNOTATED_PDF_BASE = `${VERCEL_BLOB_BASE}/samples/prediction/opendataloader/pdf`;
 
