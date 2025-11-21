@@ -87,21 +87,17 @@ export function HeroSection({
             </div>
           </motion.div>
 
-          <Card className="mx-auto w-80 gap-0 border bg-card/80 p-0 shadow-none backdrop-blur">
-            <CardContent className="p-0">
-              <button
-                className="aspect-4/5 overflow-hidden bg-muted/40 cursor-pointer"
-                onClick={() => onSampleSelect("01030000000000")}
-              >
-                <img
-                  src={"/figures/example_annotated_pdf.png"}
-                  alt="thumbnail"
-                  className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-                  loading="lazy"
-                />
-              </button>
-            </CardContent>
-          </Card>
+          <button
+            className="mx-auto w-80 rounded-2xl border p-2 aspect-4/5 overflow-hidden cursor-pointer bg-white"
+            onClick={() => onSampleSelect("01030000000000")}
+          >
+            <img
+              src={"/figures/example_annotated_pdf.webp"}
+              alt="thumbnail"
+              className="object-cover transition-transform duration-300 hover:scale-105"
+              loading="lazy"
+            />
+          </button>
         </div>
       </div>
     </section>
