@@ -5,6 +5,7 @@ import { SampleDoc } from "@/lib/samples";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PDFViewer } from "@/components/pdf-viewer";
 
 import {
   DataState,
@@ -33,9 +34,7 @@ export function ViewerCard({
   const selectedDataState = selectedDataTab
     ? dataStates[selectedDataTab]
     : undefined;
-  const showDownloadButton = ["preview", "html", "md", "json"].includes(
-    selectedTab
-  );
+  const showDownloadButton = ["html", "md", "json"].includes(selectedTab);
   const isDownloadDisabled = selectedDataState?.status !== "ready";
 
   const handleDownload = () => {
@@ -45,7 +44,7 @@ export function ViewerCard({
     let mineType = "";
     if (selectedTab === "json") {
       mineType = "application/json";
-    } else if (selectedTab === "html" || selectedTab === "preview") {
+    } else if (selectedTab === "html") {
       mineType = "text/html";
     } else if (selectedTab === "md") {
       mineType = "text/markdown";
@@ -122,13 +121,9 @@ function ViewerContent({
     }
 
     return (
-      <iframe
-        key={`${sample?.id ?? "unknown"}-${tab}`}
-        src={pdfSrc}
-        title={`${tab} PDF preview`}
-        className="h-[calc(100vh-190px)] w-full"
-        loading="lazy"
-      />
+      <div className="h-[calc(100vh-190px)] w-full flex flex-col">
+        <PDFViewer id={sample?.id ?? "unknown"} url={pdfSrc} />
+      </div>
     );
   }
 
