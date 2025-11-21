@@ -77,7 +77,7 @@ const plugins = [
 export const PDFViewer = ({ id, url }: PDFViewerProps) => {
   const { engine, isLoading } = usePdfiumEngine();
   if (isLoading || !engine) {
-    return <div>Loading PDF Engine...</div>;
+    return <div className="flex h-full flex-col bg-foreground/10"></div>;
   }
 
   const onInitialized = async (registry: PluginRegistry) => {
