@@ -32,7 +32,7 @@ import opendataloader_pdf
 opendataloader_pdf.convert(
     input_path=["path/to/document.pdf", "path/to/folder"],
     output_dir="path/to/output",
-    format=["json", "html", "pdf", "markdown"],
+    format="json,html,pdf,markdown",
 )
 ```
 
@@ -47,27 +47,25 @@ Use the same installation to drive conversions from the terminal:
 ```bash
 opendataloader-pdf path/to/document.pdf \
   -o path/to/output \
-  -f json html pdf markdown
+  -f json,html,pdf,markdown
 ```
-
-Add flags like `--content-safety-off hidden-text` or `--keep-line-breaks` as needed. See the [CLI reference](./cli-reference) for every option.
 
 ## Function reference
 
 `opendataloader_pdf.convert()` is the primary API.
 
-| Parameter               | Type                  | Required | Default      | Description                                                                                          |
-| ----------------------- | --------------------- | -------- | ------------ | ---------------------------------------------------------------------------------------------------- |
-| `input_path`            | `List[str]`           | ✅       | —            | One or more PDF file paths or directories to process.                                                |
-| `output_dir`            | `Optional[str]`       |          | Input folder | Directory where outputs are stored.                                                                  |
-| `format`                | `Optional[List[str]]` |          | `["json"]`   | Output formats to generate.                                                                          |
-| `password`              | `Optional[str]`       |          |              | Password for encrypted PDFs.                                                                         |
-| `quiet`                 | `bool`                |          | `False`      | Suppresses CLI logging output and streaming.                                                         |
-| `content_safety_off`    | `Optional[List[str]]` |          |              | Disable one or more content safety filters (`all`, `hidden-text`, `off-page`, `tiny`, `hidden-ocg`). |
-| `keep_line_breaks`      | `bool`                |          | `False`      | Preserve line breaks in text output.                                                                 |
-| `replace_invalid_chars` | `Optional[str]`       |          |              | Replacement character for invalid or unrecognized characters.                                        |
+| Parameter               | Type                              | Required | Default      | Description                                                                                                             |
+| ----------------------- | --------------------------------- | -------- | ------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| `input_path`            | `List[str]`                       | ✅ Yes   | —            | One or more PDF file paths or directories to process.                                                                   |
+| `output_dir`            | `Optional[str]`                   | No       | input folder | Directory where outputs are written.                                                                                    |
+| `password`              | `Optional[str]`                   | No       | `None`       | Password used for encrypted PDFs.                                                                                       |
+| `format`                | `Optional[Union[str, List[str]]]` | No       | `None`       | Comma-separated output formats to generate. (json, text, html, pdf, markdown, markdown-with-html, markdown-with-images) |
+| `quiet`                 | `bool`                            | No       | `False`      | Suppresses CLI logging output when `True`.                                                                              |
+| `content_safety_off`    | `Optional[Union[str, List[str]]]` | No       | `None`       | Comma-separated content safety filters to disable. (all, hidden-text, off-page, tiny, hidden-ocg)                       |
+| `keep_line_breaks`      | `bool`                            | No       | `False`      | Preserves line breaks in text output when `True`.                                                                       |
+| `replace_invalid_chars` | `Optional[str]`                   | No       | `None`       | Replacement character for invalid or unrecognized characters (e.g., �, `\u0000`).                                       |
+| `use_struct_tree`       | `bool `                           | No       | `False`      | Enable processing structure tree (disabled by default).                                                                 |
 
 ## Next steps
 
-- Review [AI Safety](./ai-safety) to understand which filters run by default.
 - Need schema details for downstream parsing? See the [JSON schema](./json-schema).
