@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 
+import { SampleDoc } from "@/lib/samples";
+import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
-import { SampleDoc } from "@/lib/samples";
 
 type SampleSidebarProps = {
   currentSample?: SampleDoc;
@@ -56,7 +56,7 @@ export function SampleSidebar({
       <ScrollArea
         className={cn(
           "px-4 py-4",
-          isDesktop ? "h-[calc(100vh-130px)]" : "flex-1 min-h-0",
+          isDesktop ? "h-[calc(100vh-130px)]" : "flex-1 min-h-0"
         )}
       >
         <div className="grid grid-cols-1 gap-3">
@@ -70,7 +70,7 @@ export function SampleSidebar({
                 onClick={() => onSampleClick(sample)}
                 className={cn(
                   "rounded-2xl border bg-muted/30 p-2 text-left transition hover:bg-muted cursor-pointer",
-                  isActive ? "border-primary" : "border-transparent",
+                  isActive ? "border-primary" : "border-transparent"
                 )}
               >
                 <div className="aspect-3/4 overflow-hidden rounded-xl bg-muted border">

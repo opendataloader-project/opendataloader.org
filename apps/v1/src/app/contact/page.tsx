@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { Section } from "@/components/section";
+
 import { ContactForm } from "./contact-form";
 
 export const metadata: Metadata = {

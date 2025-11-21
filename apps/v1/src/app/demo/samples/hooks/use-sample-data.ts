@@ -13,10 +13,10 @@ import {
 
 export function useSampleDataStates(
   sampleId: string | undefined,
-  views: ViewerTab[],
+  views: ViewerTab[]
 ) {
   const [dataStates, setDataStates] = useState<Record<DataTab, DataState>>(
-    createInitialDataState,
+    createInitialDataState
   );
   const dataStatesRef = useRef(dataStates);
 
@@ -65,7 +65,7 @@ export function useSampleDataStates(
           const response = await fetch(url, { signal: controller.signal });
           if (!response.ok) {
             throw new Error(
-              `Failed to load ${viewerTabDisplay[tab].label} data`,
+              `Failed to load ${viewerTabDisplay[tab].label} data`
             );
           }
 

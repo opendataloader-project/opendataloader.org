@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
 import { track } from "@/lib/tracking";
+import { Button } from "@/components/ui/button";
 
 type FooterNavLink = {
   label: string;

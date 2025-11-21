@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-
 import Link from "next/link";
 
-import { Section } from "@/components/section";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -12,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Section } from "@/components/section";
 import { ShowcaseCtaButtons } from "@/app/showcase/showcase-cta";
 
 const highlights = [

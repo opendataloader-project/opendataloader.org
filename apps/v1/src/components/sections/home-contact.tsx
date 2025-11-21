@@ -1,9 +1,10 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { track } from "@/lib/tracking";
 import Link from "next/link";
+
+import { track } from "@/lib/tracking";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function HomeContact() {
   return (

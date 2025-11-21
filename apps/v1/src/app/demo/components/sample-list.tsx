@@ -1,5 +1,6 @@
 import type React from "react";
 
+import { SampleDoc } from "@/lib/samples";
 import {
   Table,
   TableBody,
@@ -8,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { SampleDoc } from "@/lib/samples";
 
 type SampleListProps = {
   samples: SampleDoc[];

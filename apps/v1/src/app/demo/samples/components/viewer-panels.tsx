@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Download, Loader2 } from "lucide-react";
 
+import { SampleDoc } from "@/lib/samples";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SampleDoc } from "@/lib/samples";
 
 import {
-  DataTab,
   DataState,
+  DataTab,
   dataTabForViewer,
   parseViewerTab,
   ViewerTab,
@@ -34,7 +34,7 @@ export function ViewerCard({
     ? dataStates[selectedDataTab]
     : undefined;
   const showDownloadButton = ["preview", "html", "md", "json"].includes(
-    selectedTab,
+    selectedTab
   );
   const isDownloadDisabled = selectedDataState?.status !== "ready";
 

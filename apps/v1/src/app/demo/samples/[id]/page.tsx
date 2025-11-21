@@ -9,6 +9,8 @@ import {
 } from "next/navigation";
 import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 
+import { getSampleById, getSamples, SampleDoc } from "@/lib/samples";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -19,8 +21,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
-import { getSampleById, getSamples, SampleDoc } from "@/lib/samples";
 
 import { SampleSidebar } from "../components/sample-sidebar";
 import { ViewerCard } from "../components/viewer-panels";
@@ -39,7 +39,7 @@ export default function SampleDetailPage() {
   const searchParams = useSearchParams();
   const searchParamsString = useMemo(
     () => searchParams?.toString() ?? "",
-    [searchParams],
+    [searchParams]
   );
 
   const curView1 = useMemo(() => {
@@ -140,7 +140,7 @@ export default function SampleDetailPage() {
               "hidden border-b bg-background/95 transition-all duration-300 md:flex md:flex-col md:border-b-0",
               desktopSidebarOpen
                 ? "md:w-50 lg:w-50 md:border-r"
-                : "md:w-0 md:border-r-0 md:opacity-0 md:pointer-events-none md:overflow-hidden",
+                : "md:w-0 md:border-r-0 md:opacity-0 md:pointer-events-none md:overflow-hidden"
             )}
             aria-hidden={!desktopSidebarOpen || !isDesktop}
           >

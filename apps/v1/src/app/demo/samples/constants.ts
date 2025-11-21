@@ -49,7 +49,7 @@ export const createInitialDataState = (): Record<DataTab, DataState> => ({
 
 export function normalizeView(
   raw: string | null,
-  isPrimary: boolean,
+  isPrimary: boolean
 ): ViewerTab {
   if (!raw || !viewerTabOrder.includes(raw as ViewerTab))
     return isPrimary ? DEFAULT_PRIMARY_TAB : DEFAULT_SECONDARY_TAB;

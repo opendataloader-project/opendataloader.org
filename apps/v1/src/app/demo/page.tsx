@@ -3,17 +3,18 @@
 import React, { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { getSamples } from "@/lib/samples";
+
 import { HeroSection } from "./components/hero-section";
 import { SampleGrid } from "./components/sample-grid";
 import { SampleList } from "./components/sample-list";
 import { SamplesToolbar } from "./components/samples-toolbar";
-import { getSamples } from "@/lib/samples";
 
 function onFilesSelected(files: FileList | null) {
   if (!files || files.length === 0) return;
   console.log(
     "Selected files:",
-    Array.from(files).map((f) => ({ name: f.name, size: f.size })),
+    Array.from(files).map((f) => ({ name: f.name, size: f.size }))
   );
   alert(`${files.length} file(s) selected. (Functionality coming soon!)`);
 }
@@ -40,7 +41,7 @@ export default function DemoPage() {
 
   function onSampleKeyDown(
     event: React.KeyboardEvent<HTMLElement>,
-    id: string,
+    id: string
   ) {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();

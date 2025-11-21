@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import HomeAbout from "@/components/sections/home-about";
 import HomeBenchmark from "@/components/sections/home-benchmark";
 import HomeContact from "@/components/sections/home-contact";

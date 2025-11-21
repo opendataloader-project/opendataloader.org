@@ -1,7 +1,8 @@
-import { RootProvider } from "fumadocs-ui/provider/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Analytics } from "@vercel/analytics/next";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { RootProvider } from "fumadocs-ui/provider/next";
+
 import "./globals.css";
 
 export default function Layout({ children }: LayoutProps<"/">) {

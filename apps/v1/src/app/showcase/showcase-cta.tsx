@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { PlayCircle } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { track } from "@/lib/tracking";
+import { Button } from "@/components/ui/button";
 
 export function ShowcaseCtaButtons() {
   return (

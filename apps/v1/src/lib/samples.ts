@@ -31,7 +31,7 @@ const samples: SampleDoc[] = Array.from(
       originalPdf: `${ORIGINAL_PDF_BASE}/${id}.pdf`,
       annotatedPdf: `${ANNOTATED_PDF_BASE}/${id}_annotated.pdf`,
     };
-  },
+  }
 );
 
 export function getSamples() {
@@ -45,7 +45,7 @@ export function getSampleById(id: string | undefined | null) {
 
 export function buildDataUrl(
   type: keyof typeof DATA_TYPE_META,
-  id: string,
+  id: string
 ): string {
   const meta = DATA_TYPE_META[type];
   return `${VERCEL_BLOB_BASE}/samples/prediction/opendataloader/${meta.folder}/${id}.${meta.ext}`;

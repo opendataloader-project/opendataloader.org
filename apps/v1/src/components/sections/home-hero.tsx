@@ -1,13 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { DoorOpen, Shield, Zap } from "lucide-react";
 
-import { GitHubIcon } from "@/components/icons/github";
+import { track } from "@/lib/tracking";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { track } from "@/lib/tracking";
-import Link from "next/link";
+import { GitHubIcon } from "@/components/icons/github";
 
 export default function HomeHero() {
   return (

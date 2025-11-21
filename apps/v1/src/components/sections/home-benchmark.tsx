@@ -3,8 +3,13 @@
 import { useMemo, type ReactNode } from "react";
 import { useTheme } from "next-themes";
 
-import { MetricBarChart } from "@/components/charts/metric-bar-chart";
-import { Section } from "@/components/section";
+import {
+  formatScore,
+  formatSeconds,
+  renderScoreLabel,
+  renderSecondsLabel,
+} from "@/lib/chart-format";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -12,19 +17,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { GitHubIcon } from "@/components/icons/github";
-import {
-  formatScore,
-  formatSeconds,
-  renderScoreLabel,
-  renderSecondsLabel,
-} from "@/lib/chart-format";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
+import { MetricBarChart } from "@/components/charts/metric-bar-chart";
+import { GitHubIcon } from "@/components/icons/github";
+import { Section } from "@/components/section";
 
 const barData = [
   {
