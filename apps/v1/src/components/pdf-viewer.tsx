@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { createPluginRegistration, PluginRegistry } from "@embedpdf/core";
 import { EmbedPDF } from "@embedpdf/core/react";
 import { usePdfiumEngine } from "@embedpdf/engines/react";
@@ -18,8 +19,18 @@ import {
   RenderLayer,
   RenderPluginPackage,
 } from "@embedpdf/plugin-render/react";
+import {
+  Rotate,
+  RotatePluginPackage,
+  useRotate,
+} from "@embedpdf/plugin-rotate/react";
 import { Scroller, ScrollPluginPackage } from "@embedpdf/plugin-scroll/react";
-import { SelectionPluginPackage } from "@embedpdf/plugin-selection/react";
+import {
+  SelectionLayer,
+  SelectionPluginPackage,
+  SelectionRangeX,
+  useSelectionCapability,
+} from "@embedpdf/plugin-selection/react";
 import {
   Viewport,
   ViewportPluginPackage,
@@ -29,7 +40,14 @@ import {
   ZoomMode,
   ZoomPluginPackage,
 } from "@embedpdf/plugin-zoom/react";
-import { MoveHorizontal, ZoomIn, ZoomOut } from "lucide-react";
+import {
+  Copy,
+  MoveHorizontal,
+  RotateCcw,
+  RotateCw,
+  ZoomIn,
+  ZoomOut,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -53,6 +71,7 @@ const plugins = [
   createPluginRegistration(ZoomPluginPackage, {
     defaultZoomLevel: ZoomMode.FitPage,
   }),
+  createPluginRegistration(RotatePluginPackage),
 ];
 
 export const PDFViewer = ({ id, url }: PDFViewerProps) => {
@@ -85,22 +104,29 @@ export const PDFViewer = ({ id, url }: PDFViewerProps) => {
         <Viewport>
           <Scroller
             renderPage={({ width, height, pageIndex, scale, rotation }) => (
-              <PagePointerProvider
-                pageIndex={pageIndex}
-                pageWidth={width}
-                pageHeight={height}
-                rotation={rotation}
-                scale={scale}
-              >
-                <RenderLayer pageIndex={pageIndex} scale={scale} />
-                <AnnotationLayer
+              <Rotate pageSize={{ width, height }}>
+                <PagePointerProvider
                   pageIndex={pageIndex}
-                  scale={scale}
                   pageWidth={width}
                   pageHeight={height}
                   rotation={rotation}
-                />
-              </PagePointerProvider>
+                  scale={scale}
+                >
+                  <RenderLayer
+                    pageIndex={pageIndex}
+                    scale={scale}
+                    className="pointer-events-none select-none"
+                  />
+                  <SelectionLayer pageIndex={pageIndex} scale={scale} />
+                  <AnnotationLayer
+                    pageIndex={pageIndex}
+                    scale={scale}
+                    pageWidth={width}
+                    pageHeight={height}
+                    rotation={rotation}
+                  />
+                </PagePointerProvider>
+              </Rotate>
             )}
           />
         </Viewport>
@@ -111,25 +137,57 @@ export const PDFViewer = ({ id, url }: PDFViewerProps) => {
 
 const Toolbar = () => {
   const { provides: zoom } = useZoom();
-  if (!zoom) {
+  const { provides: rotate } = useRotate();
+  const { provides: selection } = useSelectionCapability();
+
+  const [hasSelection, setHasSelection] = useState(false);
+
+  useEffect(() => {
+    if (!selection) return;
+    return selection.onSelectionChange((sel: SelectionRangeX | null) => {
+      setHasSelection(!!sel);
+    });
+  }, [selection]);
+
+  if (!zoom || !rotate || !selection) {
     return null;
   }
 
   return (
     <ButtonGroup>
-      <Button variant="outline" size="sm" onClick={zoom.zoomOut}>
-        <ZoomOut />
-      </Button>
-      <Button variant="outline" size="sm" onClick={zoom.zoomIn}>
-        <ZoomIn />
-      </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => zoom.requestZoom(ZoomMode.FitPage)}
-      >
-        <MoveHorizontal />
-      </Button>
+      <ButtonGroup>
+        <Button variant="outline" size="sm" onClick={zoom.zoomOut}>
+          <ZoomOut />
+        </Button>
+        <Button variant="outline" size="sm" onClick={zoom.zoomIn}>
+          <ZoomIn />
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => zoom.requestZoom(ZoomMode.FitPage)}
+        >
+          <MoveHorizontal />
+        </Button>
+      </ButtonGroup>
+      <ButtonGroup>
+        <Button variant="outline" size="sm" onClick={rotate.rotateBackward}>
+          <RotateCcw />
+        </Button>
+        <Button variant="outline" size="sm" onClick={rotate.rotateForward}>
+          <RotateCw />
+        </Button>
+      </ButtonGroup>
+      <ButtonGroup>
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={!hasSelection}
+          onClick={selection?.copyToClipboard}
+        >
+          <Copy />
+        </Button>
+      </ButtonGroup>
     </ButtonGroup>
   );
 };
