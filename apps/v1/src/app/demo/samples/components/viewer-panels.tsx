@@ -34,11 +34,44 @@ export function ViewerCard({
   const selectedDataState = selectedDataTab
     ? dataStates[selectedDataTab]
     : undefined;
-  const showDownloadButton = ["html", "md", "json"].includes(selectedTab);
-  const isDownloadDisabled = selectedDataState?.status !== "ready";
+  const showDownloadButton = ["html", "md", "json", "pdf", "annot"].includes(
+    selectedTab
+  );
+  const isDownloadDisabled =
+    selectedTab === "pdf"
+      ? !sample?.originalPdf
+      : selectedTab === "annot"
+        ? !sample?.annotatedPdf
+        : selectedDataState?.status !== "ready";
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!showDownloadButton || !sample) return;
+
+    const link = document.createElement("a");
+    link.rel = "noopener";
+
+    if (selectedTab === "pdf" && sample.originalPdf) {
+      const response = await fetch(sample.originalPdf);
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      link.download = sample.name;
+      link.href = url;
+      link.click();
+      URL.revokeObjectURL(url);
+      return;
+    }
+
+    if (selectedTab === "annot" && sample.annotatedPdf) {
+      const response = await fetch(sample.annotatedPdf);
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      link.download = `${sample.id}_annotated.pdf`;
+      link.href = url;
+      link.click();
+      URL.revokeObjectURL(url);
+      return;
+    }
+
     if (selectedDataState?.status !== "ready") return;
 
     let mineType = "";
@@ -54,7 +87,6 @@ export function ViewerCard({
       type: mineType,
     });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
     link.href = url;
     link.download = `${sample.id}.${selectedTab}`;
     link.click();
