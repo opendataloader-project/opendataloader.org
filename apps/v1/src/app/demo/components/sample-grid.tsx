@@ -19,7 +19,7 @@ export function SampleGrid({ samples, onSelect }: Readonly<SampleGridProps>) {
             <img
               src={sample.thumb}
               alt={sample.name}
-              className="h-full w-full object-cover "
+              className="object-cover"
               loading="lazy"
             />
           </div>

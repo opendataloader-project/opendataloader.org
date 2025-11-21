@@ -77,7 +77,7 @@ export function SampleSidebar({
                   <img
                     src={sample.thumb}
                     alt={sample.name}
-                    className="h-full w-full max-w-[300px] object-cover"
+                    className="object-cover"
                     loading="lazy"
                   />
                 </div>
