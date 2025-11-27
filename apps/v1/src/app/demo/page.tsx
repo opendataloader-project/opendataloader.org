@@ -22,15 +22,10 @@ export default function DemoPage() {
     fileInputRef.current?.click();
   }
 
-  function onSampleSelect(_id: string) {
-    router.push("/demo/samples");
-  }
-
   return (
     <div className="min-h-screen w-full bg-linear-to-b from-background to-muted/30">
       <HeroSection
         onTryClick={onTryClick}
-        onSampleSelect={onSampleSelect}
         fileInputRef={fileInputRef}
         onFilesSelected={onFilesSelected}
       />

@@ -1,10 +1,10 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { UploadCloud } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Tooltip,
   TooltipContent,
@@ -13,17 +13,17 @@ import {
 
 type HeroSectionProps = {
   onTryClick: () => void;
-  onSampleSelect: (id: string) => void;
   fileInputRef: React.RefObject<HTMLInputElement | null>;
   onFilesSelected: (files: FileList | null) => void;
 };
 
 export function HeroSection({
   onTryClick,
-  onSampleSelect,
   fileInputRef,
   onFilesSelected,
 }: Readonly<HeroSectionProps>) {
+  const router = useRouter();
+
   return (
     <section className="relative isolate border-b bg-muted/40">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
@@ -80,7 +80,7 @@ export function HeroSection({
                 size="lg"
                 variant="outline"
                 className="rounded-2xl gap-2 cursor-pointer"
-                onClick={() => onSampleSelect("01030000000000")}
+                onClick={() => router.push("/demo/samples")}
               >
                 Sample PDFs
               </Button>
@@ -89,7 +89,7 @@ export function HeroSection({
 
           <button
             className="mx-auto w-80 rounded-2xl border p-2 aspect-4/5 overflow-hidden cursor-pointer bg-white"
-            onClick={() => onSampleSelect("01030000000000")}
+            onClick={() => router.push("/demo/samples/01030000000000")}
           >
             <img
               src={"/figures/example_annotated_pdf.webp"}

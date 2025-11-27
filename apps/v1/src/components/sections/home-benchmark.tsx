@@ -1,14 +1,8 @@
 "use client";
 
-import { useMemo, type ReactNode } from "react";
-import { useTheme } from "next-themes";
+import Image from "next/image";
+import Link from "next/link";
 
-import {
-  formatScore,
-  formatSeconds,
-  renderScoreLabel,
-  renderSecondsLabel,
-} from "@/lib/chart-format";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,84 +11,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { MetricBarChart } from "@/components/charts/metric-bar-chart";
 import { GitHubIcon } from "@/components/icons/github";
 import { Section } from "@/components/section";
 
-const barData = [
-  {
-    engine: "opendataloader-pdf",
-    overall: 0.7778189897859346,
-    elapsed_per_doc: 0.04914846062660217,
-  },
-  {
-    engine: "docling",
-    overall: 0.8767315385728099,
-    elapsed_per_doc: 0.6291988396644592,
-  },
-  {
-    engine: "pymupdf4llm",
-    overall: 0.7315707809993062,
-    elapsed_per_doc: 0.09198243498802185,
-  },
-  {
-    engine: "markitdown",
-    overall: 0.5831809981892546,
-    elapsed_per_doc: 0.04330030083656311,
-  },
-];
-
-const engineLabelMap: Record<string, string> = {
-  "opendataloader-pdf": "OpenDataLoader PDF",
-  docling: "Docling",
-  pymupdf4llm: "PyMuPDF4LLM",
-  markitdown: "MarkItDown",
-};
-
-const formatEngineLabel = (value: string) => engineLabelMap[value] ?? value;
-
-const ChartCard = ({
-  title,
-  description,
-  children,
-}: {
-  title: string;
-  description: string;
-  children: ReactNode;
-}) => (
-  <Card className="h-full">
-    <CardHeader>
-      <CardTitle className="text-base sm:text-lg">{title}</CardTitle>
-      <CardDescription>{description}</CardDescription>
-    </CardHeader>
-    <CardContent>
-      <div className="pt-2">{children}</div>
-    </CardContent>
-  </Card>
-);
-
 export default function HomeBenchmark() {
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
-  const highlightTarget = "opendataloader-pdf";
-
-  const accuracyData = useMemo(() => {
-    return [...barData]
-      .sort((a, b) => b.overall - a.overall)
-      .map(({ engine, overall }) => ({ engine, overall }));
-  }, []);
-
-  const elapsedData = useMemo(() => {
-    return [...barData]
-      .sort((a, b) => a.elapsed_per_doc - b.elapsed_per_doc)
-      .map(({ engine, elapsed_per_doc }) => ({ engine, elapsed_per_doc }));
-  }, []);
-
   return (
     <Section
       id="benchmark"
@@ -102,96 +22,55 @@ export default function HomeBenchmark() {
       subtitle="OpenDataLoader PDF is continuously being researched and developed to provide more accurate extraction and recognition through objective evaluation metrics. Please compare the three components that make up the metrics. You'll find OpenDataLoader PDF, the document inference feature that's just right for you."
     >
       <div className="mx-auto w-full max-w-6xl py-10">
-        <div className="grid gap-6 lg:grid-cols-2">
-          <ChartCard
-            title="Overall Accuracy"
-            description="A higher score reflects better accuracy. This metric plays a key role in processing document structure, tables, reading order, and similar elements."
-          >
-            <MetricBarChart
-              chartId="overall"
-              data={accuracyData}
-              dataKey="overall"
-              domain={[0, 1]}
-              valueFormatter={(value) => formatScore(value)}
-              tooltipLabel="Overall score"
-              tooltipValueFormatter={formatScore}
-              labelRenderer={renderScoreLabel}
-              cursorFill={
-                isDark ? "rgba(124,58,237,0.15)" : "rgba(59,130,246,0.08)"
-              }
-              barSize={40}
-              getCellColors={(engine) => ({
-                fill:
-                  engine === highlightTarget
-                    ? "rgba(236,72,153,0.9)"
-                    : "rgba(99,102,241,0.9)",
-                stroke:
-                  engine === highlightTarget
-                    ? "rgba(236,72,153,1)"
-                    : "rgba(99,102,241,0.4)",
-              })}
-              isDark={isDark}
-              formatEngineLabel={formatEngineLabel}
-            />
-          </ChartCard>
-          <ChartCard
-            title="Average Time"
-            description="A lower value means faster performance. This metric is especially important when processing large-scale document sets efficiently."
-          >
-            <MetricBarChart
-              chartId="elapsed"
-              data={elapsedData}
-              dataKey="elapsed_per_doc"
-              domain={[0, "dataMax + 0.1"]}
-              valueFormatter={formatSeconds}
-              tooltipLabel="Avg. time"
-              tooltipValueFormatter={formatSeconds}
-              labelRenderer={renderSecondsLabel}
-              cursorFill={
-                isDark ? "rgba(124,58,237,0.15)" : "rgba(59,130,246,0.08)"
-              }
-              barSize={40}
-              getCellColors={(engine) => ({
-                fill:
-                  engine === highlightTarget
-                    ? "rgba(236,72,153,0.8)"
-                    : "rgba(99,102,241,0.8)",
-                stroke:
-                  engine === highlightTarget
-                    ? "rgba(236,72,153,1)"
-                    : "rgba(99,102,241,1)",
-              })}
-              isDark={isDark}
-              formatEngineLabel={formatEngineLabel}
-            />
-          </ChartCard>
-        </div>
+        <Card className="overflow-hidden">
+          <CardHeader>
+            <CardTitle className="text-base sm:text-lg">
+              Benchmark Snapshots
+            </CardTitle>
+            <CardDescription>
+              Comparative overall quality and energy scores across document
+              extraction engines.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="mt-2 grid gap-4 md:grid-cols-2">
+              <div className="relative w-full overflow-hidden rounded-lg border bg-muted/30">
+                <Image
+                  src="/figures/benchmark_overall.png"
+                  alt="Overall benchmark comparison across engines"
+                  width={1200}
+                  height={800}
+                  className="h-auto w-full"
+                  priority
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                />
+              </div>
+              <div className="relative w-full overflow-hidden rounded-lg border bg-muted/30">
+                <Image
+                  src="/figures/benchmark_energy-consumption.png"
+                  alt="Energy consumption benchmark comparison across engines"
+                  width={1200}
+                  height={800}
+                  className="h-auto w-full"
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
         <div className="mt-12 flex flex-wrap justify-center gap-3">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div>
-                <Button size="lg" className="rounded-2xl" disabled>
-                  Learn More
-                </Button>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>Upcoming in November 2025</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="rounded-2xl"
-                  disabled
-                >
-                  <GitHubIcon className="h-4 w-4" /> GitHub
-                </Button>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>Upcoming in November 2025</TooltipContent>
-          </Tooltip>
+          <Button asChild size="lg" className="rounded-2xl">
+            <Link href="/docs/benchmark">Learn More</Link>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="rounded-2xl">
+            <Link
+              href="https://github.com/opendataloader-project/opendataloader-bench"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <GitHubIcon className="h-4 w-4" /> Benchmark (GitHub)
+            </Link>
+          </Button>
         </div>
       </div>
     </Section>
