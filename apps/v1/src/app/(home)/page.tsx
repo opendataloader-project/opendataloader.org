@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import HomeAbout from "@/components/sections/home-about";
+import HomeAiSafety from "@/components/sections/home-ai-safety";
 import HomeBenchmark from "@/components/sections/home-benchmark";
 import HomeContact from "@/components/sections/home-contact";
 import HomeFooter from "@/components/sections/home-footer";
@@ -51,6 +52,7 @@ export default function HomePage() {
     <div className="min-h-screen">
       <HomeHero />
       <HomeAbout />
+      <HomeAiSafety />
       <HomeTaggedPdf />
       <HomeBenchmark />
       <HomeContact />
