@@ -71,6 +71,14 @@ export default function HomeHero() {
                 <GitHubIcon className="h-4 w-4" /> GitHub
               </Link>
             </Button>
+            <Button asChild size="lg" variant="outline" className="rounded-2xl">
+              <Link
+                href="/demo/samples"
+                onClick={() => track("nav_samples", { from: "home-hero" })}
+              >
+                Sample PDFs
+              </Link>
+            </Button>
           </div>
         </motion.div>
       </div>
