@@ -5,6 +5,7 @@ import HomeBenchmark from "@/components/sections/home-benchmark";
 import HomeContact from "@/components/sections/home-contact";
 import HomeFooter from "@/components/sections/home-footer";
 import HomeHero from "@/components/sections/home-hero";
+import HomeTaggedPdf from "@/components/sections/home-tagged-pdf";
 
 const siteDescription =
   "PDF Data loader for AI/ML datasets. Easily load, explore, and utilize various datasets.";
@@ -50,6 +51,7 @@ export default function HomePage() {
     <div className="min-h-screen">
       <HomeHero />
       <HomeAbout />
+      <HomeTaggedPdf />
       <HomeBenchmark />
       <HomeContact />
       <HomeFooter />
