@@ -19,22 +19,22 @@ export default function HomeBenchmark() {
     <Section
       id="benchmark"
       title="Benchmark"
-      subtitle="OpenDataLoader PDF is continuously being researched and developed to provide more accurate extraction and recognition through objective evaluation metrics. Please compare the three components that make up the metrics. You'll find OpenDataLoader PDF, the document inference feature that's just right for you."
+      subtitle="OpenDataLoader PDF is continuously researched to deliver high-quality extraction with low energy use. Compare the components behind our metrics to see how we stay accurate and power-efficient."
     >
       <div className="mx-auto w-full max-w-6xl py-10">
-        <Card className="overflow-hidden">
-          <CardHeader>
-            <CardTitle className="text-base sm:text-lg">
-              Benchmark Snapshots
-            </CardTitle>
-            <CardDescription>
-              Comparative overall quality and energy scores across document
-              extraction engines.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="mt-2 grid gap-4 md:grid-cols-2">
-              <div className="relative w-full overflow-hidden rounded-lg border bg-muted/30">
+        <div className="grid gap-6 md:grid-cols-2">
+          <Card className="overflow-hidden">
+            <CardHeader>
+              <CardTitle className="text-base sm:text-lg">
+                Overall Data Quality
+              </CardTitle>
+              <CardDescription>
+                High-fidelity extraction across layouts—structured output that
+                stays true to the original document.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="relative w-full overflow-hidden bg-muted/30">
                 <Image
                   src="/figures/benchmark_overall.png"
                   alt="Overall benchmark comparison across engines"
@@ -45,7 +45,21 @@ export default function HomeBenchmark() {
                   sizes="(min-width: 1024px) 50vw, 100vw"
                 />
               </div>
-              <div className="relative w-full overflow-hidden rounded-lg border bg-muted/30">
+            </CardContent>
+          </Card>
+
+          <Card className="overflow-hidden">
+            <CardHeader>
+              <CardTitle className="text-base sm:text-lg">
+                Energy Consumption
+              </CardTitle>
+              <CardDescription>
+                Low power per document—efficient throughput without sacrificing
+                accuracy.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="relative w-full overflow-hidden bg-muted/30">
                 <Image
                   src="/figures/benchmark_energy-consumption.png"
                   alt="Energy consumption benchmark comparison across engines"
@@ -55,9 +69,9 @@ export default function HomeBenchmark() {
                   sizes="(min-width: 1024px) 50vw, 100vw"
                 />
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
         <div className="mt-12 flex flex-wrap justify-center gap-3">
           <Button asChild size="lg" className="rounded-2xl">
             <Link href="/docs/benchmark">Learn More</Link>
