@@ -52,9 +52,9 @@ export default function HomePage() {
     <div className="min-h-screen">
       <HomeHero />
       <HomeAbout />
+      <HomeBenchmark />
       <HomeAiSafety />
       <HomeTaggedPdf />
-      <HomeBenchmark />
       <HomeContact />
       <HomeFooter />
     </div>
