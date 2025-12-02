@@ -54,6 +54,7 @@
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-ga4": "^2.1.0",
+    "react-medium-image-zoom": "^5.4.0",
     "recharts": "^3.5.0",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
