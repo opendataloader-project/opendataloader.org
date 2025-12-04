@@ -9,7 +9,12 @@ import {
 } from "next/navigation";
 import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 
-import { getSampleById, getSamples, SampleDoc } from "@/lib/samples";
+import {
+  buildDataUrl,
+  getSampleById,
+  getSamples,
+  SampleDoc,
+} from "@/lib/samples";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,12 +30,16 @@ import { Separator } from "@/components/ui/separator";
 import { SampleSidebar } from "../components/sample-sidebar";
 import { ViewerCard } from "../components/viewer-panels";
 import {
+  createInitialDataState,
+  DataState,
+  DataTab,
+  dataTabForViewer,
   DEFAULT_PRIMARY_TAB,
   DEFAULT_SECONDARY_TAB,
   normalizeView,
   ViewerTab,
+  viewerTabDisplay,
 } from "../constants";
-import { useSampleDataStates } from "../hooks/use-sample-data";
 
 export default function SampleDetailPage() {
   const params = useParams<{ id?: string | string[] }>();
@@ -73,7 +82,99 @@ export default function SampleDetailPage() {
   const currentSample = getSampleById(routeId);
   const sampleId = currentSample?.id;
 
-  const dataStates = useSampleDataStates(sampleId, [curView1, curView2]);
+  const views = useMemo(() => [curView1, curView2], [curView1, curView2]);
+  const [dataStates, setDataStates] = useState<Record<DataTab, DataState>>(
+    createInitialDataState
+  );
+  const dataStatesRef = useRef(dataStates);
+
+  useEffect(() => {
+    dataStatesRef.current = dataStates;
+  }, [dataStates]);
+
+  const viewKey = useMemo(() => views.join("|"), [views]);
+  const requestedDataTabs = useMemo(() => {
+    const tabs = new Set<DataTab>();
+    for (const tab of views) {
+      const dataTab = dataTabForViewer[tab];
+      if (dataTab) {
+        tabs.add(dataTab);
+      }
+    }
+    return tabs;
+  }, [views]);
+
+  useEffect(() => {
+    setDataStates(createInitialDataState());
+  }, [sampleId]);
+
+  useEffect(() => {
+    if (!sampleId) return;
+    const controllers: AbortController[] = [];
+
+    for (const tab of requestedDataTabs) {
+      const activeState = dataStatesRef.current[tab];
+      if (
+        activeState &&
+        (activeState.status === "loading" || activeState.status === "ready")
+      ) {
+        continue;
+      }
+
+      const controller = new AbortController();
+      controllers.push(controller);
+      setDataStates((prev) => ({
+        ...prev,
+        [tab]: { ...prev[tab], status: "loading", error: undefined },
+      }));
+
+      const load = async () => {
+        try {
+          const url = buildDataUrl(tab, sampleId);
+          console.log("Fetching data from", url);
+          const response = await fetch(url, { signal: controller.signal });
+          if (!response.ok) {
+            throw new Error(
+              `Failed to load ${viewerTabDisplay[tab].label} data`
+            );
+          }
+
+          let text = await response.text();
+          if (tab === "json") {
+            try {
+              text = JSON.stringify(JSON.parse(text), null, 2);
+            } catch {
+              // Keep original text if parsing fails
+            }
+          }
+
+          setDataStates((prev) => ({
+            ...prev,
+            [tab]: { status: "ready", content: text },
+          }));
+        } catch (error) {
+          if (controller.signal.aborted) return;
+          setDataStates((prev) => ({
+            ...prev,
+            [tab]: {
+              status: "error",
+              content: "",
+              error:
+                error instanceof Error ? error.message : "Failed to load data",
+            },
+          }));
+        }
+      };
+
+      void load();
+    }
+
+    return () => {
+      for (const controller of controllers) {
+        controller.abort();
+      }
+    };
+  }, [requestedDataTabs, sampleId, viewKey]);
 
   useEffect(() => {
     const mediaQuery = globalThis.matchMedia("(min-width: 768px)");
