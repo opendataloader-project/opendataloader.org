@@ -13,7 +13,7 @@ export default function Layout({ children }: LayoutProps<"/">) {
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="flex flex-col min-h-screen" suppressHydrationWarning>
+      <body className="flex flex-col min-h-screen">
         <CookieConsentProvider>
           <RootProvider>{children}</RootProvider>
           <CookieConsentBanner />
