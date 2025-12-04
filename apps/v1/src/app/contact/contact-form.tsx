@@ -16,7 +16,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Field,
   FieldContent,
@@ -34,15 +33,9 @@ type SubmissionState = "idle" | "submitting" | "success" | "error";
 export function ContactForm() {
   const [status, setStatus] = useState<SubmissionState>("idle");
   const [message, setMessage] = useState<string | null>(null);
-  const [privacyConsent, setPrivacyConsent] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!privacyConsent) {
-      setStatus("error");
-      setMessage("Please agree to the Privacy Policy before submitting.");
-      return;
-    }
     setStatus("submitting");
     setMessage(null);
 
@@ -60,7 +53,6 @@ export function ContactForm() {
       jobTitle: readField("jobTitle"),
       company: readField("company"),
       details: readField("details"),
-      privacyConsent,
     };
 
     try {
@@ -84,7 +76,6 @@ export function ContactForm() {
       setStatus("success");
       setMessage("Thanks! Your message has been sent.");
       form.reset();
-      setPrivacyConsent(false);
     } catch (error) {
       console.error("Contact form submission error", error);
       setStatus("error");
@@ -102,7 +93,7 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Card className="shadow-lg">
+      <Card className="shadow-lg gap-16">
         <CardHeader>
           <CardTitle className="text-2xl">Tell us about your project</CardTitle>
           <CardDescription>
@@ -111,8 +102,8 @@ export function ContactForm() {
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-8">
-          <FieldSet className="space-y-8">
+        <CardContent>
+          <FieldSet className="space-y-4">
             <FieldLegend className="sr-only">Contact information</FieldLegend>
 
             <FieldGroup className="grid gap-6 sm:grid-cols-2">
@@ -161,46 +152,19 @@ export function ContactForm() {
               description="The more context you provide, the faster we can help."
             />
           </FieldSet>
-
-          <Field orientation="horizontal" className="items-start gap-3">
-            <Checkbox
-              id="privacyConsent"
-              name="privacyConsent"
-              checked={privacyConsent}
-              onCheckedChange={(checked) => setPrivacyConsent(checked === true)}
-              aria-required="true"
-              aria-invalid={
-                status === "error" && !privacyConsent ? "true" : undefined
-              }
-              className="mt-1"
-            />
-            <FieldContent className="gap-1.5">
-              <FieldLabel
-                htmlFor="privacyConsent"
-                className="text-sm font-medium leading-tight"
-              >
-                I agree to the Privacy Policy{}
-                <span className="text-destructive"> *</span>
-              </FieldLabel>
-              <FieldDescription>
-                I have reviewed how my information is processed and stored.{" "}
-                <Link
-                  href="/privacy-policy"
-                  className="text-primary underline-offset-2 hover:underline"
-                >
-                  Privacy Policy
-                </Link>
-                .
-              </FieldDescription>
-            </FieldContent>
-          </Field>
         </CardContent>
 
         <CardFooter className="flex flex-col gap-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="w-full flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-muted-foreground">
-              By submitting, your message and contact details are securely
-              shared with the OpenDataLoader team.
+              <span>Please see our</span>{" "}
+              <Link
+                href="https://accounts.hancom.com/policy/privacy/current/en"
+                className="text-primary underline-offset-2 hover:underline"
+              >
+                Privacy Policy
+              </Link>{" "}
+              <span>regarding how we will handle this information.</span>
             </p>
             <Button
               type="submit"

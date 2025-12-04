@@ -31,7 +31,7 @@ const FOOTER_LINKS: FooterNavLink[] = [
   },
   {
     label: "Privacy Policy",
-    href: "/privacy-policy",
+    href: "https://accounts.hancom.com/policy/privacy/current/en",
     trackingId: "privacy-policy",
     external: true,
   },
