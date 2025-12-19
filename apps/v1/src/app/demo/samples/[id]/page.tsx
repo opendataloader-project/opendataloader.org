@@ -1,12 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 
 import {
@@ -34,32 +29,39 @@ import {
   DataState,
   DataTab,
   dataTabForViewer,
-  DEFAULT_PRIMARY_TAB,
-  DEFAULT_SECONDARY_TAB,
   normalizeView,
   ViewerTab,
   viewerTabDisplay,
 } from "../constants";
 
+/**
+ * Syncs view state to URL without triggering Next.js navigation.
+ * URL is for bookmarking/sharing only - local state is the source of truth.
+ */
+function syncViewsToUrl(view1: ViewerTab, view2: ViewerTab) {
+  const url = new URL(globalThis.location.href);
+  url.searchParams.set("view1", view1);
+  url.searchParams.set("view2", view2);
+  globalThis.history.replaceState(null, "", url.toString());
+}
+
 export default function SampleDetailPage() {
   const params = useParams<{ id?: string | string[] }>();
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
-  const searchParamsString = useMemo(
-    () => searchParams?.toString() ?? "",
-    [searchParams]
+
+  // Local state is the source of truth, initialized from URL once
+  const [curView1, setCurView1] = useState<ViewerTab>(() =>
+    normalizeView(searchParams.get("view1"), true)
+  );
+  const [curView2, setCurView2] = useState<ViewerTab>(() =>
+    normalizeView(searchParams.get("view2"), false)
   );
 
-  const curView1 = useMemo(() => {
-    const viewFromUrl = searchParams.get("view1");
-    return normalizeView(viewFromUrl, true);
-  }, [searchParams]);
-
-  const curView2 = useMemo(() => {
-    const viewFromUrl = searchParams.get("view2");
-    return normalizeView(viewFromUrl, false);
-  }, [searchParams]);
+  // Sync to URL on mount and when views change
+  useEffect(() => {
+    syncViewsToUrl(curView1, curView2);
+  }, [curView1, curView2]);
 
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const [isDesktop, setIsDesktop] = useState(false);
@@ -186,28 +188,9 @@ export default function SampleDetailPage() {
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
-  useEffect(() => {
-    const params = new URLSearchParams(searchParamsString);
-    if (!params.has("view1")) {
-      params.set("view1", DEFAULT_PRIMARY_TAB);
-    }
-    if (!params.has("view2")) {
-      params.set("view2", DEFAULT_SECONDARY_TAB);
-    }
-
-    const nextParams = params.toString();
-    if (nextParams === searchParamsString) return;
-    const nextUrl = `${pathname}?${nextParams.toString()}`;
-
-    router.replace(nextUrl, {
-      scroll: false,
-    });
-  }, [pathname, router, searchParamsString]);
-
   const handleSampleClick = (sample: SampleDoc) => {
-    const querySuffix = searchParamsString ? `?${searchParamsString}` : "";
-    const url = `/demo/samples/${sample.id}${querySuffix}`;
-    console.log("Navigating to:", url);
+    // Preserve current view state when navigating to another sample
+    const url = `/demo/samples/${sample.id}?view1=${curView1}&view2=${curView2}`;
     router.push(url);
   };
 
@@ -217,16 +200,12 @@ export default function SampleDetailPage() {
 
   const handleTabChange = (tab: ViewerTab, isPrimary: boolean) => {
     const newView = normalizeView(tab, isPrimary);
-
-    const params = new URLSearchParams(searchParams.toString());
+    // Update local state - URL sync handled by useEffect
     if (isPrimary) {
-      params.set("view1", newView);
+      setCurView1(newView);
     } else {
-      params.set("view2", newView);
+      setCurView2(newView);
     }
-
-    const nextUrl = `${pathname}?${params.toString()}`;
-    router.replace(nextUrl, { scroll: false });
   };
 
   const renderDesktopSidebar = isDesktop;

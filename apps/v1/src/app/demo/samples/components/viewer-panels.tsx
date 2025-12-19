@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { Download, Loader2 } from "lucide-react";
 
 import { SampleDoc } from "@/lib/samples";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PDFViewer } from "@/components/pdf-viewer";
 
 import {
   DataState,
@@ -16,6 +16,19 @@ import {
   viewerTabDisplay,
   viewerTabOrder,
 } from "../constants";
+
+// Dynamic import to avoid SSR issues with react-pdf (uses DOMMatrix)
+const PDFViewer = dynamic(
+  () => import("@/components/pdf-viewer").then((mod) => mod.PDFViewer),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-full items-center justify-center">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    ),
+  }
+);
 
 type ViewerCardProps = {
   sample?: SampleDoc;
