@@ -19,7 +19,10 @@ import {
 
 // Dynamic import to avoid SSR issues with react-pdf (uses DOMMatrix)
 const PDFViewer = dynamic(
-  () => import("@/components/pdf-viewer").then((mod) => mod.PDFViewer),
+  () =>
+    import("@/components/features/viewers/pdf-viewer").then(
+      (mod) => mod.PDFViewer
+    ),
   {
     ssr: false,
     loading: () => (

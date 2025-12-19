@@ -3,7 +3,7 @@
 import React, { useRef } from "react";
 import { useRouter } from "next/navigation";
 
-import { HeroSection } from "./components/hero-section";
+import { HeroSection } from "./_components/hero-section";
 
 function onFilesSelected(files: FileList | null) {
   if (!files || files.length === 0) return;

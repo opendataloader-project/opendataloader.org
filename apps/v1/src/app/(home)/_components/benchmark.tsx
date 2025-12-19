@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,10 +9,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { GitHubIcon } from "@/components/icons/github";
-import { Section } from "@/components/section";
+import { GitHubIcon } from "@/components/ui/icons/github";
+import { Section } from "@/components/features/layout/section";
 
-export default function HomeBenchmark() {
+export default function Benchmark() {
   return (
     <Section
       id="benchmark"

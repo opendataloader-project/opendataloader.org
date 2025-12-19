@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 
-import HomeAbout from "@/components/sections/home-about";
-import HomeAiSafety from "@/components/sections/home-ai-safety";
-import HomeBenchmark from "@/components/sections/home-benchmark";
-import HomeContact from "@/components/sections/home-contact";
-import HomeFooter from "@/components/sections/home-footer";
-import HomeHero from "@/components/sections/home-hero";
-import HomeTaggedPdf from "@/components/sections/home-tagged-pdf";
+import About from "./_components/about";
+import AiSafety from "./_components/ai-safety";
+import Benchmark from "./_components/benchmark";
+import Contact from "./_components/contact";
+import Footer from "./_components/footer";
+import Hero from "./_components/hero";
+import TaggedPdf from "./_components/tagged-pdf";
 
 const siteDescription =
   "PDF Data loader for AI/ML datasets. Easily load, explore, and utilize various datasets.";
@@ -50,13 +50,13 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <div className="min-h-screen">
-      <HomeHero />
-      <HomeAbout />
-      <HomeBenchmark />
-      <HomeAiSafety />
-      <HomeTaggedPdf />
-      <HomeContact />
-      <HomeFooter />
+      <Hero />
+      <About />
+      <Benchmark />
+      <AiSafety />
+      <TaggedPdf />
+      <Contact />
+      <Footer />
     </div>
   );
 }

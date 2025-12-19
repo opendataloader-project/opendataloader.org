@@ -1,6 +1,5 @@
-"use client";
-
 import Link from "next/link";
+import type { FilterItem } from "@/types";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Section } from "@/components/section";
+import { Section } from "@/components/features/layout/section";
 
 const attackVectors = [
   "Hidden or transparent text planted inside the page.",
@@ -18,7 +17,7 @@ const attackVectors = [
   "Tiny fonts, OCG layers, or steganographic images carrying prompts.",
 ];
 
-const filters = [
+const filters: FilterItem[] = [
   {
     name: "hidden-text",
     status: "On",
@@ -41,7 +40,7 @@ const filters = [
   },
 ];
 
-export default function HomeAiSafety() {
+export default function AiSafety() {
   return (
     <Section
       id="ai-safety"
@@ -49,7 +48,7 @@ export default function HomeAiSafety() {
       subtitle="Defends against indirect prompt injection hiding inside PDFs before content reaches your agents."
     >
       <div className="grid gap-6 lg:grid-cols-2">
-        <Card className="border border-neutral-200/60 bg-white/50 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-neutral-900/40">
+        <Card className="border-neutral-200/60 bg-white/50 backdrop-blur-sm dark:border-white/10 dark:bg-neutral-900/40">
           <CardHeader>
             <CardTitle>What we defend against</CardTitle>
             <CardDescription>
@@ -66,7 +65,7 @@ export default function HomeAiSafety() {
           </CardContent>
         </Card>
 
-        <Card className="border border-neutral-200/60 bg-white/50 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-neutral-900/40">
+        <Card className="border-neutral-200/60 bg-white/50 backdrop-blur-sm dark:border-white/10 dark:bg-neutral-900/40">
           <CardHeader>
             <CardTitle>Filters (on by default)</CardTitle>
             <CardDescription>

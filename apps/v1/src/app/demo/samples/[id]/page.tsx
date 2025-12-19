@@ -22,9 +22,9 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 
-import { LoadingOverlay } from "../../components/loading-overlay";
-import { SampleSidebar } from "../components/sample-sidebar";
-import { ViewerCard } from "../components/viewer-panels";
+import { SampleSidebar } from "../_components/sample-sidebar";
+import { ViewerCard } from "../_components/viewer-panels";
+import { LoadingOverlay } from "../../_components/loading-overlay";
 import {
   createInitialDataState,
   DataState,

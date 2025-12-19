@@ -1,10 +1,10 @@
 "use client";
 
-import { type ReactNode } from "react";
 import Link from "next/link";
+import type { BadgeLinkItem, FeatureItem } from "@/types";
 import Autoplay from "embla-carousel-autoplay";
 
-import { track } from "@/lib/tracking";
+import { trackBadgeClick } from "@/lib/tracking";
 import {
   Card,
   CardDescription,
@@ -18,9 +18,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Section } from "@/components/section";
+import { Section } from "@/components/features/layout/section";
 
-const features: { icon: ReactNode; title: string; description: string }[] = [
+const features: FeatureItem[] = [
   {
     icon: "🛡️",
     title: "AI-Safety",
@@ -59,7 +59,7 @@ const features: { icon: ReactNode; title: string; description: string }[] = [
   },
 ];
 
-const badgeLinks = [
+const badgeLinks: BadgeLinkItem[] = [
   {
     badge: "license",
     href: "https://github.com/opendataloader-project/opendataloader-pdf/blob/main/LICENSE",
@@ -172,9 +172,7 @@ const BadgeGallery = () => (
         prefetch={false}
         target="_blank"
         rel="noreferrer"
-        onClick={() =>
-          track("badge_click", { from: "about", badge: badge.badge })
-        }
+        onClick={() => trackBadgeClick(badge.badge, "home-about")}
       >
         <img src={badge.imageSrc} alt={badge.alt} />
       </Link>
@@ -182,7 +180,7 @@ const BadgeGallery = () => (
   </div>
 );
 
-export default function HomeAbout() {
+export default function About() {
   return (
     <Section
       id="about"

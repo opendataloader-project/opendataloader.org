@@ -2,15 +2,15 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 
-import { useCookieConsent } from "./cookie-consent-context";
+import { useCookieConsent } from "@/hooks/use-cookie-consent";
 
-type ConditionalGoogleAnalyticsProps = {
+type ConditionalGoogleAnalyticsProps = Readonly<{
   gaId?: string;
-};
+}>;
 
 export function ConditionalGoogleAnalytics({
   gaId,
-}: Readonly<ConditionalGoogleAnalyticsProps>) {
+}: ConditionalGoogleAnalyticsProps) {
   const { status, isReady } = useCookieConsent();
 
   if (!gaId || !isReady || status !== "accepted") {

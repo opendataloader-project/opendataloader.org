@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 
 import { getSamples } from "@/lib/samples";
 
-import { LoadingOverlay } from "../components/loading-overlay";
-import { SampleGrid } from "../components/sample-grid";
-import { SampleList } from "../components/sample-list";
-import { SamplesToolbar } from "../components/samples-toolbar";
+import { LoadingOverlay } from "../_components/loading-overlay";
+import { SampleGrid } from "../_components/sample-grid";
+import { SampleList } from "../_components/sample-list";
+import { SamplesToolbar } from "../_components/samples-toolbar";
 
 export default function SamplesPage() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");

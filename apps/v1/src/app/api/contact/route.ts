@@ -4,7 +4,13 @@ import { Resend } from "resend";
 const CONTACT_TO = "open.dataloader@hancom.com";
 const CONTACT_FROM = "noreply@opendataloader.org";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResendClient() {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    return null;
+  }
+  return new Resend(apiKey);
+}
 
 export async function POST(request: Request) {
   try {
@@ -29,6 +35,7 @@ export async function POST(request: Request) {
       );
     }
 
+    const resend = getResendClient();
     if (!CONTACT_FROM || !resend) {
       console.error(
         "Missing email configuration. CONTACT_EMAIL_FROM and RESEND_API_KEY must be set."

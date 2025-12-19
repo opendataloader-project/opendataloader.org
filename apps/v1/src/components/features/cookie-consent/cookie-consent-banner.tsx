@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 
+import { useCookieConsent } from "@/hooks/use-cookie-consent";
 import { Button } from "@/components/ui/button";
-
-import { useCookieConsent } from "./cookie-consent-context";
 
 export function CookieConsentBanner() {
   const { status, isReady, acceptAll, rejectAll } = useCookieConsent();

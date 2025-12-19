@@ -1,9 +1,9 @@
 import { RootProvider } from "fumadocs-ui/provider/next";
+import { Provider as JotaiProvider } from "jotai";
 
-import { ConditionalGoogleAnalytics } from "@/components/cookie-consent/conditional-google-analytics";
-import { ConditionalVercelAnalytics } from "@/components/cookie-consent/conditional-vercel-analytics";
-import { CookieConsentBanner } from "@/components/cookie-consent/cookie-consent-banner";
-import { CookieConsentProvider } from "@/components/cookie-consent/cookie-consent-context";
+import { ConditionalGoogleAnalytics } from "@/components/features/cookie-consent/conditional-google-analytics";
+import { ConditionalVercelAnalytics } from "@/components/features/cookie-consent/conditional-vercel-analytics";
+import { CookieConsentBanner } from "@/components/features/cookie-consent/cookie-consent-banner";
 
 import "katex/dist/katex.css";
 import "./globals.css";
@@ -14,12 +14,12 @@ export default function Layout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="flex flex-col min-h-screen">
-        <CookieConsentProvider>
+        <JotaiProvider>
           <RootProvider>{children}</RootProvider>
           <CookieConsentBanner />
           <ConditionalVercelAnalytics />
           <ConditionalGoogleAnalytics gaId={gaId} />
-        </CookieConsentProvider>
+        </JotaiProvider>
       </body>
     </html>
   );

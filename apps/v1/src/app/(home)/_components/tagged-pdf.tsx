@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -10,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Section } from "@/components/section";
+import { Section } from "@/components/features/layout/section";
 
 const scenarios = [
   "Research papers: identify authors, affiliations, and headings for precise citations.",
@@ -18,7 +16,7 @@ const scenarios = [
   "Legal contracts: surface clauses, dates, and parties for faster review.",
 ];
 
-export default function HomeTaggedPdf() {
+export default function TaggedPdf() {
   return (
     <Section
       id="tagged-pdf"
@@ -26,7 +24,7 @@ export default function HomeTaggedPdf() {
       subtitle="A semantic, accessible PDF structure that makes documents AI-ready and easier to validate."
     >
       <div className="grid gap-6 lg:grid-cols-2">
-        <Card className="border border-neutral-200/60 bg-white/50 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-neutral-900/40">
+        <Card className="border-neutral-200/60 bg-white/50 backdrop-blur-sm dark:border-white/10 dark:bg-neutral-900/40">
           <CardHeader>
             <CardTitle>Why it matters</CardTitle>
             <CardDescription>
@@ -48,7 +46,7 @@ export default function HomeTaggedPdf() {
           </CardContent>
         </Card>
 
-        <Card className="border border-neutral-200/60 bg-white/50 shadow-sm backdrop-blur-sm dark:border-white/10 dark:bg-neutral-900/40">
+        <Card className="border-neutral-200/60 bg-white/50 backdrop-blur-sm dark:border-white/10 dark:bg-neutral-900/40">
           <CardHeader>
             <CardTitle>Real-world scenarios</CardTitle>
             <CardDescription>

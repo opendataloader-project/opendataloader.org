@@ -4,15 +4,15 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { DoorOpen, Shield, Zap } from "lucide-react";
 
-import { track } from "@/lib/tracking";
+import { trackNavigation } from "@/lib/tracking";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { GitHubIcon } from "@/components/icons/github";
+import { GitHubIcon } from "@/components/ui/icons/github";
 
-export default function HomeHero() {
+export default function Hero() {
   return (
     <section id="top" className="relative">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -52,11 +52,11 @@ export default function HomeHero() {
           <p className="max-w-7xl text-lg text-neutral-700 dark:text-neutral-300">
             Easily feed them into AI stacks like LLM, vector search, and RAG!
           </p>
-          <div className="mt-8 flex flex-wrap gap-3 justify-center">
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button asChild size="lg" className="rounded-2xl">
               <Link
                 href="/docs"
-                onClick={() => track("nav_get_started", { from: "home-hero" })}
+                onClick={() => trackNavigation("get_started", "home-hero")}
               >
                 Get Started
               </Link>
@@ -66,7 +66,7 @@ export default function HomeHero() {
                 href="https://github.com/opendataloader-project/opendataloader-pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => track("nav_github", { from: "home-hero" })}
+                onClick={() => trackNavigation("github", "home-hero")}
               >
                 <GitHubIcon className="h-4 w-4" /> GitHub
               </Link>
@@ -74,7 +74,7 @@ export default function HomeHero() {
             <Button asChild size="lg" variant="outline" className="rounded-2xl">
               <Link
                 href="/demo/samples"
-                onClick={() => track("nav_samples", { from: "home-hero" })}
+                onClick={() => trackNavigation("samples", "home-hero")}
               >
                 Sample PDFs
               </Link>

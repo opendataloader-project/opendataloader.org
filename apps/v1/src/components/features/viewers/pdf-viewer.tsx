@@ -19,7 +19,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -87,8 +87,8 @@ export const PDFViewer = ({ url }: PDFViewerProps) => {
           canNext={pageNumber < numPages}
         />
       </div>
-      <ScrollArea className="flex-1">
-        <div className="flex justify-center items-start p-4">
+      <ScrollArea className="flex-1 min-h-0 *:data-[slot=scroll-area-viewport]:overflow-auto!">
+        <div className="inline-flex min-w-full justify-center items-start p-4">
           <Document
             file={url}
             onLoadSuccess={onDocumentLoadSuccess}
@@ -115,6 +115,7 @@ export const PDFViewer = ({ url }: PDFViewerProps) => {
             />
           </Document>
         </div>
+        <ScrollBar orientation="horizontal" />
       </ScrollArea>
     </div>
   );

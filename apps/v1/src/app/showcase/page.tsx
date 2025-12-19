@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Section } from "@/components/section";
+import { Section } from "@/components/features/layout/section";
 import { ShowcaseCtaButtons } from "@/app/showcase/showcase-cta";
 
 const highlights = [

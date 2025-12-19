@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { Section } from "@/components/section";
+import { Section } from "@/components/features/layout/section";
 
 import { ContactForm } from "./contact-form";
 

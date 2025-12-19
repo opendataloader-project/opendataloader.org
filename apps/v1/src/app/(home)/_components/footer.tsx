@@ -1,16 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import type { FooterNavLink } from "@/types";
 
-import { track } from "@/lib/tracking";
+import { trackNavigation } from "@/lib/tracking";
 import { Button } from "@/components/ui/button";
-
-type FooterNavLink = {
-  label: string;
-  href: string;
-  trackingId: string;
-  external?: boolean;
-};
 
 const FOOTER_LINKS: FooterNavLink[] = [
   {
@@ -37,7 +31,7 @@ const FOOTER_LINKS: FooterNavLink[] = [
   },
 ];
 
-export default function HomeFooter() {
+export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -57,7 +51,7 @@ export default function HomeFooter() {
                   variant="link"
                   size="sm"
                   className="px-0 text-neutral-600 dark:text-neutral-300"
-                  onClick={() => track(trackingId, { from: "home-footer" })}
+                  onClick={() => trackNavigation(trackingId, "home-footer")}
                 >
                   <Link
                     href={href}

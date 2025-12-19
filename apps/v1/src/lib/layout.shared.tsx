@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { BaseLayoutProps, LinkItemType } from "fumadocs-ui/layouts/shared";
 
-import { GitHubIcon } from "@/components/icons/github";
+import { GitHubIcon } from "@/components/ui/icons/github";
 
 export const linkItems: LinkItemType[] = [
   {
