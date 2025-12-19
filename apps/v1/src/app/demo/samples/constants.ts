@@ -36,7 +36,7 @@ export const dataTabForViewer: Partial<Record<ViewerTab, DataTab>> = {
 };
 
 export const DEFAULT_PRIMARY_TAB: ViewerTab = "annot";
-export const DEFAULT_SECONDARY_TAB: ViewerTab = "preview";
+export const DEFAULT_SECONDARY_TAB: ViewerTab = "json";
 
 export const parseViewerTab = (value: string | null): ViewerTab | null =>
   viewerTabOrder.includes(value as ViewerTab) ? (value as ViewerTab) : null;

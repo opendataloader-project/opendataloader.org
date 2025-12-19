@@ -1,48 +1,16 @@
-import { useEffect, useState } from "react";
-import { createPluginRegistration, PluginRegistry } from "@embedpdf/core";
-import { EmbedPDF } from "@embedpdf/core/react";
-import { usePdfiumEngine } from "@embedpdf/engines/react";
+"use client";
+
+import { useCallback, useState } from "react";
+import { Document, Page, pdfjs } from "react-pdf";
+
+import "react-pdf/dist/Page/AnnotationLayer.css";
+import "react-pdf/dist/Page/TextLayer.css";
+
 import {
-  AnnotationLayer,
-  AnnotationPluginPackage,
-} from "@embedpdf/plugin-annotation/react";
-import { HistoryPluginPackage } from "@embedpdf/plugin-history/react";
-import {
-  InteractionManagerPluginPackage,
-  PagePointerProvider,
-} from "@embedpdf/plugin-interaction-manager/react";
-import {
-  LoaderCapability,
-  LoaderPluginPackage,
-} from "@embedpdf/plugin-loader/react";
-import {
-  RenderLayer,
-  RenderPluginPackage,
-} from "@embedpdf/plugin-render/react";
-import {
-  Rotate,
-  RotatePluginPackage,
-  useRotate,
-} from "@embedpdf/plugin-rotate/react";
-import { Scroller, ScrollPluginPackage } from "@embedpdf/plugin-scroll/react";
-import {
-  SelectionLayer,
-  SelectionPluginPackage,
-  SelectionRangeX,
-  useSelectionCapability,
-} from "@embedpdf/plugin-selection/react";
-import {
-  Viewport,
-  ViewportPluginPackage,
-} from "@embedpdf/plugin-viewport/react";
-import {
-  useZoom,
-  ZoomMode,
-  ZoomPluginPackage,
-} from "@embedpdf/plugin-zoom/react";
-import {
+  ChevronLeft,
+  ChevronRight,
   Copy,
-  MoveHorizontal,
+  Loader2,
   RotateCcw,
   RotateCw,
   ZoomIn,
@@ -51,140 +19,168 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 type PDFViewerProps = {
-  id: string;
   url: string;
 };
 
-const plugins = [
-  createPluginRegistration(LoaderPluginPackage),
-  createPluginRegistration(ViewportPluginPackage),
-  createPluginRegistration(ScrollPluginPackage),
-  createPluginRegistration(RenderPluginPackage),
-  createPluginRegistration(InteractionManagerPluginPackage),
-  createPluginRegistration(SelectionPluginPackage),
-  createPluginRegistration(HistoryPluginPackage),
-  createPluginRegistration(AnnotationPluginPackage, {
-    annotationAuthor: "opendataloader.org",
-  }),
-  createPluginRegistration(ZoomPluginPackage, {
-    defaultZoomLevel: ZoomMode.FitPage,
-  }),
-  createPluginRegistration(RotatePluginPackage),
-];
+export const PDFViewer = ({ url }: PDFViewerProps) => {
+  const [numPages, setNumPages] = useState<number>(0);
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [scale, setScale] = useState<number>(1);
+  const [rotation, setRotation] = useState<number>(0);
 
-export const PDFViewer = ({ id, url }: PDFViewerProps) => {
-  const { engine, isLoading } = usePdfiumEngine();
-  if (isLoading || !engine) {
-    return <div className="flex h-full flex-col bg-foreground/10"></div>;
-  }
-
-  const onInitialized = async (registry: PluginRegistry) => {
-    console.log("PDF Viewer initialized");
-
-    const loaderProvider = registry.getCapabilityProvider(
-      "loader"
-    ) as Readonly<LoaderCapability> | null;
-    loaderProvider?.loadDocument({
-      type: "url",
-      pdfFile: {
-        id,
-        url,
-      },
-    });
+  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
+    setNumPages(numPages);
+    setPageNumber(1);
   };
 
+  const goToPrevPage = () => {
+    setPageNumber((prev) => Math.max(prev - 1, 1));
+  };
+
+  const goToNextPage = () => {
+    setPageNumber((prev) => Math.min(prev + 1, numPages));
+  };
+
+  const zoomIn = () => {
+    setScale((prev) => Math.min(prev + 0.25, 3));
+  };
+
+  const zoomOut = () => {
+    setScale((prev) => Math.max(prev - 0.25, 0.5));
+  };
+
+  const rotateForward = () => {
+    setRotation((prev) => (prev + 90) % 360);
+  };
+
+  const rotateBackward = () => {
+    setRotation((prev) => (prev - 90 + 360) % 360);
+  };
+
+  const copySelection = useCallback(() => {
+    const selection = globalThis.getSelection();
+    if (selection?.toString()) {
+      navigator.clipboard.writeText(selection.toString());
+    }
+  }, []);
+
   return (
-    <EmbedPDF engine={engine} plugins={plugins} onInitialized={onInitialized}>
-      <div className="flex h-full flex-col bg-foreground/10">
-        <div className="p-2 flex justify-end">
-          <Toolbar />
+    <div className="flex h-full flex-col bg-foreground/10">
+      <div className="p-2 flex justify-between items-center">
+        <div className="text-sm text-muted-foreground">
+          {numPages > 0 && `${pageNumber} / ${numPages}`}
         </div>
-        <Viewport>
-          <Scroller
-            renderPage={({ width, height, pageIndex, scale, rotation }) => (
-              <Rotate pageSize={{ width, height }}>
-                <PagePointerProvider
-                  pageIndex={pageIndex}
-                  pageWidth={width}
-                  pageHeight={height}
-                  rotation={rotation}
-                  scale={scale}
-                >
-                  <RenderLayer
-                    pageIndex={pageIndex}
-                    scale={scale}
-                    className="pointer-events-none select-none"
-                  />
-                  <SelectionLayer pageIndex={pageIndex} scale={scale} />
-                  <AnnotationLayer
-                    pageIndex={pageIndex}
-                    scale={scale}
-                    pageWidth={width}
-                    pageHeight={height}
-                    rotation={rotation}
-                  />
-                </PagePointerProvider>
-              </Rotate>
-            )}
-          />
-        </Viewport>
+        <Toolbar
+          onZoomIn={zoomIn}
+          onZoomOut={zoomOut}
+          onRotateForward={rotateForward}
+          onRotateBackward={rotateBackward}
+          onCopy={copySelection}
+          onPrevPage={goToPrevPage}
+          onNextPage={goToNextPage}
+          canPrev={pageNumber > 1}
+          canNext={pageNumber < numPages}
+        />
       </div>
-    </EmbedPDF>
+      <ScrollArea className="flex-1">
+        <div className="flex justify-center items-start p-4">
+          <Document
+            file={url}
+            onLoadSuccess={onDocumentLoadSuccess}
+            loading={
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            }
+            error={
+              <div className="flex items-center justify-center py-8 text-muted-foreground">
+                Failed to load PDF
+              </div>
+            }
+          >
+            <Page
+              pageNumber={pageNumber}
+              scale={scale}
+              rotate={rotation}
+              loading={
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                </div>
+              }
+            />
+          </Document>
+        </div>
+      </ScrollArea>
+    </div>
   );
 };
 
-const Toolbar = () => {
-  const { provides: zoom } = useZoom();
-  const { provides: rotate } = useRotate();
-  const { provides: selection } = useSelectionCapability();
+type ToolbarProps = {
+  onZoomIn: () => void;
+  onZoomOut: () => void;
+  onRotateForward: () => void;
+  onRotateBackward: () => void;
+  onCopy: () => void;
+  onPrevPage: () => void;
+  onNextPage: () => void;
+  canPrev: boolean;
+  canNext: boolean;
+};
 
-  const [hasSelection, setHasSelection] = useState(false);
-
-  useEffect(() => {
-    if (!selection) return;
-    return selection.onSelectionChange((sel: SelectionRangeX | null) => {
-      setHasSelection(!!sel);
-    });
-  }, [selection]);
-
-  if (!zoom || !rotate || !selection) {
-    return null;
-  }
-
+const Toolbar = ({
+  onZoomIn,
+  onZoomOut,
+  onRotateForward,
+  onRotateBackward,
+  onCopy,
+  onPrevPage,
+  onNextPage,
+  canPrev,
+  canNext,
+}: ToolbarProps) => {
   return (
     <ButtonGroup>
       <ButtonGroup>
-        <Button variant="outline" size="sm" onClick={zoom.zoomOut}>
-          <ZoomOut />
-        </Button>
-        <Button variant="outline" size="sm" onClick={zoom.zoomIn}>
-          <ZoomIn />
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onPrevPage}
+          disabled={!canPrev}
+        >
+          <ChevronLeft />
         </Button>
         <Button
           variant="outline"
           size="sm"
-          onClick={() => zoom.requestZoom(ZoomMode.FitPage)}
+          onClick={onNextPage}
+          disabled={!canNext}
         >
-          <MoveHorizontal />
+          <ChevronRight />
         </Button>
       </ButtonGroup>
       <ButtonGroup>
-        <Button variant="outline" size="sm" onClick={rotate.rotateBackward}>
+        <Button variant="outline" size="sm" onClick={onZoomOut}>
+          <ZoomOut />
+        </Button>
+        <Button variant="outline" size="sm" onClick={onZoomIn}>
+          <ZoomIn />
+        </Button>
+      </ButtonGroup>
+      <ButtonGroup>
+        <Button variant="outline" size="sm" onClick={onRotateBackward}>
           <RotateCcw />
         </Button>
-        <Button variant="outline" size="sm" onClick={rotate.rotateForward}>
+        <Button variant="outline" size="sm" onClick={onRotateForward}>
           <RotateCw />
         </Button>
       </ButtonGroup>
       <ButtonGroup>
-        <Button
-          variant="outline"
-          size="sm"
-          disabled={!hasSelection}
-          onClick={selection?.copyToClipboard}
-        >
+        <Button variant="outline" size="sm" onClick={onCopy}>
           <Copy />
         </Button>
       </ButtonGroup>

@@ -154,7 +154,7 @@ function ViewerContent({
 
     return (
       <div className="h-[calc(100vh-190px)] w-full flex flex-col">
-        <PDFViewer id={sample?.id ?? "unknown"} url={pdfSrc} />
+        <PDFViewer url={pdfSrc} />
       </div>
     );
   }
