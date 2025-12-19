@@ -39,7 +39,13 @@ main().catch((error) => {
 });
 ```
 
-### CLI usage
+### `convert()` options
+
+import NodeConvertOptions from './_generated/node-convert-options.mdx';
+
+<NodeConvertOptions />
+
+## CLI usage
 
 ```bash
 npx @opendataloader/pdf path/to/document.pdf path/to/folder \
@@ -47,19 +53,7 @@ npx @opendataloader/pdf path/to/document.pdf path/to/folder \
   -f json,html,pdf,markdown
 ```
 
-## `convert()` options
-
-| Property                      | Type                 | Default     | Description                                                                                                             |
-| ----------------------------- | -------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `inputPaths`                  | `string[]`           | —           | One or more file paths or directories to process.                                                                       |
-| `options.outputDir`           | `string`             | `undefined` | Directory where outputs are written.                                                                                    |
-| `options.password`            | `string`             | `undefined` | Password for encrypted PDFs.                                                                                            |
-| `options.format`              | `string \| string[]` | `undefined` | Comma-separated output formats to generate. (json, text, html, pdf, markdown, markdown-with-html, markdown-with-images) |
-| `options.quiet`               | `boolean`            | `false`     | Suppress CLI logging output and prevent streaming.                                                                      |
-| `options.contentSafetyOff`    | `string \| string[]` | `undefined` | Comma-separated content safety filters to disable. (all, hidden-text, off-page, tiny, hidden-ocg)                       |
-| `options.keepLineBreaks`      | `boolean`            | `false`     | Preserve line breaks in text output.                                                                                    |
-| `options.replaceInvalidChars` | `string`             | `undefined` | Replacement character for invalid or unrecognized characters.                                                           |
-| `options.useStructTree`       | `boolean`            | `false`     | Enable processing structure tree (disabled by default).                                                                 |
+For CLI options, see the [CLI Options Reference](./cli-options-reference).
 
 ## Next steps
 

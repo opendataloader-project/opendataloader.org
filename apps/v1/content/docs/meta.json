@@ -15,13 +15,15 @@
     "tagged-pdf",
     "---Benchmark---",
     "benchmark",
+    "---Reference---",
+    "cli-options-reference",
+    "json-schema",
     "---Development---",
     "development-workflow",
-    "json-schema",
     "---Community---",
     "community",
     "contributing",
-    "upcoming-roadmap.mdx",
+    "upcoming-roadmap",
     "license"
   ]
 }
