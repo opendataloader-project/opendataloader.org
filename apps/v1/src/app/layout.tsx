@@ -1,4 +1,6 @@
 import { RootProvider } from "fumadocs-ui/provider/next";
+import { GeistMono } from "geist/font/mono";
+import { GeistSans } from "geist/font/sans";
 import { Provider as JotaiProvider } from "jotai";
 
 import { ConditionalGoogleAnalytics } from "@/components/features/cookie-consent/conditional-google-analytics";
@@ -13,7 +15,9 @@ export default function Layout({ children }: LayoutProps<"/">) {
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="flex flex-col min-h-screen">
+      <body
+        className={`${GeistSans.variable} ${GeistMono.variable} flex flex-col min-h-screen font-sans`}
+      >
         <JotaiProvider>
           <RootProvider>{children}</RootProvider>
           <CookieConsentBanner />
