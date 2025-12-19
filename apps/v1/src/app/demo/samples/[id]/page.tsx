@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 
@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 
+import { LoadingOverlay } from "../../components/loading-overlay";
 import { SampleSidebar } from "../components/sample-sidebar";
 import { ViewerCard } from "../components/viewer-panels";
 import {
@@ -49,6 +50,7 @@ export default function SampleDetailPage() {
   const params = useParams<{ id?: string | string[] }>();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   // Local state is the source of truth, initialized from URL once
   const [curView1, setCurView1] = useState<ViewerTab>(() =>
@@ -191,7 +193,9 @@ export default function SampleDetailPage() {
   const handleSampleClick = (sample: SampleDoc) => {
     // Preserve current view state when navigating to another sample
     const url = `/demo/samples/${sample.id}?view1=${curView1}&view2=${curView2}`;
-    router.push(url);
+    startTransition(() => {
+      router.push(url);
+    });
   };
 
   const handleSidebarToggle = () => {
@@ -213,6 +217,7 @@ export default function SampleDetailPage() {
 
   return (
     <div className="w-full bg-linear-to-b from-background via-background to-muted/30">
+      <LoadingOverlay isLoading={isPending} />
       <div className="flex flex-col md:flex-row">
         {renderDesktopSidebar && (
           <aside

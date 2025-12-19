@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 import { getSamples } from "@/lib/samples";
 
+import { LoadingOverlay } from "../components/loading-overlay";
 import { SampleGrid } from "../components/sample-grid";
 import { SampleList } from "../components/sample-list";
 import { SamplesToolbar } from "../components/samples-toolbar";
@@ -12,6 +13,7 @@ import { SamplesToolbar } from "../components/samples-toolbar";
 export default function SamplesPage() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [query, setQuery] = useState("");
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   const samples = useMemo(() => getSamples(), []);
@@ -22,7 +24,9 @@ export default function SamplesPage() {
   }, [query, samples]);
 
   function onSampleSelect(id: string) {
-    router.push(`/demo/samples/${id}`);
+    startTransition(() => {
+      router.push(`/demo/samples/${id}`);
+    });
   }
 
   function onSampleKeyDown(
@@ -37,6 +41,7 @@ export default function SamplesPage() {
 
   return (
     <div className="min-h-screen w-full bg-linear-to-b from-background to-muted/30">
+      <LoadingOverlay isLoading={isPending} />
       <SamplesToolbar
         query={query}
         onQueryChange={setQuery}
