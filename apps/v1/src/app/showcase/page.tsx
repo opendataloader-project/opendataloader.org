@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -11,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Section } from "@/components/features/layout/section";
-import { ShowcaseCtaButtons } from "@/app/showcase/showcase-cta";
+import { ShowcaseHero } from "@/app/showcase/_components/showcase-hero";
 
 const highlights = [
   {
@@ -40,61 +38,7 @@ export const metadata: Metadata = {
 export default function ShowcasePage() {
   return (
     <main className="flex-1 bg-background">
-      <section className="border-b bg-muted/40">
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 lg:px-8 md:grid-cols-2 md:items-center">
-          <div className="space-y-6">
-            <div className="space-y-4">
-              <div className="flex flex-wrap items-center gap-3 text-muted-foreground">
-                <Badge variant="secondary" className="uppercase tracking-wide">
-                  Showcase
-                </Badge>
-              </div>
-              <div className="flex flex-col gap-1">
-                <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                  Data Loader Studio
-                </h1>
-                <div className="flex flex-wrap items-center gap-1">
-                  <span className="text-sm text-muted-foreground">
-                    Powered by
-                  </span>
-                  <Image
-                    src="/figures/hnc-logo.svg"
-                    alt="HANCOM logo"
-                    width={180}
-                    height={48}
-                    className="h-4 w-auto dark:hidden"
-                    priority
-                  />
-                  <Image
-                    src="/figures/hnc-logo-dark.svg"
-                    alt="HANCOM logo"
-                    width={180}
-                    height={48}
-                    className="hidden h-4 w-auto dark:block"
-                    priority
-                  />
-                </div>
-              </div>
-              <p className="text-lg text-muted-foreground">
-                Data Loader Studio is a commercial product developed by HANCOM
-                using OpenDataLoader PDF, pairing the extraction engine with an
-                operator-ready workspace.
-              </p>
-            </div>
-            <ShowcaseCtaButtons />
-          </div>
-          <div className="border border-neutral-200 bg-background/90 shadow-xl shadow-black/5 dark:border-neutral-800 dark:bg-neutral-900/60">
-            <Image
-              src="/figures/hnc-studio-preview.webp"
-              alt="Data Loader Studio viewing mode preview"
-              width={1911}
-              height={1019}
-              className="h-auto w-full"
-              priority
-            />
-          </div>
-        </div>
-      </section>
+      <ShowcaseHero />
 
       <Section
         id="studio-highlights"
