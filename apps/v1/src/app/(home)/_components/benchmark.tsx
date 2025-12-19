@@ -24,11 +24,11 @@ export default function Benchmark() {
           <Card className="overflow-hidden">
             <CardHeader>
               <CardTitle className="text-base sm:text-lg">
-                Overall Data Quality
+                Extraction Accuracy
               </CardTitle>
               <CardDescription>
-                High-fidelity extraction across layouts—structured output that
-                stays true to the original document.
+                High accuracy extraction that preserves tables, figures, and
+                complex layouts reliably.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -49,18 +49,18 @@ export default function Benchmark() {
           <Card className="overflow-hidden">
             <CardHeader>
               <CardTitle className="text-base sm:text-lg">
-                Energy Consumption
+                Processing Speed
               </CardTitle>
               <CardDescription>
-                Low power per document—efficient throughput without sacrificing
-                accuracy.
+                Fast and efficient document processing—extract content quickly
+                without compromising on quality.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="relative w-full overflow-hidden bg-muted/30">
                 <Image
-                  src="/figures/benchmark_energy-consumption.png"
-                  alt="Energy consumption benchmark comparison across engines"
+                  src="/figures/benchmark_extraction-time.png"
+                  alt="Extraction time benchmark comparison across engines"
                   width={1200}
                   height={800}
                   className="h-auto w-full"
