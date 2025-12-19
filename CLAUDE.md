@@ -60,7 +60,7 @@ public/figures/              # Static assets for docs
 
 ## Environment Variables
 
-- `RESEND_API_KEY` - Required for `/api/contact` route. Build will fail without it.
+- `RESEND_API_KEY` - For `/api/contact` route (optional, contact form disabled without it)
 - `NEXT_PUBLIC_GA_ID` - Google Analytics ID (optional)
 
 ## Documentation Authoring
