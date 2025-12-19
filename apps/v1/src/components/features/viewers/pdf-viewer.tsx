@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 
 import "react-pdf/dist/Page/AnnotationLayer.css";
@@ -19,7 +19,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -28,10 +28,31 @@ type PDFViewerProps = {
 };
 
 export const PDFViewer = ({ url }: PDFViewerProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [scale, setScale] = useState<number>(1);
   const [rotation, setRotation] = useState<number>(0);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const updateWidth = () => {
+      // 32px for inner padding (p-4 = 16px * 2)
+      setContainerWidth(container.clientWidth - 32);
+    };
+
+    updateWidth();
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateWidth();
+    });
+
+    resizeObserver.observe(container);
+    return () => resizeObserver.disconnect();
+  }, []);
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
@@ -70,7 +91,7 @@ export const PDFViewer = ({ url }: PDFViewerProps) => {
   }, []);
 
   return (
-    <div className="flex h-full flex-col bg-foreground/10">
+    <div ref={containerRef} className="flex h-full flex-col bg-foreground/10">
       <div className="p-2 flex justify-between items-center">
         <div className="text-sm text-muted-foreground">
           {numPages > 0 && `${pageNumber} / ${numPages}`}
@@ -87,7 +108,10 @@ export const PDFViewer = ({ url }: PDFViewerProps) => {
           canNext={pageNumber < numPages}
         />
       </div>
-      <ScrollArea className="flex-1 min-h-0 *:data-[slot=scroll-area-viewport]:overflow-auto!">
+      <ScrollArea
+        orientation="both"
+        className="flex-1 min-h-0 *:data-[slot=scroll-area-viewport]:overflow-auto!"
+      >
         <div className="inline-flex min-w-full justify-center items-start p-4">
           <Document
             file={url}
@@ -105,6 +129,7 @@ export const PDFViewer = ({ url }: PDFViewerProps) => {
           >
             <Page
               pageNumber={pageNumber}
+              width={containerWidth > 0 ? containerWidth : undefined}
               scale={scale}
               rotate={rotation}
               loading={
@@ -115,7 +140,6 @@ export const PDFViewer = ({ url }: PDFViewerProps) => {
             />
           </Document>
         </div>
-        <ScrollBar orientation="horizontal" />
       </ScrollArea>
     </div>
   );
