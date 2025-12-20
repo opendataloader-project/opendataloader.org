@@ -4,16 +4,16 @@ import { motion } from "framer-motion";
 
 const partners = [
   {
-    name: "PDF Association",
-    logo: "/figures/pdf-association-logo.png",
-    role: "International organization advancing PDF technology standards",
-    url: "https://pdfa.org",
-  },
-  {
     name: "Hancom",
     logo: "/figures/hnc-logo.svg",
     role: "Building OpenDataLoader-PDF extraction engine",
     url: "https://hancom.com",
+  },
+  {
+    name: "PDF Association",
+    logo: "/figures/pdf-association-logo.png",
+    role: "International organization advancing PDF technology standards",
+    url: "https://pdfa.org",
   },
   {
     name: "Dual Lab",
@@ -42,6 +42,21 @@ export default function Collaboration() {
           </p>
         </motion.div>
 
+        {/* Collaboration Illustration */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-12 flex justify-center"
+        >
+          <img
+            src="/figures/collaboration-picture.webp"
+            alt="OpenDataLoader collaboration ecosystem"
+            className="h-auto max-w-full rounded-lg shadow-lg md:max-w-4xl"
+          />
+        </motion.div>
+
         {/* Partners Grid */}
         <div className="mt-12 grid gap-8 md:grid-cols-3">
           {partners.map((partner) => (
@@ -64,10 +79,7 @@ export default function Collaboration() {
                   className="h-auto max-h-16 w-auto max-w-35 object-contain"
                 />
               </div>
-              <h3 className="mt-4 font-semibold text-gray-900">
-                {partner.name}
-              </h3>
-              <p className="mt-2 text-sm text-gray-600">{partner.role}</p>
+              <p className="mt-4 text-sm text-gray-600">{partner.role}</p>
             </motion.a>
           ))}
         </div>
