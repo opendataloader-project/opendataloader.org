@@ -1,0 +1,61 @@
+---
+title: Tagged PDF
+description: Using native PDF structure tags for accurate AI data extraction
+---
+
+## Why Tagged PDF Matters for AI
+
+Tagged PDF includes semantic structure (headings, paragraphs, lists, tables) that tells AI exactly how a document is organized. When a PDF has proper tags, you get:
+
+- **Exact layout intent** — No guessing, no heuristics
+- **Correct reading order** — Author's intended flow preserved
+- **Semantic hierarchy** — Headings, lists, tables properly identified
+
+### European Accessibility Act (EAA)
+
+The [European Accessibility Act](https://commission.europa.eu/strategy-and-policy/policies/justice-and-fundamental-rights/disability/union-equality-strategy-rights-persons-disabilities-2021-2030/european-accessibility-act_en) took effect **June 28, 2025**, requiring accessible digital documents across the EU. This means:
+
+- More PDFs will be properly tagged with semantic structure
+- Organizations must publish accessible documents
+- Tagged PDF adoption is accelerating
+
+**OpenDataLoader leverages this shift** — when structure tags exist, we extract the exact layout the author intended, without guessing.
+
+## How to Use Tagged PDF
+
+Enable Tagged PDF extraction with the `use_struct_tree` option:
+
+```python
+import opendataloader_pdf
+
+opendataloader_pdf.convert(
+    input_path="accessible-document.pdf",
+    output_dir="output/",
+    use_struct_tree=True  # Use native PDF structure tags
+)
+```
+
+Most PDF parsers ignore structure tags entirely. OpenDataLoader is one of the few that fully supports them.
+
+## Development Status
+
+| Feature | Purpose | Status |
+|:--------|:--------|:-------|
+| Tag extraction | Use existing tags to determine document structure | Available |
+| Tag validation | Validate tags against PDF Association recommendations | In progress |
+| Hybrid extraction | Combine tags with visual heuristics for best results | In progress |
+
+## Use Cases
+
+### Research Papers
+A well-tagged paper lets AI accurately identify author names, affiliations, and sections — enabling automated citation building.
+
+### Financial Reports
+Proper tags enable precise extraction of balance sheet titles and data cells, automating analysis without error-prone heuristics.
+
+### Legal Contracts
+Tags help AI quickly identify and cross-reference clauses, dates, and parties — speeding up legal review.
+
+## Learn More
+
+- [Industry Collaboration](./tagged-pdf-collaboration) — Our partnership with PDF Association and Dual Lab
