@@ -110,8 +110,8 @@ export default function ProblemSection() {
             src="/figures/problem-solution-comparison.webp"
             alt="Comparison of PDF parsing problems vs solutions"
             width={1200}
-            height={675}
-            className="mx-auto rounded-xl shadow-lg"
+            height={1181}
+            className="mx-auto max-w-2xl rounded-xl shadow-lg"
           />
         </motion.div>
       </div>

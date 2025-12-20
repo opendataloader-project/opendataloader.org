@@ -58,8 +58,8 @@ export default function HowItWorks() {
             src="/figures/pipeline-diagram.webp"
             alt="PDF processing pipeline diagram"
             width={1200}
-            height={400}
-            className="mx-auto rounded-xl"
+            height={1181}
+            className="mx-auto max-w-2xl rounded-xl"
           />
         </motion.div>
 

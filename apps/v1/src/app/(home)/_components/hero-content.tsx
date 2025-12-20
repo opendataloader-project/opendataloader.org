@@ -71,12 +71,12 @@ export default function HeroContent() {
       </div>
 
       {/* Hero Illustration */}
-      <div className="mx-auto mt-12 max-w-4xl">
+      <div className="mx-auto mt-12 max-w-2xl">
         <Image
           src="/figures/hero-illustration.webp"
           alt="PDF to structured data transformation"
           width={1200}
-          height={675}
+          height={1181}
           className="rounded-xl shadow-lg"
           priority
         />
