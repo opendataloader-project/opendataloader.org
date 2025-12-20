@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 import { Download, Loader2 } from "lucide-react";
 
 import { SampleDoc } from "@/lib/samples";
 import { Button } from "@/components/ui/button";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import {
@@ -229,8 +229,14 @@ function ViewerContent({
     state.status === "ready" &&
     (tab === "md" || tab === "json" || tab === "html")
   ) {
+    const langMap = { md: "markdown", json: "json", html: "html" } as const;
     return (
-      <HighlightedCodeBlock code={state.content || "No data"} lang={tab} />
+      <div className="h-[calc(100vh-190px)] overflow-auto">
+        <DynamicCodeBlock
+          lang={langMap[tab]}
+          code={state.content || "No data"}
+        />
+      </div>
     );
   }
 
@@ -239,80 +245,6 @@ function ViewerContent({
       <pre className="whitespace-pre-wrap font-mono text-xs">
         {state.content || "No data"}
       </pre>
-    </ScrollArea>
-  );
-}
-
-type CodeLang = "md" | "json" | "html";
-
-function HighlightedCodeBlock({
-  code,
-  lang,
-}: Readonly<{
-  code: string;
-  lang: CodeLang;
-}>) {
-  const [highlighted, setHighlighted] = useState<string | null>(null);
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-
-  useEffect(() => {
-    if (typeof document === "undefined") return;
-
-    const getTheme = () =>
-      document.documentElement.classList.contains("dark") ? "dark" : "light";
-
-    setTheme(getTheme());
-
-    const observer = new MutationObserver(() => {
-      setTheme(getTheme());
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    let isCancelled = false;
-
-    const run = async () => {
-      try {
-        const { codeToHtml } = await import("shiki/bundle/web");
-        const html = await codeToHtml(code, {
-          lang,
-          theme: theme === "dark" ? "github-dark-default" : "min-light",
-        });
-        if (!isCancelled) {
-          setHighlighted(html);
-        }
-      } catch (error) {
-        console.error("Failed to highlight code with Shiki", error);
-        if (!isCancelled) {
-          setHighlighted(null);
-        }
-      }
-    };
-
-    void run();
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [code, lang, theme]);
-
-  return (
-    <ScrollArea className="h-[calc(100vh-190px)] bg-background text-xs">
-      {highlighted ? (
-        <div dangerouslySetInnerHTML={{ __html: highlighted }} />
-      ) : (
-        <pre className="whitespace-pre-wrap wrap-break-word overflow-auto bg-muted/40 p-4 font-mono text-xs text-foreground">
-          {code}
-        </pre>
-      )}
-      <ScrollBar orientation="horizontal" />
     </ScrollArea>
   );
 }

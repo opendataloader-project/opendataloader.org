@@ -9,7 +9,15 @@ export type TrackingLocation =
   | "home-ai-safety"
   | "home-tagged-pdf"
   | "home-contact"
-  | "home-footer";
+  | "home-footer"
+  | "home-cta"
+  | "home-problem"
+  | "home-solution"
+  | "home-how-it-works"
+  | "home-quick-start"
+  | "home-output-preview"
+  | "home-why-opendataloader"
+  | "home-use-cases";
 
 export type TrackingParams = {
   from: TrackingLocation;
