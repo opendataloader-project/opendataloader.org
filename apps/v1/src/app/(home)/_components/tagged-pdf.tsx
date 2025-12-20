@@ -102,7 +102,7 @@ export default function TaggedPdf() {
             href="/docs/tagged-pdf"
             className="inline-flex items-center text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300"
           >
-            Learn more about Tagged PDF
+            Tagged PDF documentation
             <ArrowRight className="ml-1 h-4 w-4" />
           </Link>
           <Link

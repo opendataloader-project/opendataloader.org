@@ -26,6 +26,7 @@ const features = [
     description:
       "Rule-based extraction runs on any CPU. Process 100+ pages per second. Deploy anywhere.",
     link: "/docs/benchmark/speed",
+    linkText: "View speed benchmarks",
   },
   {
     icon: Target,
@@ -33,6 +34,7 @@ const features = [
     description:
       "Correctly reads multi-column layouts like academic papers and newspapers. Text flows in the order humans would read it.",
     link: "/docs/reading-order",
+    linkText: "How reading order works",
   },
   {
     icon: MapPin,
@@ -40,6 +42,7 @@ const features = [
     description:
       "Every element includes [x1, y1, x2, y2] coordinates. Enable precise citations back to the source PDF.",
     link: "/docs/json-schema",
+    linkText: "View JSON schema",
   },
   {
     icon: Shield,
@@ -47,6 +50,7 @@ const features = [
     description:
       "Automatically filters hidden text, off-page content, and prompt injection attempts.",
     link: "/docs/ai-safety",
+    linkText: "AI safety documentation",
   },
   {
     icon: Table2,
@@ -54,6 +58,7 @@ const features = [
     description:
       "Detects table borders and clusters text into rows/columns. Handles merged cells and complex structures.",
     link: "/docs/json-schema#table",
+    linkText: "Table schema details",
   },
   {
     icon: Lock,
@@ -99,12 +104,12 @@ export default function SolutionSection() {
                   <CardDescription className="text-sm leading-relaxed">
                     {feature.description}
                   </CardDescription>
-                  {feature.link && (
+                  {feature.link && feature.linkText && (
                     <Link
                       href={feature.link}
                       className="mt-2 inline-flex items-center text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
                     >
-                      Learn more
+                      {feature.linkText}
                       <ArrowRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" />
                     </Link>
                   )}
