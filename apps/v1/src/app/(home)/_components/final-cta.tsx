@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BookOpen, Copy, MessageSquare, Star } from "lucide-react";
+import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
+import { BookOpen, MessageSquare, Star } from "lucide-react";
 
 import { trackNavigation } from "@/lib/tracking";
 import { Button } from "@/components/ui/button";
@@ -12,22 +12,11 @@ import { GitHubIcon } from "@/components/ui/icons/github";
 const installCommand = "pip install opendataloader-pdf";
 
 export default function FinalCTA() {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(installCommand);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy:", err);
-    }
-  };
 
   return (
     <section
       id="cta"
-      className="bg-gradient-to-r from-blue-600 to-blue-800 py-20"
+      className="bg-gradient-to-br from-slate-50 via-gray-100 to-slate-100 py-20"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -37,34 +26,18 @@ export default function FinalCTA() {
           transition={{ duration: 0.25 }}
           className="text-center"
         >
-          <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
             Ready to Parse PDFs the Right Way?
           </h2>
 
           {/* Install Command */}
-          <div className="mx-auto mt-8 max-w-md">
-            <div className="flex items-center overflow-hidden rounded-lg bg-slate-900">
-              <code className="flex-1 px-4 py-3 text-left text-gray-100">
-                {installCommand}
-              </code>
-              <button
-                onClick={handleCopy}
-                className="flex h-full items-center gap-2 border-l border-slate-700 px-4 py-3 text-gray-400 transition-colors hover:bg-slate-800 hover:text-white"
-                aria-label="Copy to clipboard"
-              >
-                <Copy className="h-4 w-4" />
-                <span className="text-sm">{copied ? "Copied!" : "Copy"}</span>
-              </button>
-            </div>
+          <div className="mx-auto mt-8 max-w-md text-left">
+            <DynamicCodeBlock lang="bash" code={installCommand} />
           </div>
 
           {/* CTA Buttons */}
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button
-              asChild
-              size="lg"
-              className="bg-white text-blue-700 hover:bg-gray-100"
-            >
+            <Button asChild size="lg">
               <Link
                 href="/docs"
                 onClick={() => trackNavigation("docs", "home-cta")}
@@ -72,12 +45,7 @@ export default function FinalCTA() {
                 Read the Docs
               </Link>
             </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="border-white/30 bg-transparent text-white hover:bg-white/10"
-            >
+            <Button asChild size="lg" variant="outline">
               <Link
                 href="https://github.com/opendataloader-project/opendataloader-pdf"
                 target="_blank"
@@ -91,10 +59,10 @@ export default function FinalCTA() {
           </div>
 
           {/* Footer Links */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-white/80">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-gray-600">
             <Link
               href="/docs"
-              className="flex items-center gap-1.5 hover:text-white"
+              className="flex items-center gap-1.5 hover:text-gray-900"
             >
               <BookOpen className="h-4 w-4" />
               <span>Documentation</span>
@@ -103,7 +71,7 @@ export default function FinalCTA() {
               href="https://github.com/opendataloader-project/opendataloader-pdf/discussions"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 hover:text-white"
+              className="flex items-center gap-1.5 hover:text-gray-900"
             >
               <MessageSquare className="h-4 w-4" />
               <span>GitHub Discussions</span>
@@ -112,7 +80,7 @@ export default function FinalCTA() {
               href="https://github.com/opendataloader-project/opendataloader-pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 hover:text-white"
+              className="flex items-center gap-1.5 hover:text-gray-900"
             >
               <Star className="h-4 w-4" />
               <span>Star on GitHub</span>
