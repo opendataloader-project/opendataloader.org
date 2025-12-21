@@ -248,7 +248,7 @@ export default function SampleDetailPage() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="rounded-full cursor-pointer"
+                  className="rounded-full"
                   onClick={handleSidebarToggle}
                   aria-label="Toggle sidebar"
                 >
@@ -264,7 +264,7 @@ export default function SampleDetailPage() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="rounded-full cursor-pointer"
+                      className="rounded-full"
                       aria-label="Toggle sidebar"
                     >
                       <PanelLeftOpen className="h-4 w-4" />

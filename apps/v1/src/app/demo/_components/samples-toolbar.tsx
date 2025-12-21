@@ -41,17 +41,11 @@ export function SamplesToolbar({
             variant="outline"
             size="sm"
           >
-            <ToggleGroupItem
-              value="grid"
-              className="gap-1 rounded-lg cursor-pointer"
-            >
+            <ToggleGroupItem value="grid" className="gap-1 rounded-lg">
               <LayoutGrid className="h-4 w-4" />
               <span className="hidden sm:inline">Grid</span>
             </ToggleGroupItem>
-            <ToggleGroupItem
-              value="list"
-              className="gap-1 rounded-lg cursor-pointer"
-            >
+            <ToggleGroupItem value="list" className="gap-1 rounded-lg">
               <List className="h-4 w-4" />
               <span className="hidden sm:inline">List</span>
             </ToggleGroupItem>

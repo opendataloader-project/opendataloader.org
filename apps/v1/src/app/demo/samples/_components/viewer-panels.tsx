@@ -120,7 +120,7 @@ export function ViewerCard({
       <div className="mt-2 flex items-center justify-between gap-2 px-2">
         <TabsList className="mx-0">
           {viewerTabOrder.map((tab) => (
-            <TabsTrigger key={tab} value={tab} className="cursor-pointer">
+            <TabsTrigger key={tab} value={tab}>
               {viewerTabDisplay[tab].label}
             </TabsTrigger>
           ))}
@@ -129,7 +129,7 @@ export function ViewerCard({
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-full cursor-pointer"
+            className="rounded-full"
             aria-label="Download content"
             onClick={handleDownload}
             disabled={isDownloadDisabled}

@@ -32,16 +32,10 @@ export function CookieConsentBanner() {
           </p>
 
           <div className="flex gap-3 justify-center">
-            <Button
-              variant="outline"
-              className="cursor-pointer"
-              onClick={rejectAll}
-            >
+            <Button variant="outline" onClick={rejectAll}>
               Reject All
             </Button>
-            <Button className="cursor-pointer" onClick={acceptAll}>
-              Accept All
-            </Button>
+            <Button onClick={acceptAll}>Accept All</Button>
           </div>
         </div>
       </div>

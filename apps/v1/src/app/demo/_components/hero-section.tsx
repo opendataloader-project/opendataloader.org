@@ -64,7 +64,7 @@ export function HeroSection({
             <div>
               <Button
                 size="lg"
-                className="rounded-2xl gap-2 cursor-pointer"
+                className="rounded-2xl gap-2"
                 onClick={onTryClick}
                 disabled
               >
@@ -85,7 +85,7 @@ export function HeroSection({
         <Button
           size="lg"
           variant="outline"
-          className="rounded-2xl gap-2 cursor-pointer"
+          className="rounded-2xl gap-2"
           onClick={() => router.push("/demo/samples")}
         >
           Sample PDFs
