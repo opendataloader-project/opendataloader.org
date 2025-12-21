@@ -39,14 +39,6 @@ export default async function TrustIndicators() {
         <Scale className="h-4 w-4" />
         <span>MPL-2.0 License</span>
       </Link>
-      <span className="text-gray-300 dark:text-gray-600">|</span>
-      <Link
-        href="/docs/benchmark/speed"
-        className="flex items-center gap-1.5 hover:text-gray-700 dark:hover:text-gray-300"
-      >
-        <Zap className="h-4 w-4" />
-        <span>0.05s/page</span>
-      </Link>
     </div>
   );
 }
