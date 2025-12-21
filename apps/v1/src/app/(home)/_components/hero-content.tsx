@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Shield, Target, Zap } from "lucide-react";
 
 import { trackNavigation } from "@/lib/tracking";
 import { Badge } from "@/components/ui/badge";
@@ -18,13 +19,16 @@ export default function HeroContent() {
     >
       {/* Eyebrow Badges */}
       <div className="flex items-center justify-center gap-3">
-        <Badge className="gap-2 bg-yellow-100 px-3 py-1 text-yellow-700 hover:bg-yellow-100 dark:bg-yellow-900/30 dark:text-yellow-300">
+        <Badge variant="secondary" className="gap-1.5">
+          <Zap className="h-3.5 w-3.5" />
           Fast
         </Badge>
-        <Badge className="gap-2 bg-blue-100 px-3 py-1 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300">
+        <Badge variant="secondary" className="gap-1.5">
+          <Target className="h-3.5 w-3.5" />
           Accurate
         </Badge>
-        <Badge className="gap-2 bg-green-100 px-3 py-1 text-green-700 hover:bg-green-100 dark:bg-green-900/30 dark:text-green-300">
+        <Badge variant="secondary" className="gap-1.5">
+          <Shield className="h-3.5 w-3.5" />
           100% Local
         </Badge>
       </div>
@@ -32,8 +36,8 @@ export default function HeroContent() {
       {/* Headline */}
       <h1 className="mt-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl dark:text-white">
         Best Open-Source PDF Parser
-        <br />
-        <span className="text-blue-600 dark:text-blue-400">
+        <br />{" "}
+        <span className="bg-linear-to-r from-red-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
           for RAG & LLM Pipelines
         </span>
       </h1>
