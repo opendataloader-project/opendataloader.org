@@ -74,14 +74,17 @@ export default function OutputPreview() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
+            className="min-w-0"
           >
             <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
               JSON Output Example
             </h3>
-            <DynamicCodeBlock lang="json" code={jsonExample} />
+            <div className="overflow-x-auto">
+              <DynamicCodeBlock lang="json" code={jsonExample} />
+            </div>
 
             {/* Field Descriptions Table */}
-            <div className="mt-6 overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
+            <div className="mt-6 overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
               <table className="w-full text-sm">
                 <thead className="bg-gray-50 dark:bg-gray-800">
                   <tr>
@@ -163,19 +166,26 @@ export default function OutputPreview() {
           </div>
         </motion.div>
 
-        {/* Link to Schema */}
+        {/* Links */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-6 text-center"
+          className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-2"
         >
           <Link
             href="/docs/json-schema"
             className="inline-flex items-center text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
           >
             View Full JSON Schema
+            <ArrowRight className="ml-1 h-4 w-4" />
+          </Link>
+          <Link
+            href="/demo/samples"
+            className="inline-flex items-center text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+          >
+            Browse Sample Extractions
             <ArrowRight className="ml-1 h-4 w-4" />
           </Link>
         </motion.div>

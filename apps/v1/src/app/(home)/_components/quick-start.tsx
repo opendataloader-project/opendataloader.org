@@ -103,9 +103,9 @@ export default function QuickStart() {
             </TabsList>
 
             {Object.entries(codeExamples).map(([key, example]) => (
-              <TabsContent key={key} value={key} className="mt-4 space-y-4">
+              <TabsContent key={key} value={key} className="mt-4 min-w-0 space-y-4">
                 {example.install && (
-                  <div>
+                  <div className="overflow-x-auto">
                     <DynamicCodeBlock
                       lang={key === "java" ? "xml" : "bash"}
                       code={example.install}
@@ -113,7 +113,7 @@ export default function QuickStart() {
                   </div>
                 )}
                 {example.code && (
-                  <div>
+                  <div className="overflow-x-auto">
                     <DynamicCodeBlock
                       lang={getCodeLang(key)}
                       code={example.code}
@@ -142,11 +142,11 @@ export default function QuickStart() {
         >
           <div className="flex items-start gap-3">
             <Link2 className="mt-0.5 h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400" />
-            <div>
+            <div className="min-w-0 flex-1">
               <p className="font-medium text-blue-800 dark:text-blue-200">
                 Building a RAG pipeline? Use our official LangChain integration:
               </p>
-              <div className="mt-2">
+              <div className="mt-2 overflow-x-auto">
                 <DynamicCodeBlock
                   lang="bash"
                   code="pip install langchain-opendataloader-pdf"

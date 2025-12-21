@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 
-import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const jsonExample = `{
@@ -27,6 +27,17 @@ This paper presents a novel approach to document parsing...
 | Parameter | Value |
 | --------- | ----- |
 | Accuracy  | 91%   |`;
+
+const htmlExample = `<article>
+  <h1>Introduction</h1>
+  <p>This paper presents a novel approach to document parsing...</p>
+
+  <h2>Methods</h2>
+  <table>
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>Accuracy</td><td>91%</td></tr>
+  </table>
+</article>`;
 
 export default function HowItWorks() {
   const [activeTab, setActiveTab] = useState("json");
@@ -59,7 +70,7 @@ export default function HowItWorks() {
             alt="PDF processing pipeline diagram"
             width={1200}
             height={1181}
-            className="mx-auto max-w-2xl rounded-xl"
+            className="mx-auto w-full max-w-2xl rounded-xl"
           />
         </motion.div>
 
@@ -76,9 +87,10 @@ export default function HowItWorks() {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="json">JSON</TabsTrigger>
               <TabsTrigger value="markdown">Markdown</TabsTrigger>
+              <TabsTrigger value="html">HTML</TabsTrigger>
               <TabsTrigger value="annotated">Annotated PDF</TabsTrigger>
             </TabsList>
 
@@ -90,8 +102,12 @@ export default function HowItWorks() {
               <DynamicCodeBlock lang="markdown" code={markdownExample} />
             </TabsContent>
 
+            <TabsContent value="html" className="mt-4">
+              <DynamicCodeBlock lang="html" code={htmlExample} />
+            </TabsContent>
+
             <TabsContent value="annotated" className="mt-4">
-              <div className="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="mx-auto max-w-md overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
                 <Image
                   src="/figures/example_annotated_pdf.webp"
                   alt="Visual debugging: see detected structures overlaid on the original"
@@ -109,11 +125,13 @@ export default function HowItWorks() {
 
           {/* CTA to Demo */}
           <div className="mt-8 text-center">
-            <Button asChild>
-              <Link href="/demo/samples/01030000000000?view1=annot&view2=json">
-                Explore Real Samples →
-              </Link>
-            </Button>
+            <Link
+              href="/demo/samples/01030000000000?view1=annot&view2=json"
+              className="inline-flex items-center text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+            >
+              See It in Action
+              <ArrowRight className="ml-1 h-4 w-4" />
+            </Link>
           </div>
         </motion.div>
       </div>

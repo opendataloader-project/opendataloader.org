@@ -1,11 +1,15 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
+  ArrowUpDown,
   BarChart3,
   CheckCircle,
+  ChevronDown,
+  ChevronUp,
   FileText,
   Lock,
   MapPin,
@@ -20,28 +24,33 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const metrics = [
   {
     icon: Zap,
     label: "Processing Speed",
-    value: "0.05s",
-    unit: "/page",
+    value: "Fast",
+    unit: "",
     description:
       "Rule-based heuristics deliver high throughput without GPU overhead",
   },
   {
     icon: Target,
-    label: "Reading Order",
-    value: "91%",
-    unit: "accuracy",
-    description: "XY-Cut++ algorithm correctly reads multi-column layouts",
+    label: "Extraction Accuracy",
+    value: "Accurate",
+    unit: "",
+    description: "Reading order, tables, and headings extracted correctly",
   },
   {
     icon: Lock,
-    label: "Privacy",
-    value: "100%",
-    unit: "local",
+    label: "Data Privacy",
+    value: "100% Local",
+    unit: "",
     description: "Zero network calls — documents never leave your machine",
   },
 ];
@@ -73,101 +82,30 @@ const features = [
 ];
 
 const benchmarkData = [
-  {
-    engine: "opendataloader",
-    speed: 0.05,
-    readingOrder: 0.91,
-    table: 0.49,
-    heading: 0.65,
-    highlight: true,
-  },
-  {
-    engine: "docling",
-    speed: 0.73,
-    readingOrder: 0.9,
-    table: 0.89,
-    heading: 0.8,
-    highlight: false,
-  },
-  {
-    engine: "pymupdf4llm",
-    speed: 0.09,
-    readingOrder: 0.89,
-    table: 0.4,
-    heading: 0.41,
-    highlight: false,
-  },
-  {
-    engine: "markitdown",
-    speed: 0.04,
-    readingOrder: 0.88,
-    table: 0.0,
-    heading: 0.0,
-    highlight: false,
-  },
+  { engine: "opendataloader", speed: 0.05, readingOrder: 0.91, table: 0.49, heading: 0.65 },
+  { engine: "docling", speed: 0.73, readingOrder: 0.9, table: 0.89, heading: 0.8 },
+  { engine: "pymupdf4llm", speed: 0.09, readingOrder: 0.89, table: 0.4, heading: 0.41 },
+  { engine: "markitdown", speed: 0.04, readingOrder: 0.88, table: 0, heading: 0 },
 ];
 
-// Calculate ranks for each metric with tie handling
-function calculateRanks() {
-  const ranks: Record<string, Record<string, number>> = {};
+type SortKey = "speed" | "readingOrder" | "table" | "heading";
+type SortDirection = "asc" | "desc";
 
-  // Helper to assign ranks with ties (same value = same rank)
-  function assignRanks(
-    sorted: typeof benchmarkData,
-    getValue: (item: (typeof benchmarkData)[0]) => number,
-    field: string
-  ) {
-    let currentRank = 1;
-    sorted.forEach((item, idx) => {
-      if (!ranks[item.engine]) ranks[item.engine] = {};
-      if (idx > 0 && getValue(sorted[idx - 1]) === getValue(item)) {
-        // Same value as previous = same rank
-        ranks[item.engine][field] = ranks[sorted[idx - 1].engine][field];
-      } else {
-        ranks[item.engine][field] = currentRank;
-      }
-      currentRank++;
-    });
+// Column definitions for sortable headers
+const columns: { key: SortKey; label: string; color: string; inverted?: boolean }[] = [
+  { key: "speed", label: "Speed (s/page)", color: "bg-cyan-400", inverted: true },
+  { key: "readingOrder", label: "Reading Order", color: "bg-blue-400" },
+  { key: "table", label: "Table", color: "bg-orange-400" },
+  { key: "heading", label: "Heading", color: "bg-green-400" },
+];
+
+function SortIcon({ sortKey, currentSort, direction }: { sortKey: SortKey; currentSort: SortKey | null; direction: SortDirection }) {
+  if (currentSort !== sortKey) {
+    return <ArrowUpDown className="ml-1 inline h-3 w-3 opacity-50" />;
   }
-
-  // Speed: lower is better
-  const speedSorted = [...benchmarkData].sort((a, b) => a.speed - b.speed);
-  assignRanks(speedSorted, (item) => item.speed, "speed");
-
-  // Reading Order: higher is better
-  const roSorted = [...benchmarkData].sort(
-    (a, b) => b.readingOrder - a.readingOrder
-  );
-  assignRanks(roSorted, (item) => item.readingOrder, "readingOrder");
-
-  // Table: higher is better
-  const tableSorted = [...benchmarkData].sort((a, b) => b.table - a.table);
-  assignRanks(tableSorted, (item) => item.table, "table");
-
-  // Heading: higher is better
-  const headingSorted = [...benchmarkData].sort(
-    (a, b) => b.heading - a.heading
-  );
-  assignRanks(headingSorted, (item) => item.heading, "heading");
-
-  return ranks;
-}
-
-const ranks = calculateRanks();
-
-function RankBadge({ rank }: { rank: number }) {
-  if (rank > 2) return null;
-  const colors = {
-    1: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-400", // 금색
-    2: "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300", // 은색
-  };
-  return (
-    <span
-      className={`ml-1.5 inline-flex items-center rounded px-1.5 py-0.5 text-xs font-medium ${colors[rank as keyof typeof colors]}`}
-    >
-      #{rank}
-    </span>
-  );
+  return direction === "asc"
+    ? <ChevronUp className="ml-1 inline h-3 w-3" />
+    : <ChevronDown className="ml-1 inline h-3 w-3" />;
 }
 
 // Mini bar component for benchmark table
@@ -176,23 +114,34 @@ function MiniBar({
   max,
   color,
   inverted = false,
+  label,
 }: {
   value: number;
   max: number;
   color: string;
   inverted?: boolean;
+  label: string;
 }) {
   // For inverted (speed), lower is better so we invert the percentage
   const percentage = inverted
     ? ((max - value) / max) * 100
     : (value / max) * 100;
   return (
-    <div className="mt-1 h-1.5 w-full rounded-full bg-gray-200 dark:bg-gray-700">
-      <div
-        className={`h-1.5 rounded-full ${color}`}
-        style={{ width: `${Math.max(percentage, 2)}%` }}
-      />
-    </div>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <div className="mx-auto mt-1 h-3 w-20 cursor-pointer rounded-full bg-gray-200 dark:bg-gray-700">
+          <div
+            className={`h-3 rounded-full ${color}`}
+            style={{ width: `${Math.max(percentage, 2)}%` }}
+          />
+        </div>
+      </TooltipTrigger>
+      <TooltipContent>
+        <span>
+          {label}: {value.toFixed(2)}
+        </span>
+      </TooltipContent>
+    </Tooltip>
   );
 }
 
@@ -200,12 +149,12 @@ const useCaseRecommendations = [
   {
     useCase: "Best overall balance",
     recommended: "opendataloader",
-    reason: "Fast (0.05s/page) with highest reading order accuracy",
+    reason: "Fast with highest reading order accuracy",
   },
   {
     useCase: "Maximum accuracy",
     recommended: "docling",
-    reason: "Highest scores for tables and headings, but 15x slower",
+    reason: "Highest scores for tables and headings, but significantly slower",
   },
   {
     useCase: "PyMuPDF ecosystem",
@@ -220,6 +169,32 @@ const useCaseRecommendations = [
 ];
 
 export default function WhyOpenDataLoader() {
+  const [sortKey, setSortKey] = useState<SortKey | null>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+
+  const sortedData = useMemo(() => {
+    if (!sortKey) return benchmarkData;
+
+    return [...benchmarkData].sort((a, b) => {
+      const aVal = a[sortKey];
+      const bVal = b[sortKey];
+      // For speed, lower is better, so we invert the sort
+      const isInverted = sortKey === "speed";
+      const multiplier = sortDirection === "asc" ? 1 : -1;
+      const invertMultiplier = isInverted ? -1 : 1;
+      return (aVal - bVal) * multiplier * invertMultiplier;
+    });
+  }, [sortKey, sortDirection]);
+
+  const handleSort = (key: SortKey) => {
+    if (sortKey === key) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortKey(key);
+      setSortDirection("desc"); // Default to desc (best first)
+    }
+  };
+
   return (
     <section
       id="why-opendataloader"
@@ -248,9 +223,9 @@ export default function WhyOpenDataLoader() {
         >
           <p className="text-blue-800 dark:text-blue-200">
             OpenDataLoader PDF is built specifically for RAG pipelines. It
-            delivers 91% reading order accuracy, 0.05s per page processing
-            speed, and bounding boxes for every element — all running 100%
-            locally on your CPU with no GPU required.
+            delivers high reading order accuracy, fast processing speed, and
+            bounding boxes for every element — all running 100% locally on your
+            CPU with no GPU required.
           </p>
         </motion.div>
 
@@ -327,101 +302,41 @@ export default function WhyOpenDataLoader() {
             <table className="w-full text-sm">
               <thead className="bg-gray-100 dark:bg-gray-800">
                 <tr>
-                  <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-white">
+                  <th className="w-1/5 px-4 py-3 text-left font-semibold text-gray-900 dark:text-white">
                     Engine
                   </th>
-                  <th className="px-4 py-3 text-center font-semibold text-gray-900 dark:text-white">
-                    Speed (s/page)
-                  </th>
-                  <th className="px-4 py-3 text-center font-semibold text-gray-900 dark:text-white">
-                    Reading Order
-                  </th>
-                  <th className="px-4 py-3 text-center font-semibold text-gray-900 dark:text-white">
-                    Table
-                  </th>
-                  <th className="px-4 py-3 text-center font-semibold text-gray-900 dark:text-white">
-                    Heading
-                  </th>
+                  {columns.map((col) => (
+                    <th
+                      key={col.key}
+                      className="w-1/5 cursor-pointer select-none px-4 py-3 text-center font-semibold text-gray-900 transition-colors hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
+                      onClick={() => handleSort(col.key)}
+                    >
+                      {col.label}
+                      <SortIcon sortKey={col.key} currentSort={sortKey} direction={sortDirection} />
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {benchmarkData.map((row) => (
+                {sortedData.map((row) => (
                   <tr
                     key={row.engine}
-                    className={
-                      row.highlight
-                        ? "bg-blue-50 dark:bg-blue-900/20"
-                        : "bg-white dark:bg-gray-950"
-                    }
+                    className="bg-white transition-colors hover:bg-gray-50 dark:bg-gray-950 dark:hover:bg-gray-900"
                   >
-                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">
-                      {row.highlight ? (
-                        <span className="font-bold">{row.engine}</span>
-                      ) : (
-                        row.engine
-                      )}
+                    <td className="w-1/5 px-4 py-3 font-medium text-gray-900 dark:text-white">
+                      {row.engine}
                     </td>
-                    <td className="px-4 py-3 font-mono text-gray-600 dark:text-gray-300">
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`w-10 text-right ${ranks[row.engine].speed === 1 ? "font-bold text-green-600 dark:text-green-400" : ""}`}
-                        >
-                          {row.speed.toFixed(2)}
-                        </span>
-                        <RankBadge rank={ranks[row.engine].speed} />
-                      </div>
-                      <MiniBar
-                        value={row.speed}
-                        max={0.8}
-                        color="bg-cyan-500"
-                        inverted
-                      />
-                    </td>
-                    <td className="px-4 py-3 font-mono text-gray-600 dark:text-gray-300">
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`w-10 text-right ${ranks[row.engine].readingOrder === 1 ? "font-bold text-green-600 dark:text-green-400" : ""}`}
-                        >
-                          {row.readingOrder.toFixed(2)}
-                        </span>
-                        <RankBadge rank={ranks[row.engine].readingOrder} />
-                      </div>
-                      <MiniBar
-                        value={row.readingOrder}
-                        max={1}
-                        color="bg-blue-500"
-                      />
-                    </td>
-                    <td className="px-4 py-3 font-mono text-gray-600 dark:text-gray-300">
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`w-10 text-right ${ranks[row.engine].table === 1 ? "font-bold text-green-600 dark:text-green-400" : ""}`}
-                        >
-                          {row.table.toFixed(2)}
-                        </span>
-                        <RankBadge rank={ranks[row.engine].table} />
-                      </div>
-                      <MiniBar
-                        value={row.table}
-                        max={1}
-                        color="bg-orange-500"
-                      />
-                    </td>
-                    <td className="px-4 py-3 font-mono text-gray-600 dark:text-gray-300">
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`w-10 text-right ${ranks[row.engine].heading === 1 ? "font-bold text-green-600 dark:text-green-400" : ""}`}
-                        >
-                          {row.heading.toFixed(2)}
-                        </span>
-                        <RankBadge rank={ranks[row.engine].heading} />
-                      </div>
-                      <MiniBar
-                        value={row.heading}
-                        max={1}
-                        color="bg-green-500"
-                      />
-                    </td>
+                    {columns.map((col) => (
+                      <td key={col.key} className="w-1/5 px-4 py-3">
+                        <MiniBar
+                          value={row[col.key]}
+                          max={col.key === "speed" ? 0.8 : 1}
+                          color={col.color}
+                          inverted={col.inverted}
+                          label={col.label}
+                        />
+                      </td>
+                    ))}
                   </tr>
                 ))}
               </tbody>
@@ -454,18 +369,15 @@ export default function WhyOpenDataLoader() {
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {useCaseRecommendations.map((row) => (
-                  <tr key={row.useCase} className="bg-white dark:bg-gray-950">
+                  <tr
+                    key={row.useCase}
+                    className="bg-white transition-colors hover:bg-gray-50 dark:bg-gray-950 dark:hover:bg-gray-900"
+                  >
                     <td className="px-4 py-3 text-gray-600 dark:text-gray-300">
                       {row.useCase}
                     </td>
                     <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">
-                      {row.recommended === "opendataloader" ? (
-                        <span className="font-bold text-blue-600 dark:text-blue-400">
-                          {row.recommended}
-                        </span>
-                      ) : (
-                        row.recommended
-                      )}
+                      {row.recommended}
                     </td>
                     <td className="px-4 py-3 text-gray-600 dark:text-gray-300">
                       {row.reason}

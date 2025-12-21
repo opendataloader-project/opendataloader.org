@@ -111,7 +111,7 @@ export default function ProblemSection() {
             alt="Comparison of PDF parsing problems vs solutions"
             width={1200}
             height={1181}
-            className="mx-auto max-w-2xl rounded-xl shadow-lg"
+            className="mx-auto w-full max-w-2xl rounded-xl shadow-lg"
           />
         </motion.div>
       </div>
