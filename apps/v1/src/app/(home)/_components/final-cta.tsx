@@ -12,7 +12,6 @@ import { GitHubIcon } from "@/components/ui/icons/github";
 const installCommand = "pip install opendataloader-pdf";
 
 export default function FinalCTA() {
-
   return (
     <section
       id="cta"

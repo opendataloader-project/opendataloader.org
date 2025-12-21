@@ -65,11 +65,13 @@ export default function HowItWorks() {
           transition={{ duration: 0.25 }}
           className="mt-12"
         >
-          <Image
-            src="/figures/pipeline-diagram.webp"
-            alt="PDF processing pipeline diagram"
-            width={1200}
-            height={1181}
+          <video
+            src="/figures/pipeline.mp4"
+            poster="/figures/pipeline-poster.webp"
+            autoPlay
+            loop
+            muted
+            playsInline
             className="mx-auto w-full max-w-2xl rounded-xl"
           />
         </motion.div>

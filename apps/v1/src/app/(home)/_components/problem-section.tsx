@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { Cloud, FileText, MapPin, Table2 } from "lucide-react";
 
@@ -98,7 +97,7 @@ export default function ProblemSection() {
           ))}
         </div>
 
-        {/* Problem/Solution Comparison Image */}
+        {/* Problem/Solution Comparison Video */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -106,11 +105,13 @@ export default function ProblemSection() {
           transition={{ duration: 0.25 }}
           className="mt-12"
         >
-          <Image
-            src="/figures/problem-solution-comparison.webp"
-            alt="Comparison of PDF parsing problems vs solutions"
-            width={1200}
-            height={1181}
+          <video
+            src="/figures/problem-solution.mp4"
+            poster="/figures/problem-solution-poster.webp"
+            autoPlay
+            loop
+            muted
+            playsInline
             className="mx-auto w-full max-w-2xl rounded-xl shadow-lg"
           />
         </motion.div>
