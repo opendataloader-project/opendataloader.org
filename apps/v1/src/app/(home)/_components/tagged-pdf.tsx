@@ -39,10 +39,10 @@ export default function TaggedPdf() {
     <section id="tagged-pdf" className="bg-gray-50 py-16 dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="text-center"
         >
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
@@ -60,10 +60,10 @@ export default function TaggedPdf() {
           {benefits.map((benefit, index) => (
             <motion.div
               key={benefit.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 * index }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.2, delay: 0.03 * index }}
               className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800"
             >
               <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30">
@@ -81,10 +81,10 @@ export default function TaggedPdf() {
 
         {/* Code Example */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="mx-auto mt-12 max-w-2xl"
         >
           <DynamicCodeBlock lang="python" code={codeExample} />
@@ -94,8 +94,8 @@ export default function TaggedPdf() {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="mt-8 flex flex-wrap items-center justify-center gap-6"
         >
           <Link

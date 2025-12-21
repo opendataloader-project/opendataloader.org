@@ -46,10 +46,10 @@ export default function HowItWorks() {
     <section id="how-it-works" className="bg-white py-16 dark:bg-gray-950">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="text-center"
         >
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
@@ -59,10 +59,10 @@ export default function HowItWorks() {
 
         {/* Pipeline Diagram */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="mt-12"
         >
           <Image
@@ -76,10 +76,10 @@ export default function HowItWorks() {
 
         {/* Output Format Tabs */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="mx-auto mt-12 max-w-3xl"
         >
           <Tabs

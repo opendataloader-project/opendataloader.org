@@ -72,10 +72,10 @@ export default function QuickStart() {
     <section id="quick-start" className="bg-gray-50 py-16 dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="text-center"
         >
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
@@ -84,10 +84,10 @@ export default function QuickStart() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="mx-auto mt-12 max-w-2xl"
         >
           <Tabs
@@ -138,10 +138,10 @@ export default function QuickStart() {
 
         {/* LangChain Highlight */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="mx-auto mt-8 max-w-2xl rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20"
         >
           <div className="flex items-start gap-3">

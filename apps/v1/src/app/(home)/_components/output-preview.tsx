@@ -55,10 +55,10 @@ export default function OutputPreview() {
     <section id="output-preview" className="bg-white py-16 dark:bg-gray-950">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="text-center"
         >
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
@@ -70,10 +70,10 @@ export default function OutputPreview() {
         <div className="mt-12 grid gap-8 lg:grid-cols-2">
           {/* Left Column - JSON Example */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -10 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.25 }}
             className="min-w-0"
           >
             <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
@@ -114,10 +114,10 @@ export default function OutputPreview() {
 
           {/* Right Column - Visual */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 10 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.25 }}
           >
             <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
               Bounding Box Visualization
@@ -139,10 +139,10 @@ export default function OutputPreview() {
 
         {/* Callout Box */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="mt-12 rounded-lg border-l-4 border-blue-500 bg-blue-50 p-4 dark:bg-blue-900/20"
         >
           <div className="flex items-start gap-3">
@@ -170,8 +170,8 @@ export default function OutputPreview() {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-2"
         >
           <Link

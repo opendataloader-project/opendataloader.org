@@ -74,10 +74,10 @@ export default function SolutionSection() {
     <section id="solution" className="bg-gray-50 py-16 dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="text-center"
         >
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
@@ -90,10 +90,10 @@ export default function SolutionSection() {
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 * index }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.2, delay: 0.03 * index }}
             >
               <Card className="group h-full transition-shadow hover:shadow-md">
                 <CardHeader>

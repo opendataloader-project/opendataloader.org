@@ -46,10 +46,10 @@ export default function UseCases() {
     <section id="use-cases" className="bg-white py-16 dark:bg-gray-950">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="text-center"
         >
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
@@ -62,10 +62,10 @@ export default function UseCases() {
           {useCases.map((useCase, index) => (
             <motion.div
               key={useCase.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 * index }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.2, delay: 0.03 * index }}
               className="min-w-[280px] flex-shrink-0 md:min-w-0"
             >
               <Card className="h-full">

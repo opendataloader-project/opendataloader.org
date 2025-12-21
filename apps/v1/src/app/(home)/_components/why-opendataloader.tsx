@@ -246,10 +246,10 @@ export default function WhyOpenDataLoader() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="text-center"
         >
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
@@ -259,10 +259,10 @@ export default function WhyOpenDataLoader() {
 
         {/* TL;DR Box */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="mx-auto mt-8 max-w-3xl rounded-lg border border-blue-200 bg-blue-50 p-4 text-center dark:border-blue-800 dark:bg-blue-900/20"
         >
           <p className="text-blue-800 dark:text-blue-200">
@@ -278,10 +278,10 @@ export default function WhyOpenDataLoader() {
           {metrics.map((metric, index) => (
             <motion.div
               key={metric.label}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 * (index + 2) }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.2, delay: 0.03 * index }}
             >
               <Card className="text-center">
                 <CardHeader>
@@ -309,10 +309,10 @@ export default function WhyOpenDataLoader() {
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 * (index + 5) }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.2, delay: 0.03 * index }}
             >
               <Card className="h-full">
                 <CardHeader>
@@ -331,10 +331,10 @@ export default function WhyOpenDataLoader() {
 
         {/* Benchmark Comparison */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.9 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="mt-12"
         >
           <h3 className="mb-6 text-center text-xl font-semibold text-gray-900 dark:text-white">
@@ -441,8 +441,8 @@ export default function WhyOpenDataLoader() {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 1 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="mt-8 text-center"
         >
           <Link

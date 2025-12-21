@@ -28,10 +28,10 @@ export default function Collaboration() {
     <section id="collaboration" className="bg-gray-50 py-16 dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="text-center"
         >
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
@@ -44,10 +44,10 @@ export default function Collaboration() {
 
         {/* Collaboration Illustration */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.25 }}
           className="mt-12 flex justify-center"
         >
           <video
@@ -69,11 +69,11 @@ export default function Collaboration() {
               href={partner.url}
               target="_blank"
               rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               whileHover={{ scale: 1.03, y: -4 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.2 }}
               className="flex cursor-pointer flex-col items-center rounded-lg border border-gray-200 bg-white p-6 text-center transition-shadow hover:border-blue-400 hover:shadow-lg dark:border-gray-700 dark:hover:border-blue-500"
             >
               <div className="flex h-20 items-center justify-center">
