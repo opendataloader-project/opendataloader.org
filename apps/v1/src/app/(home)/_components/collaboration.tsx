@@ -50,9 +50,13 @@ export default function Collaboration() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="mt-12 flex justify-center"
         >
-          <img
-            src="/figures/collaboration-picture.webp"
-            alt="OpenDataLoader collaboration ecosystem"
+          <video
+            src="/figures/collaboration.mp4"
+            poster="/figures/collaboration-poster.webp"
+            autoPlay
+            loop
+            muted
+            playsInline
             className="h-auto max-w-full rounded-lg shadow-lg md:max-w-4xl"
           />
         </motion.div>

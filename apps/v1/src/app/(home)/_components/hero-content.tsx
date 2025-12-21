@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
@@ -72,13 +71,14 @@ export default function HeroContent() {
 
       {/* Hero Illustration */}
       <div className="mx-auto mt-12 max-w-2xl">
-        <Image
-          src="/figures/hero-illustration.webp"
-          alt="PDF to structured data transformation"
-          width={1200}
-          height={1181}
+        <video
+          src="/figures/hero.mp4"
+          poster="/figures/hero-poster.webp"
+          autoPlay
+          loop
+          muted
+          playsInline
           className="rounded-xl shadow-lg"
-          priority
         />
       </div>
     </motion.div>
