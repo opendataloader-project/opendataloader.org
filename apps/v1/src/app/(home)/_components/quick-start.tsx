@@ -103,7 +103,11 @@ export default function QuickStart() {
             </TabsList>
 
             {Object.entries(codeExamples).map(([key, example]) => (
-              <TabsContent key={key} value={key} className="mt-4 min-w-0 space-y-4">
+              <TabsContent
+                key={key}
+                value={key}
+                className="mt-4 min-w-0 space-y-4"
+              >
                 {example.install && (
                   <div className="overflow-x-auto">
                     <DynamicCodeBlock

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Package, Scale, Zap } from "lucide-react";
+import { Package, Scale } from "lucide-react";
 
 import { formatStats, getProjectStats } from "@/lib/stats";
 import { GitHubIcon } from "@/components/ui/icons/github";

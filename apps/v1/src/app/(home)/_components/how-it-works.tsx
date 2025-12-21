@@ -5,8 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
-
 import { ArrowRight } from "lucide-react";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const jsonExample = `{

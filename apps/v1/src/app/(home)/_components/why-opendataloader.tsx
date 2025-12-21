@@ -82,30 +82,74 @@ const features = [
 ];
 
 const benchmarkData = [
-  { engine: "opendataloader", speed: 0.05, readingOrder: 0.91, table: 0.49, heading: 0.65 },
-  { engine: "docling", speed: 0.73, readingOrder: 0.9, table: 0.89, heading: 0.8 },
-  { engine: "pymupdf4llm", speed: 0.09, readingOrder: 0.89, table: 0.4, heading: 0.41 },
-  { engine: "markitdown", speed: 0.04, readingOrder: 0.88, table: 0, heading: 0 },
+  {
+    engine: "opendataloader",
+    speed: 0.05,
+    readingOrder: 0.91,
+    table: 0.49,
+    heading: 0.65,
+  },
+  {
+    engine: "docling",
+    speed: 0.73,
+    readingOrder: 0.9,
+    table: 0.89,
+    heading: 0.8,
+  },
+  {
+    engine: "pymupdf4llm",
+    speed: 0.09,
+    readingOrder: 0.89,
+    table: 0.4,
+    heading: 0.41,
+  },
+  {
+    engine: "markitdown",
+    speed: 0.04,
+    readingOrder: 0.88,
+    table: 0,
+    heading: 0,
+  },
 ];
 
 type SortKey = "speed" | "readingOrder" | "table" | "heading";
 type SortDirection = "asc" | "desc";
 
 // Column definitions for sortable headers
-const columns: { key: SortKey; label: string; color: string; inverted?: boolean }[] = [
-  { key: "speed", label: "Speed (s/page)", color: "bg-cyan-400", inverted: true },
+const columns: {
+  key: SortKey;
+  label: string;
+  color: string;
+  inverted?: boolean;
+}[] = [
+  {
+    key: "speed",
+    label: "Speed (s/page)",
+    color: "bg-cyan-400",
+    inverted: true,
+  },
   { key: "readingOrder", label: "Reading Order", color: "bg-blue-400" },
   { key: "table", label: "Table", color: "bg-orange-400" },
   { key: "heading", label: "Heading", color: "bg-green-400" },
 ];
 
-function SortIcon({ sortKey, currentSort, direction }: { sortKey: SortKey; currentSort: SortKey | null; direction: SortDirection }) {
+function SortIcon({
+  sortKey,
+  currentSort,
+  direction,
+}: {
+  sortKey: SortKey;
+  currentSort: SortKey | null;
+  direction: SortDirection;
+}) {
   if (currentSort !== sortKey) {
     return <ArrowUpDown className="ml-1 inline h-3 w-3 opacity-50" />;
   }
-  return direction === "asc"
-    ? <ChevronUp className="ml-1 inline h-3 w-3" />
-    : <ChevronDown className="ml-1 inline h-3 w-3" />;
+  return direction === "asc" ? (
+    <ChevronUp className="ml-1 inline h-3 w-3" />
+  ) : (
+    <ChevronDown className="ml-1 inline h-3 w-3" />
+  );
 }
 
 // Mini bar component for benchmark table
@@ -312,7 +356,11 @@ export default function WhyOpenDataLoader() {
                       onClick={() => handleSort(col.key)}
                     >
                       {col.label}
-                      <SortIcon sortKey={col.key} currentSort={sortKey} direction={sortDirection} />
+                      <SortIcon
+                        sortKey={col.key}
+                        currentSort={sortKey}
+                        direction={sortDirection}
+                      />
                     </th>
                   ))}
                 </tr>
