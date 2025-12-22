@@ -9,7 +9,7 @@ import { AnimateOnScroll } from "@/components/ui/animate-on-scroll";
 import { Button } from "@/components/ui/button";
 import { GitHubIcon } from "@/components/ui/icons/github";
 
-const installCommand = "pip install opendataloader-pdf";
+const installCommand = "pip install -U opendataloader-pdf";
 
 export default function FinalCTA() {
   return (

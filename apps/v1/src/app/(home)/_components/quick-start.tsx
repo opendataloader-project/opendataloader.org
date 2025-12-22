@@ -22,8 +22,7 @@ const codeExamples = {
 opendataloader_pdf.convert(
     input_path=["document.pdf"],
     output_dir="output/",
-    format="json,html,pdf,markdown",
-    reading_order="xycut",  # For accurate multi-column reading order
+    format="json,html,pdf,markdown"
 )`,
     guideLink: "/docs/quick-start-python",
     guideText: "View Python Guide",
@@ -34,8 +33,7 @@ opendataloader_pdf.convert(
 
 await convert(["document.pdf"], {
   outputDir: "output/",
-  format: "json,html,pdf,markdown",
-  readingOrder: "xycut",  // For accurate multi-column reading order
+  format: "json,html,pdf,markdown"
 });`,
     guideLink: "/docs/quick-start-nodejs",
     guideText: "View Node.js Guide",
@@ -44,8 +42,7 @@ await convert(["document.pdf"], {
     install: "",
     code: String.raw`docker run --rm -v "$PWD":/work \
   ghcr.io/opendataloader-project/opendataloader-pdf-cli:latest \
-  /work/document.pdf -f json,html,pdf,markdown \
-  --reading-order xycut  # For accurate multi-column reading order`,
+  /work/document.pdf -f json,html,pdf,markdown`,
     guideLink: "/docs/quick-start-docker",
     guideText: "View Docker Guide",
   },
@@ -57,7 +54,6 @@ await convert(["document.pdf"], {
 </dependency>`,
     code: `Config config = new Config();
 config.setOutputFolder("output/");
-config.setReadingOrder(Config.READING_ORDER_XYCUT);  // For accurate multi-column reading order
 
 OpenDataLoaderPDF.processFile("document.pdf", config);`,
     guideLink: "/docs/quick-start-java",
@@ -135,7 +131,7 @@ export default function QuickStart() {
               <div className="mt-2 overflow-x-auto">
                 <DynamicCodeBlock
                   lang="bash"
-                  code="pip install langchain-opendataloader-pdf"
+                  code="pip install -U langchain-opendataloader-pdf"
                 />
               </div>
               <Link

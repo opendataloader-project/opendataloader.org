@@ -17,7 +17,7 @@ OpenDataLoader PDF is an open-source PDF parser designed specifically for RAG (R
 ## Quick Start
 
 \`\`\`bash
-pip install opendataloader-pdf
+pip install -U opendataloader-pdf
 \`\`\`
 
 \`\`\`python
@@ -26,8 +26,7 @@ import opendataloader_pdf
 opendataloader_pdf.convert(
     input_path=["document.pdf"],
     output_dir="output/",
-    format="json,markdown",
-    reading_order="xycut",
+    format="json,markdown"
 )
 \`\`\`
 
