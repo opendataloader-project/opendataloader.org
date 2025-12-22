@@ -60,12 +60,12 @@ export default function Collaboration() {
         {/* Partners Grid */}
         <div className="mt-12 grid gap-8 md:grid-cols-3">
           {partners.map((partner, index) => (
-            <AnimateOnScroll key={partner.name} delay={30 * index}>
+            <AnimateOnScroll key={partner.name} delay={30 * index} className="h-full">
               <Link
                 href={partner.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex cursor-pointer flex-col items-center rounded-lg border border-gray-200 bg-white p-6 text-center transition-all duration-200 hover:-translate-y-1 hover:scale-[1.03] hover:border-blue-400 hover:shadow-lg dark:border-gray-700 dark:hover:border-blue-500"
+                className="flex h-full cursor-pointer flex-col items-center rounded-lg border border-gray-200 bg-white p-6 text-center transition-all duration-200 hover:-translate-y-1 hover:scale-[1.03] hover:border-blue-400 hover:shadow-lg dark:border-gray-700 dark:hover:border-blue-500"
               >
                 <div className="flex h-20 w-35 items-center justify-center">
                   {partner.logoDark ? (
