@@ -1,8 +1,6 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { Accessibility, Bot, GraduationCap } from "lucide-react";
 
+import { AnimateOnScroll } from "@/components/ui/animate-on-scroll";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -45,27 +43,18 @@ export default function UseCases() {
   return (
     <section id="use-cases" className="bg-white py-16 dark:bg-gray-950">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="text-center"
-        >
+        <AnimateOnScroll className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
             Built for Production RAG Pipelines
           </h2>
-        </motion.div>
+        </AnimateOnScroll>
 
         {/* Use Case Cards - Horizontal Scroll on Mobile */}
         <div className="mt-12 flex gap-6 overflow-x-auto pb-4 md:grid md:grid-cols-2 md:overflow-visible lg:grid-cols-3">
           {useCases.map((useCase, index) => (
-            <motion.div
+            <AnimateOnScroll
               key={useCase.title}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.2, delay: 0.03 * index }}
+              delay={30 * index}
               className="min-w-[280px] flex-shrink-0 md:min-w-0"
             >
               <Card className="h-full">
@@ -84,7 +73,7 @@ export default function UseCases() {
                   </CardDescription>
                 </CardHeader>
               </Card>
-            </motion.div>
+            </AnimateOnScroll>
           ))}
         </div>
       </div>

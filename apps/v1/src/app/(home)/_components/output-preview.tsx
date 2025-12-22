@@ -1,10 +1,9 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 import { ArrowRight, Lightbulb } from "lucide-react";
+
+import { AnimateOnScroll } from "@/components/ui/animate-on-scroll";
 
 const jsonExample = `{
   "type": "heading",
@@ -54,28 +53,16 @@ export default function OutputPreview() {
   return (
     <section id="output-preview" className="bg-white py-16 dark:bg-gray-950">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="text-center"
-        >
+        <AnimateOnScroll className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
             Structured Output with Bounding Boxes
           </h2>
-        </motion.div>
+        </AnimateOnScroll>
 
         {/* Two Column Layout */}
         <div className="mt-12 grid gap-8 lg:grid-cols-2">
           {/* Left Column - JSON Example */}
-          <motion.div
-            initial={{ opacity: 0, x: -10 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.25 }}
-            className="min-w-0"
-          >
+          <AnimateOnScroll animation="fade-left" className="min-w-0">
             <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
               JSON Output Example
             </h3>
@@ -110,15 +97,10 @@ export default function OutputPreview() {
                 </tbody>
               </table>
             </div>
-          </motion.div>
+          </AnimateOnScroll>
 
           {/* Right Column - Visual */}
-          <motion.div
-            initial={{ opacity: 0, x: 10 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.25 }}
-          >
+          <AnimateOnScroll animation="fade-right">
             <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
               Bounding Box Visualization
             </h3>
@@ -134,17 +116,11 @@ export default function OutputPreview() {
                 className="w-full cursor-pointer transition-transform duration-300 group-hover:scale-[1.02]"
               />
             </Link>
-          </motion.div>
+          </AnimateOnScroll>
         </div>
 
         {/* Callout Box */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="mt-12 rounded-lg border-l-4 border-blue-500 bg-blue-50 p-4 dark:bg-blue-900/20"
-        >
+        <AnimateOnScroll className="mt-12 rounded-lg border-l-4 border-blue-500 bg-blue-50 p-4 dark:bg-blue-900/20">
           <div className="flex items-start gap-3">
             <Lightbulb className="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-600 dark:text-blue-400" />
             <div>
@@ -164,14 +140,11 @@ export default function OutputPreview() {
               </ul>
             </div>
           </div>
-        </motion.div>
+        </AnimateOnScroll>
 
         {/* Links */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
+        <AnimateOnScroll
+          animation="fade-in"
           className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-2"
         >
           <Link
@@ -188,7 +161,7 @@ export default function OutputPreview() {
             Browse Sample Extractions
             <ArrowRight className="ml-1 h-4 w-4" />
           </Link>
-        </motion.div>
+        </AnimateOnScroll>
       </div>
     </section>
   );

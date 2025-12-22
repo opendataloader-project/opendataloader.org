@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import {
   ArrowRight,
   ArrowUpDown,
@@ -18,6 +17,7 @@ import {
   Zap,
 } from "lucide-react";
 
+import { AnimateOnScroll } from "@/components/ui/animate-on-scroll";
 import {
   Card,
   CardDescription,
@@ -245,44 +245,26 @@ export default function WhyOpenDataLoader() {
       className="bg-gray-50 py-16 dark:bg-gray-900"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="text-center"
-        >
+        <AnimateOnScroll className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
             Why OpenDataLoader PDF?
           </h2>
-        </motion.div>
+        </AnimateOnScroll>
 
         {/* TL;DR Box */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="mx-auto mt-8 max-w-3xl rounded-lg border border-blue-200 bg-blue-50 p-4 text-center dark:border-blue-800 dark:bg-blue-900/20"
-        >
+        <AnimateOnScroll className="mx-auto mt-8 max-w-3xl rounded-lg border border-blue-200 bg-blue-50 p-4 text-center dark:border-blue-800 dark:bg-blue-900/20">
           <p className="text-blue-800 dark:text-blue-200">
             OpenDataLoader PDF is built specifically for RAG pipelines. It
             delivers high reading order accuracy, fast processing speed, and
             bounding boxes for every element — all running 100% locally on your
             CPU with no GPU required.
           </p>
-        </motion.div>
+        </AnimateOnScroll>
 
         {/* Key Metrics Cards */}
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {metrics.map((metric, index) => (
-            <motion.div
-              key={metric.label}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.2, delay: 0.03 * index }}
-            >
+            <AnimateOnScroll key={metric.label} delay={30 * index}>
               <Card className="text-center">
                 <CardHeader>
                   <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
@@ -300,20 +282,14 @@ export default function WhyOpenDataLoader() {
                   </CardDescription>
                 </CardHeader>
               </Card>
-            </motion.div>
+            </AnimateOnScroll>
           ))}
         </div>
 
         {/* Feature Highlight Cards */}
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, index) => (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.2, delay: 0.03 * index }}
-            >
+            <AnimateOnScroll key={feature.title} delay={30 * index}>
               <Card className="h-full">
                 <CardHeader>
                   <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30">
@@ -325,18 +301,12 @@ export default function WhyOpenDataLoader() {
                   </CardDescription>
                 </CardHeader>
               </Card>
-            </motion.div>
+            </AnimateOnScroll>
           ))}
         </div>
 
         {/* Benchmark Comparison */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="mt-12"
-        >
+        <AnimateOnScroll className="mt-12">
           <h3 className="mb-6 text-center text-xl font-semibold text-gray-900 dark:text-white">
             Benchmark Comparison
           </h3>
@@ -435,16 +405,10 @@ export default function WhyOpenDataLoader() {
               </tbody>
             </table>
           </div>
-        </motion.div>
+        </AnimateOnScroll>
 
         {/* Benchmark Link */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="mt-8 text-center"
-        >
+        <AnimateOnScroll animation="fade-in" className="mt-8 text-center">
           <Link
             href="/docs/benchmark"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
@@ -453,7 +417,7 @@ export default function WhyOpenDataLoader() {
             See transparent benchmark methodology and results
             <ArrowRight className="h-4 w-4" />
           </Link>
-        </motion.div>
+        </AnimateOnScroll>
       </div>
     </section>
   );

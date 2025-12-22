@@ -1,9 +1,8 @@
-"use client";
-
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 import { Accessibility, ArrowRight, FileCheck, Shield } from "lucide-react";
+
+import { AnimateOnScroll } from "@/components/ui/animate-on-scroll";
 
 const codeExample = `import opendataloader_pdf
 
@@ -38,13 +37,7 @@ export default function TaggedPdf() {
   return (
     <section id="tagged-pdf" className="bg-gray-50 py-16 dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="text-center"
-        >
+        <AnimateOnScroll className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
             Tagged PDF Support
           </h2>
@@ -53,17 +46,14 @@ export default function TaggedPdf() {
             <br />
             We&apos;re one of the few that fully support them.
           </p>
-        </motion.div>
+        </AnimateOnScroll>
 
         {/* Benefits Grid */}
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {benefits.map((benefit, index) => (
-            <motion.div
+            <AnimateOnScroll
               key={benefit.title}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.2, delay: 0.03 * index }}
+              delay={30 * index}
               className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800"
             >
               <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30">
@@ -75,27 +65,18 @@ export default function TaggedPdf() {
               <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
                 {benefit.description}
               </p>
-            </motion.div>
+            </AnimateOnScroll>
           ))}
         </div>
 
         {/* Code Example */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="mx-auto mt-12 max-w-2xl"
-        >
+        <AnimateOnScroll className="mx-auto mt-12 max-w-2xl">
           <DynamicCodeBlock lang="python" code={codeExample} />
-        </motion.div>
+        </AnimateOnScroll>
 
         {/* Links */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
+        <AnimateOnScroll
+          animation="fade-in"
           className="mt-8 flex flex-wrap items-center justify-center gap-6"
         >
           <Link
@@ -112,7 +93,7 @@ export default function TaggedPdf() {
             Collaboration Guide
             <ArrowRight className="ml-1 h-4 w-4" />
           </Link>
-        </motion.div>
+        </AnimateOnScroll>
       </div>
     </section>
   );

@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 import { BookOpen, MessageSquare, Star } from "lucide-react";
 
 import { trackNavigation } from "@/lib/tracking";
+import { AnimateOnScroll } from "@/components/ui/animate-on-scroll";
 import { Button } from "@/components/ui/button";
 import { GitHubIcon } from "@/components/ui/icons/github";
 
@@ -18,13 +18,7 @@ export default function FinalCTA() {
       className="bg-gradient-to-br from-slate-50 via-gray-100 to-slate-100 py-20"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="text-center"
-        >
+        <AnimateOnScroll className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
             Ready to Parse PDFs the Right Way?
           </h2>
@@ -85,7 +79,7 @@ export default function FinalCTA() {
               <span>Star on GitHub</span>
             </Link>
           </div>
-        </motion.div>
+        </AnimateOnScroll>
       </div>
     </section>
   );

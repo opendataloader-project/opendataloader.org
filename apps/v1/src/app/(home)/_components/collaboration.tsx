@@ -1,8 +1,7 @@
-"use client";
-
 import Image from "next/image";
-import { motion } from "framer-motion";
+import Link from "next/link";
 
+import { AnimateOnScroll } from "@/components/ui/animate-on-scroll";
 import { LazyVideo } from "@/components/ui/lazy-video";
 
 const partners = [
@@ -37,27 +36,18 @@ export default function Collaboration() {
   return (
     <section id="collaboration" className="bg-gray-50 py-16 dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="text-center"
-        >
+        <AnimateOnScroll className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
             Built in Collaboration
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-300">
             Working with industry leaders to advance PDF data extraction
           </p>
-        </motion.div>
+        </AnimateOnScroll>
 
         {/* Collaboration Illustration */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
+        <AnimateOnScroll
+          animation="scale-in"
           className="mt-12 flex justify-center"
         >
           <LazyVideo
@@ -65,53 +55,49 @@ export default function Collaboration() {
             poster="/figures/collaboration-poster.webp"
             className="h-auto max-w-full rounded-lg shadow-lg md:max-w-4xl"
           />
-        </motion.div>
+        </AnimateOnScroll>
 
         {/* Partners Grid */}
         <div className="mt-12 grid gap-8 md:grid-cols-3">
-          {partners.map((partner) => (
-            <motion.a
-              key={partner.name}
-              href={partner.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              whileHover={{ scale: 1.03, y: -4 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.2 }}
-              className="flex cursor-pointer flex-col items-center rounded-lg border border-gray-200 bg-white p-6 text-center transition-shadow hover:border-blue-400 hover:shadow-lg dark:border-gray-700 dark:hover:border-blue-500"
-            >
-              <div className="flex h-20 w-35 items-center justify-center">
-                {partner.logoDark ? (
-                  <>
+          {partners.map((partner, index) => (
+            <AnimateOnScroll key={partner.name} delay={30 * index}>
+              <Link
+                href={partner.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex cursor-pointer flex-col items-center rounded-lg border border-gray-200 bg-white p-6 text-center transition-all duration-200 hover:-translate-y-1 hover:scale-[1.03] hover:border-blue-400 hover:shadow-lg dark:border-gray-700 dark:hover:border-blue-500"
+              >
+                <div className="flex h-20 w-35 items-center justify-center">
+                  {partner.logoDark ? (
+                    <>
+                      <Image
+                        src={partner.logo}
+                        alt={partner.name}
+                        width={partner.width}
+                        height={partner.height}
+                        className="h-auto max-h-16 w-auto max-w-35 object-contain dark:hidden"
+                      />
+                      <Image
+                        src={partner.logoDark}
+                        alt={partner.name}
+                        width={partner.width}
+                        height={partner.height}
+                        className="hidden h-auto max-h-16 w-auto max-w-35 object-contain dark:block"
+                      />
+                    </>
+                  ) : (
                     <Image
                       src={partner.logo}
                       alt={partner.name}
                       width={partner.width}
                       height={partner.height}
-                      className="h-auto max-h-16 w-auto max-w-35 object-contain dark:hidden"
+                      className="h-auto max-h-16 w-auto max-w-35 object-contain"
                     />
-                    <Image
-                      src={partner.logoDark}
-                      alt={partner.name}
-                      width={partner.width}
-                      height={partner.height}
-                      className="hidden h-auto max-h-16 w-auto max-w-35 object-contain dark:block"
-                    />
-                  </>
-                ) : (
-                  <Image
-                    src={partner.logo}
-                    alt={partner.name}
-                    width={partner.width}
-                    height={partner.height}
-                    className="h-auto max-h-16 w-auto max-w-35 object-contain"
-                  />
-                )}
-              </div>
-              <p className="mt-4 text-sm text-gray-600">{partner.role}</p>
-            </motion.a>
+                  )}
+                </div>
+                <p className="mt-4 text-sm text-gray-600">{partner.role}</p>
+              </Link>
+            </AnimateOnScroll>
           ))}
         </div>
       </div>

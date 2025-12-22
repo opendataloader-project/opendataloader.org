@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Head from "next/head";
 
 interface LazyVideoProps {
   src: string;
@@ -53,16 +54,24 @@ export function LazyVideo({
   }, []);
 
   return (
-    <video
-      ref={videoRef}
-      src={isInView ? src : undefined}
-      poster={poster}
-      autoPlay={isInView}
-      loop
-      muted
-      playsInline
-      className={className}
-      onCanPlay={handleCanPlay}
-    />
+    <>
+      {/* Preload poster image for priority videos */}
+      {priority && poster && (
+        <Head>
+          <link rel="preload" as="image" href={poster} />
+        </Head>
+      )}
+      <video
+        ref={videoRef}
+        src={isInView ? src : undefined}
+        poster={poster}
+        autoPlay={isInView}
+        loop
+        muted
+        playsInline
+        className={className}
+        onCanPlay={handleCanPlay}
+      />
+    </>
   );
 }

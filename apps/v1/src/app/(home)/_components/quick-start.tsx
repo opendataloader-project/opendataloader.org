@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 import { ArrowRight, Link2 } from "lucide-react";
 
+import { AnimateOnScroll } from "@/components/ui/animate-on-scroll";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 function getCodeLang(key: string): string {
@@ -71,25 +71,13 @@ export default function QuickStart() {
   return (
     <section id="quick-start" className="bg-gray-50 py-16 dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="text-center"
-        >
+        <AnimateOnScroll className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
             Get Started in 60 Seconds
           </h2>
-        </motion.div>
+        </AnimateOnScroll>
 
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="mx-auto mt-12 max-w-2xl"
-        >
+        <AnimateOnScroll className="mx-auto mt-12 max-w-2xl">
           <Tabs
             value={activeTab}
             onValueChange={setActiveTab}
@@ -134,16 +122,10 @@ export default function QuickStart() {
               </TabsContent>
             ))}
           </Tabs>
-        </motion.div>
+        </AnimateOnScroll>
 
         {/* LangChain Highlight */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="mx-auto mt-8 max-w-2xl rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20"
-        >
+        <AnimateOnScroll className="mx-auto mt-8 max-w-2xl rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20">
           <div className="flex items-start gap-3">
             <Link2 className="mt-0.5 h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400" />
             <div className="min-w-0 flex-1">
@@ -165,7 +147,7 @@ export default function QuickStart() {
               </Link>
             </div>
           </div>
-        </motion.div>
+        </AnimateOnScroll>
       </div>
     </section>
   );

@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { motion } from "framer-motion";
 import {
   ArrowRight,
   Lock,
@@ -12,6 +9,7 @@ import {
   Zap,
 } from "lucide-react";
 
+import { AnimateOnScroll } from "@/components/ui/animate-on-scroll";
 import {
   Card,
   CardDescription,
@@ -73,28 +71,16 @@ export default function SolutionSection() {
   return (
     <section id="solution" className="bg-gray-50 py-16 dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="text-center"
-        >
+        <AnimateOnScroll className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
             Built for RAG, Not Just PDF Reading
           </h2>
-        </motion.div>
+        </AnimateOnScroll>
 
         {/* Feature Cards Grid */}
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.2, delay: 0.03 * index }}
-            >
+            <AnimateOnScroll key={feature.title} delay={30 * index}>
               <Card className="group h-full transition-shadow hover:shadow-md">
                 <CardHeader>
                   <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30">
@@ -115,7 +101,7 @@ export default function SolutionSection() {
                   )}
                 </CardHeader>
               </Card>
-            </motion.div>
+            </AnimateOnScroll>
           ))}
         </div>
       </div>

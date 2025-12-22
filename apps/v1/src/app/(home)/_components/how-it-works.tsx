@@ -3,10 +3,10 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 import { ArrowRight } from "lucide-react";
 
+import { AnimateOnScroll } from "@/components/ui/animate-on-scroll";
 import { LazyVideo } from "@/components/ui/lazy-video";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -46,41 +46,23 @@ export default function HowItWorks() {
   return (
     <section id="how-it-works" className="bg-white py-16 dark:bg-gray-950">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="text-center"
-        >
+        <AnimateOnScroll className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
             From PDF to LLM-Ready Data
           </h2>
-        </motion.div>
+        </AnimateOnScroll>
 
         {/* Pipeline Diagram */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="mt-12"
-        >
+        <AnimateOnScroll className="mt-12">
           <LazyVideo
             src="/figures/pipeline.mp4"
             poster="/figures/pipeline-poster.webp"
             className="mx-auto w-full max-w-2xl rounded-xl"
           />
-        </motion.div>
+        </AnimateOnScroll>
 
         {/* Output Format Tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.25 }}
-          className="mx-auto mt-12 max-w-3xl"
-        >
+        <AnimateOnScroll className="mx-auto mt-12 max-w-3xl">
           <Tabs
             value={activeTab}
             onValueChange={setActiveTab}
@@ -132,7 +114,7 @@ export default function HowItWorks() {
               <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </div>
-        </motion.div>
+        </AnimateOnScroll>
       </div>
     </section>
   );
