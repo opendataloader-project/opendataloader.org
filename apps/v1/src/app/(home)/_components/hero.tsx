@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 
 import HeroContent from "./hero-content";
+import HeroHeadline from "./hero-headline";
 import TrustIndicators from "./trust-indicators";
 
 // Fallback for TrustIndicators while loading
@@ -25,6 +26,9 @@ export default function Hero() {
       className="relative overflow-hidden bg-white dark:bg-gray-950"
     >
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+        {/* Server-rendered headline for fast LCP */}
+        <HeroHeadline />
+        {/* Client-side interactive content */}
         <HeroContent />
         <Suspense fallback={<TrustIndicatorsSkeleton />}>
           <TrustIndicators />

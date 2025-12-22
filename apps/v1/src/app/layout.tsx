@@ -15,6 +15,15 @@ export default function Layout({ children }: LayoutProps<"/">) {
 
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Preconnect to external origins for faster resource loading */}
+        {gaId && (
+          <>
+            <link rel="preconnect" href="https://www.googletagmanager.com" />
+            <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+          </>
+        )}
+      </head>
       <body
         className={`${GeistSans.variable} ${GeistMono.variable} flex flex-col min-h-screen font-sans`}
       >
