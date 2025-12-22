@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { LazyVideo } from "@/components/ui/lazy-video";
 
 const problemCards = [
   {
@@ -105,13 +106,9 @@ export default function ProblemSection() {
           transition={{ duration: 0.25 }}
           className="mt-12"
         >
-          <video
+          <LazyVideo
             src="/figures/problem-solution.mp4"
             poster="/figures/problem-solution-poster.webp"
-            autoPlay
-            loop
-            muted
-            playsInline
             className="mx-auto w-full max-w-2xl rounded-xl shadow-lg"
           />
         </motion.div>

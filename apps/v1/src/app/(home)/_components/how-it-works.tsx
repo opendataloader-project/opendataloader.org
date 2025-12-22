@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 import { ArrowRight } from "lucide-react";
 
+import { LazyVideo } from "@/components/ui/lazy-video";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const jsonExample = `{
@@ -65,13 +66,9 @@ export default function HowItWorks() {
           transition={{ duration: 0.25 }}
           className="mt-12"
         >
-          <video
+          <LazyVideo
             src="/figures/pipeline.mp4"
             poster="/figures/pipeline-poster.webp"
-            autoPlay
-            loop
-            muted
-            playsInline
             className="mx-auto w-full max-w-2xl rounded-xl"
           />
         </motion.div>

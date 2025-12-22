@@ -8,6 +8,7 @@ import { trackNavigation } from "@/lib/tracking";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { GitHubIcon } from "@/components/ui/icons/github";
+import { LazyVideo } from "@/components/ui/lazy-video";
 
 export default function HeroContent() {
   return (
@@ -75,14 +76,11 @@ export default function HeroContent() {
 
       {/* Hero Illustration */}
       <div className="mx-auto mt-12 max-w-2xl">
-        <video
+        <LazyVideo
           src="/figures/hero.mp4"
           poster="/figures/hero-poster.webp"
-          autoPlay
-          loop
-          muted
-          playsInline
           className="rounded-xl shadow-lg"
+          priority
         />
       </div>
     </motion.div>

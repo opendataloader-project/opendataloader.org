@@ -1,17 +1,22 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 
-import Collaboration from "./_components/collaboration";
-import FinalCTA from "./_components/final-cta";
 import Footer from "./_components/footer";
 import Hero from "./_components/hero";
-import HowItWorks from "./_components/how-it-works";
-import OutputPreview from "./_components/output-preview";
 import ProblemSection from "./_components/problem-section";
-import QuickStart from "./_components/quick-start";
 import SolutionSection from "./_components/solution-section";
-import TaggedPdf from "./_components/tagged-pdf";
-import UseCases from "./_components/use-cases";
-import WhyOpenDataLoader from "./_components/why-opendataloader";
+
+// Below-the-fold components loaded dynamically
+const HowItWorks = dynamic(() => import("./_components/how-it-works"));
+const QuickStart = dynamic(() => import("./_components/quick-start"));
+const OutputPreview = dynamic(() => import("./_components/output-preview"));
+const WhyOpenDataLoader = dynamic(
+  () => import("./_components/why-opendataloader")
+);
+const UseCases = dynamic(() => import("./_components/use-cases"));
+const TaggedPdf = dynamic(() => import("./_components/tagged-pdf"));
+const Collaboration = dynamic(() => import("./_components/collaboration"));
+const FinalCTA = dynamic(() => import("./_components/final-cta"));
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://opendataloader.org"),

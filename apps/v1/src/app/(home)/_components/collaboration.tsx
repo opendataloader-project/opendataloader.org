@@ -1,23 +1,33 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
+
+import { LazyVideo } from "@/components/ui/lazy-video";
 
 const partners = [
   {
     name: "Hancom",
-    logo: "/figures/hnc-logo.svg",
+    logo: "/figures/hnc-logo.webp",
+    logoDark: "/figures/hnc-logo-dark.webp",
+    width: 280,
+    height: 62,
     role: "Building OpenDataLoader-PDF extraction engine",
     url: "https://hancom.com",
   },
   {
     name: "PDF Association",
-    logo: "/figures/pdf-association-logo.png",
+    logo: "/figures/pdf-association-logo.webp",
+    width: 280,
+    height: 132,
     role: "International organization advancing PDF technology standards",
     url: "https://pdfa.org",
   },
   {
     name: "Dual Lab",
-    logo: "/figures/duallab-logo.png",
+    logo: "/figures/duallab-logo.webp",
+    width: 280,
+    height: 59,
     role: "Developing veraPDF-based validation tools",
     url: "https://duallab.com",
   },
@@ -50,13 +60,9 @@ export default function Collaboration() {
           transition={{ duration: 0.25 }}
           className="mt-12 flex justify-center"
         >
-          <video
+          <LazyVideo
             src="/figures/collaboration.mp4"
             poster="/figures/collaboration-poster.webp"
-            autoPlay
-            loop
-            muted
-            playsInline
             className="h-auto max-w-full rounded-lg shadow-lg md:max-w-4xl"
           />
         </motion.div>
@@ -76,12 +82,33 @@ export default function Collaboration() {
               transition={{ duration: 0.2 }}
               className="flex cursor-pointer flex-col items-center rounded-lg border border-gray-200 bg-white p-6 text-center transition-shadow hover:border-blue-400 hover:shadow-lg dark:border-gray-700 dark:hover:border-blue-500"
             >
-              <div className="flex h-20 items-center justify-center">
-                <img
-                  src={partner.logo}
-                  alt={partner.name}
-                  className="h-auto max-h-16 w-auto max-w-35 object-contain"
-                />
+              <div className="flex h-20 w-35 items-center justify-center">
+                {partner.logoDark ? (
+                  <>
+                    <Image
+                      src={partner.logo}
+                      alt={partner.name}
+                      width={partner.width}
+                      height={partner.height}
+                      className="h-auto max-h-16 w-auto max-w-35 object-contain dark:hidden"
+                    />
+                    <Image
+                      src={partner.logoDark}
+                      alt={partner.name}
+                      width={partner.width}
+                      height={partner.height}
+                      className="hidden h-auto max-h-16 w-auto max-w-35 object-contain dark:block"
+                    />
+                  </>
+                ) : (
+                  <Image
+                    src={partner.logo}
+                    alt={partner.name}
+                    width={partner.width}
+                    height={partner.height}
+                    className="h-auto max-h-16 w-auto max-w-35 object-contain"
+                  />
+                )}
               </div>
               <p className="mt-4 text-sm text-gray-600">{partner.role}</p>
             </motion.a>
