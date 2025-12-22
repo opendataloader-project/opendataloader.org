@@ -1,7 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -25,6 +24,14 @@ export function HeroSection({
   contentClassName,
   mediaClassName,
 }: HeroSectionProps) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Trigger animation after mount
+    const timer = setTimeout(() => setIsVisible(true), 10);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section
       className={cn(
@@ -40,24 +47,28 @@ export function HeroSection({
             media ? "md:grid-cols-2" : "md:grid-cols-1"
           )}
         >
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className={cn("space-y-6", contentClassName)}
+          <div
+            className={cn(
+              "space-y-6 transition-all duration-500 ease-out",
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-3",
+              contentClassName
+            )}
           >
             {children}
-          </motion.div>
+          </div>
 
           {media && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className={cn("flex items-center justify-center", mediaClassName)}
+            <div
+              className={cn(
+                "flex items-center justify-center transition-all duration-500 ease-out delay-100",
+                isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95",
+                mediaClassName
+              )}
             >
               {media}
-            </motion.div>
+            </div>
           )}
         </div>
       </div>
