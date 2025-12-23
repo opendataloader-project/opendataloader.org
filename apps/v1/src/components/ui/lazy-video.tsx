@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Head from "next/head";
+import ReactDOM from "react-dom";
 
 interface LazyVideoProps {
   src: string;
@@ -20,6 +20,16 @@ export function LazyVideo({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isInView, setIsInView] = useState(priority);
   const hasLoadedRef = useRef(false);
+
+  // Preload poster image for priority videos using React 19 preload API
+  useEffect(() => {
+    if (priority && poster) {
+      ReactDOM.preload(poster, {
+        as: "image",
+        fetchPriority: "high",
+      });
+    }
+  }, [priority, poster]);
 
   useEffect(() => {
     if (priority || !videoRef.current) return;
@@ -54,24 +64,18 @@ export function LazyVideo({
   }, []);
 
   return (
-    <>
-      {/* Preload poster image for priority videos */}
-      {priority && poster && (
-        <Head>
-          <link rel="preload" as="image" href={poster} />
-        </Head>
-      )}
-      <video
-        ref={videoRef}
-        src={isInView ? src : undefined}
-        poster={poster}
-        autoPlay={isInView}
-        loop
-        muted
-        playsInline
-        className={className}
-        onCanPlay={handleCanPlay}
-      />
-    </>
+    <video
+      ref={videoRef}
+      src={isInView ? src : undefined}
+      poster={poster}
+      autoPlay={isInView}
+      loop
+      muted
+      playsInline
+      className={className}
+      onCanPlay={handleCanPlay}
+      // @ts-expect-error -- fetchPriority is valid HTML attribute but not in React types yet
+      fetchPriority={priority ? "high" : undefined}
+    />
   );
 }

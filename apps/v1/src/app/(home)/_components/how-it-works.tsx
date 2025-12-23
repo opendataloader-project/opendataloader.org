@@ -94,6 +94,7 @@ export default function HowItWorks() {
                   alt="Visual debugging: see detected structures overlaid on the original"
                   width={800}
                   height={600}
+                  sizes="(max-width: 448px) 100vw, 448px"
                   className="w-full"
                 />
                 <p className="bg-gray-50 p-3 text-center text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-400">

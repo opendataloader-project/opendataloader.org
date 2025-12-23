@@ -113,6 +113,7 @@ export default function OutputPreview() {
                 alt="PDF with bounding box overlays showing detected elements"
                 width={600}
                 height={800}
+                sizes="(max-width: 768px) 100vw, 400px"
                 className="w-full cursor-pointer transition-transform duration-300 group-hover:scale-[1.02]"
               />
             </Link>
