@@ -1,42 +1,52 @@
 import { Shield, Target, Zap } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
-
 export default function HeroHeadline() {
   return (
     <div className="text-center">
-      {/* Eyebrow Badges */}
-      <div className="flex items-center justify-center gap-3">
-        <Badge variant="secondary" className="gap-1.5">
-          <Zap className="h-3.5 w-3.5" />
-          Fast
-        </Badge>
-        <Badge variant="secondary" className="gap-1.5">
-          <Target className="h-3.5 w-3.5" />
-          Accurate
-        </Badge>
-        <Badge variant="secondary" className="gap-1.5">
-          <Shield className="h-3.5 w-3.5" />
+      {/* Eyebrow Badges - Pill style with icons */}
+      <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-200 bg-cyan-50/80 px-3 py-1 text-xs font-medium text-cyan-700 backdrop-blur-sm dark:border-cyan-800/50 dark:bg-cyan-950/50 dark:text-cyan-300">
+          <Zap className="h-3 w-3" />
+          Lightning Fast
+        </span>
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50/80 px-3 py-1 text-xs font-medium text-emerald-700 backdrop-blur-sm dark:border-emerald-800/50 dark:bg-emerald-950/50 dark:text-emerald-300">
+          <Target className="h-3 w-3" />
+          91% Accuracy
+        </span>
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-200 bg-violet-50/80 px-3 py-1 text-xs font-medium text-violet-700 backdrop-blur-sm dark:border-violet-800/50 dark:bg-violet-950/50 dark:text-violet-300">
+          <Shield className="h-3 w-3" />
           100% Local
-        </Badge>
+        </span>
       </div>
 
-      {/* Headline - LCP element, rendered without JS */}
-      <h1 className="mt-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl dark:text-white">
-        Best Open-Source PDF Parser
-        <br />{" "}
-        <span className="bg-linear-to-r from-red-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
-          for RAG &amp; LLM Pipelines
-        </span>
+      {/* Headline - LCP element, bold and impactful */}
+      <h1 className="mt-8 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-7xl dark:text-white">
+        PDF Parsing
+        <br />
+        <span className="text-gradient-brand">Built for RAG</span>
       </h1>
 
-      {/* Subheadline */}
-      <p className="mx-auto mt-6 max-w-3xl text-lg text-gray-600 sm:text-xl dark:text-gray-300">
-        No GPU required, 100% local processing with bounding boxes.
-        <br />
-        Convert PDFs to LLM-ready Markdown and JSON with accurate reading order
-        and table extraction.
+      {/* Subheadline - Clear value prop with better hierarchy */}
+      <p className="mx-auto mt-6 max-w-2xl text-balance text-lg leading-relaxed text-slate-600 sm:text-xl dark:text-slate-300">
+        Convert PDFs to LLM-ready Markdown and JSON with accurate reading order,
+        table extraction, and bounding boxes for citations.
       </p>
+
+      {/* Technical specs row */}
+      <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-slate-500 dark:text-slate-400">
+        <span className="flex items-center gap-1.5">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+          No GPU Required
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="h-1.5 w-1.5 rounded-full bg-cyan-500" />
+          Open Source
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+          Deterministic Output
+        </span>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
-import { ArrowRight, Lightbulb } from "lucide-react";
+import { ArrowRight, Braces, Lightbulb } from "lucide-react";
 
 import { AnimateOnScroll } from "@/components/ui/animate-on-scroll";
 
@@ -51,45 +51,60 @@ const fieldDescriptions = [
 
 export default function OutputPreview() {
   return (
-    <section id="output-preview" className="bg-white py-16 dark:bg-gray-950">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section
+      id="output-preview"
+      className="relative bg-slate-50 py-20 dark:bg-slate-900"
+    >
+      {/* Background pattern */}
+      <div className="absolute inset-0 bg-dot-pattern opacity-40" />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
+          {/* Section label */}
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-sm font-medium text-violet-700 dark:border-violet-800/50 dark:bg-violet-950/50 dark:text-violet-300">
+            <Braces className="h-3.5 w-3.5" />
+            Output Format
+          </div>
+
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl dark:text-white">
             Structured Output with Bounding Boxes
           </h2>
         </AnimateOnScroll>
 
         {/* Two Column Layout */}
-        <div className="mt-12 grid gap-8 lg:grid-cols-2">
+        <div className="mt-14 grid gap-8 lg:grid-cols-2">
           {/* Left Column - JSON Example */}
           <AnimateOnScroll animation="fade-left" className="min-w-0">
-            <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">
               JSON Output Example
             </h3>
-            <div className="overflow-x-auto">
+            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
               <DynamicCodeBlock lang="json" code={jsonExample} />
             </div>
 
             {/* Field Descriptions Table */}
-            <div className="mt-6 overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+            <div className="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
               <table className="w-full text-sm">
-                <thead className="bg-gray-50 dark:bg-gray-800">
-                  <tr>
-                    <th className="px-4 py-2 text-left font-medium text-gray-900 dark:text-white">
+                <thead>
+                  <tr className="border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
+                    <th className="px-4 py-3 text-left font-semibold text-slate-900 dark:text-white">
                       Field
                     </th>
-                    <th className="px-4 py-2 text-left font-medium text-gray-900 dark:text-white">
+                    <th className="px-4 py-3 text-left font-semibold text-slate-900 dark:text-white">
                       Description
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
                   {fieldDescriptions.map((item) => (
-                    <tr key={item.field}>
-                      <td className="px-4 py-2 font-mono text-blue-600 dark:text-blue-400">
+                    <tr
+                      key={item.field}
+                      className="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800"
+                    >
+                      <td className="px-4 py-2.5 font-mono text-sm text-cyan-600 dark:text-cyan-400">
                         {item.field}
                       </td>
-                      <td className="px-4 py-2 text-gray-600 dark:text-gray-300">
+                      <td className="px-4 py-2.5 text-slate-600 dark:text-slate-400">
                         {item.description}
                       </td>
                     </tr>
@@ -101,12 +116,12 @@ export default function OutputPreview() {
 
           {/* Right Column - Visual */}
           <AnimateOnScroll animation="fade-right">
-            <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">
               Bounding Box Visualization
             </h3>
             <Link
               href="/demo/samples/01030000000000?view1=annot&view2=json"
-              className="group block overflow-hidden rounded-lg border border-gray-200 transition-all duration-300 hover:border-blue-400 hover:shadow-lg dark:border-gray-700 dark:hover:border-blue-500"
+              className="group block overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:border-cyan-400 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800 dark:hover:border-cyan-500"
             >
               <Image
                 src="/figures/example_annotated_pdf.webp"
@@ -114,53 +129,64 @@ export default function OutputPreview() {
                 width={600}
                 height={800}
                 sizes="(max-width: 768px) 100vw, 400px"
-                className="w-full cursor-pointer transition-transform duration-300 group-hover:scale-[1.02]"
+                className="w-full cursor-pointer transition-transform duration-300 group-hover:scale-[1.01]"
               />
             </Link>
           </AnimateOnScroll>
         </div>
 
-        {/* Callout Box */}
-        <AnimateOnScroll className="mt-12 rounded-lg border-l-4 border-blue-500 bg-blue-50 p-4 dark:bg-blue-900/20">
-          <div className="flex items-start gap-3">
-            <Lightbulb className="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-600 dark:text-blue-400" />
-            <div>
-              <h4 className="font-semibold text-blue-800 dark:text-blue-200">
-                Why Bounding Boxes Matter for RAG
-              </h4>
-              <p className="mt-1 text-blue-700 dark:text-blue-300">
-                When your LLM answers a question, bounding boxes let you:
-              </p>
-              <ul className="mt-2 list-inside list-disc text-blue-700 dark:text-blue-300">
-                <li>Highlight the exact source location in the PDF</li>
-                <li>
-                  Build citation links: &quot;Source: document.pdf, Page 3,
-                  Position (72, 450)&quot;
-                </li>
-                <li>Verify extraction accuracy by visual comparison</li>
-              </ul>
+        {/* Callout Box - Enhanced */}
+        <AnimateOnScroll className="mt-14">
+          <div className="relative rounded-2xl border border-sky-200/50 bg-gradient-to-br from-sky-50 to-cyan-50/50 p-6 dark:border-sky-800/30 dark:from-sky-950/30 dark:to-cyan-950/20">
+            <div className="absolute -left-3 top-6 h-12 w-1 rounded-full bg-gradient-to-b from-sky-400 to-cyan-500" />
+            <div className="flex items-start gap-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-sky-100 dark:bg-sky-900/30">
+                <Lightbulb className="h-5 w-5 text-sky-600 dark:text-sky-400" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-sky-900 dark:text-sky-100">
+                  Why Bounding Boxes Matter for RAG
+                </h4>
+                <p className="mt-1 text-sky-700 dark:text-sky-300">
+                  When your LLM answers a question, bounding boxes let you:
+                </p>
+                <ul className="mt-3 space-y-1.5 text-sky-700 dark:text-sky-300">
+                  <li className="flex items-start gap-2">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-400" />
+                    Highlight the exact source location in the PDF
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-400" />
+                    Build citation links with page and position references
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-400" />
+                    Verify extraction accuracy by visual comparison
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </AnimateOnScroll>
 
-        {/* Links */}
+        {/* Links - Enhanced */}
         <AnimateOnScroll
           animation="fade-in"
-          className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-2"
+          className="mt-8 flex flex-wrap items-center justify-center gap-4"
         >
           <Link
             href="/docs/json-schema"
-            className="inline-flex items-center text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+            className="group inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:bg-slate-700"
           >
             View Full JSON Schema
-            <ArrowRight className="ml-1 h-4 w-4" />
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </Link>
           <Link
             href="/demo/samples"
-            className="inline-flex items-center text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+            className="group inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:bg-slate-700"
           >
             Browse Sample Extractions
-            <ArrowRight className="ml-1 h-4 w-4" />
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </AnimateOnScroll>
       </div>

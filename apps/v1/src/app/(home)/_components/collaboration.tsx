@@ -8,7 +8,6 @@ const partners = [
   {
     name: "Hancom",
     logo: "/figures/hnc-logo.webp",
-    logoDark: "/figures/hnc-logo-dark.webp",
     width: 280,
     height: 62,
     role: "Building OpenDataLoader-PDF extraction engine",
@@ -60,7 +59,11 @@ export default function Collaboration() {
         {/* Partners Grid */}
         <div className="mt-12 grid gap-8 md:grid-cols-3">
           {partners.map((partner, index) => (
-            <AnimateOnScroll key={partner.name} delay={30 * index} className="h-full">
+            <AnimateOnScroll
+              key={partner.name}
+              delay={30 * index}
+              className="h-full"
+            >
               <Link
                 href={partner.url}
                 target="_blank"
@@ -68,32 +71,13 @@ export default function Collaboration() {
                 className="flex h-full cursor-pointer flex-col items-center rounded-lg border border-gray-200 bg-white p-6 text-center transition-all duration-200 hover:-translate-y-1 hover:scale-[1.03] hover:border-blue-400 hover:shadow-lg dark:border-gray-700 dark:hover:border-blue-500"
               >
                 <div className="flex h-20 w-35 items-center justify-center">
-                  {partner.logoDark ? (
-                    <>
-                      <Image
-                        src={partner.logo}
-                        alt={partner.name}
-                        width={partner.width}
-                        height={partner.height}
-                        className="h-auto max-h-16 w-auto max-w-35 object-contain dark:hidden"
-                      />
-                      <Image
-                        src={partner.logoDark}
-                        alt={partner.name}
-                        width={partner.width}
-                        height={partner.height}
-                        className="hidden h-auto max-h-16 w-auto max-w-35 object-contain dark:block"
-                      />
-                    </>
-                  ) : (
-                    <Image
-                      src={partner.logo}
-                      alt={partner.name}
-                      width={partner.width}
-                      height={partner.height}
-                      className="h-auto max-h-16 w-auto max-w-35 object-contain"
-                    />
-                  )}
+                  <Image
+                    src={partner.logo}
+                    alt={partner.name}
+                    width={partner.width}
+                    height={partner.height}
+                    className="h-auto max-h-16 w-auto max-w-35 object-contain"
+                  />
                 </div>
                 <p className="mt-4 text-sm text-gray-600">{partner.role}</p>
               </Link>

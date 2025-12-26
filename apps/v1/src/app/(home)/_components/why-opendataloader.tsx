@@ -6,80 +6,17 @@ import {
   ArrowRight,
   ArrowUpDown,
   BarChart3,
-  CheckCircle,
   ChevronDown,
   ChevronUp,
-  FileText,
-  Lock,
-  MapPin,
-  Shield,
-  Target,
-  Zap,
+  Trophy,
 } from "lucide-react";
 
 import { AnimateOnScroll } from "@/components/ui/animate-on-scroll";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-const metrics = [
-  {
-    icon: Zap,
-    label: "Processing Speed",
-    value: "Fast",
-    unit: "",
-    description:
-      "Rule-based heuristics deliver high throughput without GPU overhead",
-  },
-  {
-    icon: Target,
-    label: "Extraction Accuracy",
-    value: "Accurate",
-    unit: "",
-    description: "Reading order, tables, and headings extracted correctly",
-  },
-  {
-    icon: Lock,
-    label: "Data Privacy",
-    value: "100% Local",
-    unit: "",
-    description: "Zero network calls — documents never leave your machine",
-  },
-];
-
-const features = [
-  {
-    icon: MapPin,
-    title: "Bounding Boxes",
-    description:
-      "Every element includes [x1, y1, x2, y2] coordinates for precise citations",
-  },
-  {
-    icon: CheckCircle,
-    title: "Deterministic Output",
-    description:
-      "Same input always produces same output — essential for testing and audits",
-  },
-  {
-    icon: Shield,
-    title: "AI Safety Built-in",
-    description:
-      "Auto-filters hidden text, off-page content, and prompt injection attempts",
-  },
-  {
-    icon: FileText,
-    title: "Multiple Formats",
-    description: "JSON, Markdown, HTML output — ready for any LLM pipeline",
-  },
-];
 
 const benchmarkData = [
   {
@@ -222,7 +159,6 @@ export default function WhyOpenDataLoader() {
     return [...benchmarkData].sort((a, b) => {
       const aVal = a[sortKey];
       const bVal = b[sortKey];
-      // For speed, lower is better, so we invert the sort
       const isInverted = sortKey === "speed";
       const multiplier = sortDirection === "asc" ? 1 : -1;
       const invertMultiplier = isInverted ? -1 : 1;
@@ -235,187 +171,166 @@ export default function WhyOpenDataLoader() {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
       setSortKey(key);
-      setSortDirection("desc"); // Default to desc (best first)
+      setSortDirection("desc");
     }
   };
 
   return (
     <section
       id="why-opendataloader"
-      className="bg-gray-50 py-16 dark:bg-gray-900"
+      className="relative bg-white py-20 dark:bg-slate-950"
     >
+      {/* Section divider */}
+      <div className="section-divider absolute inset-x-0 top-0" />
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
+          {/* Section label */}
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-sm font-medium text-violet-700 dark:border-violet-800/50 dark:bg-violet-950/50 dark:text-violet-300">
+            <Trophy className="h-3.5 w-3.5" />
+            Benchmarks
+          </div>
+
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl dark:text-white">
             Why OpenDataLoader PDF?
           </h2>
         </AnimateOnScroll>
 
-        {/* TL;DR Box */}
-        <AnimateOnScroll className="mx-auto mt-8 max-w-3xl rounded-lg border border-blue-200 bg-blue-50 p-4 text-center dark:border-blue-800 dark:bg-blue-900/20">
-          <p className="text-blue-800 dark:text-blue-200">
-            OpenDataLoader PDF is built specifically for RAG pipelines. It
-            delivers high reading order accuracy, fast processing speed, and
-            bounding boxes for every element — all running 100% locally on your
-            CPU with no GPU required.
-          </p>
+        {/* TL;DR Box - Enhanced */}
+        <AnimateOnScroll className="mx-auto mt-10 max-w-3xl">
+          <div className="relative rounded-2xl border border-cyan-200/50 bg-gradient-to-br from-cyan-50 to-sky-50/50 p-6 dark:border-cyan-800/30 dark:from-cyan-950/30 dark:to-sky-950/20">
+            <div className="absolute -left-3 top-6 h-12 w-1 rounded-full bg-gradient-to-b from-cyan-400 to-sky-500" />
+            <p className="text-lg text-cyan-900 dark:text-cyan-100">
+              Built specifically for RAG pipelines. Highest reading order
+              accuracy, fast processing, and bounding boxes for every element —
+              all running <strong>100% locally</strong> on your CPU.
+            </p>
+          </div>
         </AnimateOnScroll>
 
-        {/* Key Metrics Cards */}
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {metrics.map((metric, index) => (
-            <AnimateOnScroll key={metric.label} delay={30 * index}>
-              <Card className="text-center">
-                <CardHeader>
-                  <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
-                    <metric.icon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <div className="text-3xl font-bold text-gray-900 dark:text-white">
-                    {metric.value}
-                    <span className="ml-1 text-lg font-normal text-gray-500 dark:text-gray-400">
-                      {metric.unit}
-                    </span>
-                  </div>
-                  <CardTitle className="text-base">{metric.label}</CardTitle>
-                  <CardDescription className="text-sm">
-                    {metric.description}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            </AnimateOnScroll>
-          ))}
-        </div>
-
-        {/* Feature Highlight Cards */}
-        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {features.map((feature, index) => (
-            <AnimateOnScroll key={feature.title} delay={30 * index}>
-              <Card className="h-full">
-                <CardHeader>
-                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30">
-                    <feature.icon className="h-5 w-5 text-green-600 dark:text-green-400" />
-                  </div>
-                  <CardTitle className="text-base">{feature.title}</CardTitle>
-                  <CardDescription className="text-sm">
-                    {feature.description}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            </AnimateOnScroll>
-          ))}
-        </div>
-
-        {/* Benchmark Comparison */}
-        <AnimateOnScroll className="mt-12">
-          <h3 className="mb-6 text-center text-xl font-semibold text-gray-900 dark:text-white">
+        {/* Benchmark Comparison - Redesigned */}
+        <AnimateOnScroll className="mt-16">
+          <h3 className="mb-8 text-center text-xl font-semibold text-slate-900 dark:text-white">
             Benchmark Comparison
           </h3>
 
-          {/* Benchmark Table */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-100 dark:bg-gray-800">
-                <tr>
-                  <th className="w-1/5 px-4 py-3 text-left font-semibold text-gray-900 dark:text-white">
-                    Engine
-                  </th>
-                  {columns.map((col) => (
-                    <th
-                      key={col.key}
-                      className="w-1/5 cursor-pointer select-none px-4 py-3 text-center font-semibold text-gray-900 transition-colors hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
-                      onClick={() => handleSort(col.key)}
-                    >
-                      {col.label}
-                      <SortIcon
-                        sortKey={col.key}
-                        currentSort={sortKey}
-                        direction={sortDirection}
-                      />
+          {/* Enhanced Benchmark Table */}
+          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800/50">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
+                    <th className="w-1/5 px-5 py-4 text-left font-semibold text-slate-900 dark:text-white">
+                      Engine
                     </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {sortedData.map((row) => (
-                  <tr
-                    key={row.engine}
-                    className="bg-white transition-colors hover:bg-gray-50 dark:bg-gray-950 dark:hover:bg-gray-900"
-                  >
-                    <td className="w-1/5 px-4 py-3 font-medium text-gray-900 dark:text-white">
-                      {row.engine}
-                    </td>
                     {columns.map((col) => (
-                      <td key={col.key} className="w-1/5 px-4 py-3">
-                        <MiniBar
-                          value={row[col.key]}
-                          max={col.key === "speed" ? 0.8 : 1}
-                          color={col.color}
-                          inverted={col.inverted}
-                          label={col.label}
-                        />
-                      </td>
+                      <th
+                        key={col.key}
+                        className="w-1/5 cursor-pointer select-none px-5 py-4 text-center font-semibold text-slate-900 transition-colors hover:bg-slate-100 dark:text-white dark:hover:bg-slate-700"
+                        onClick={() => handleSort(col.key)}
+                      >
+                        <span className="inline-flex items-center gap-1">
+                          {col.label}
+                          <SortIcon
+                            sortKey={col.key}
+                            currentSort={sortKey}
+                            direction={sortDirection}
+                          />
+                        </span>
+                      </th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
+                  {sortedData.map((row) => (
+                    <tr
+                      key={row.engine}
+                      className={`transition-colors hover:bg-slate-50 dark:hover:bg-slate-800 ${
+                        row.engine === "opendataloader"
+                          ? "bg-cyan-50/50 dark:bg-cyan-950/20"
+                          : ""
+                      }`}
+                    >
+                      <td className="w-1/5 px-5 py-4">
+                        <span
+                          className={`font-medium ${
+                            row.engine === "opendataloader"
+                              ? "text-cyan-700 dark:text-cyan-400"
+                              : "text-slate-900 dark:text-white"
+                          }`}
+                        >
+                          {row.engine}
+                        </span>
+                      </td>
+                      {columns.map((col) => (
+                        <td key={col.key} className="w-1/5 px-5 py-4">
+                          <MiniBar
+                            value={row[col.key]}
+                            max={col.key === "speed" ? 0.8 : 1}
+                            color={col.color}
+                            inverted={col.inverted}
+                            label={col.label}
+                          />
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="border-t border-slate-200 bg-slate-50 px-5 py-3 dark:border-slate-700 dark:bg-slate-800">
+              <p className="text-center text-xs text-slate-500 dark:text-slate-400">
+                Scores normalized to [0,1]. Higher is better for accuracy; lower
+                for speed.
+              </p>
+            </div>
           </div>
 
-          <p className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
-            Scores normalized to [0,1]. Higher is better for accuracy; lower for
-            speed.
-          </p>
-
-          {/* When to Use Each */}
-          <div className="mt-12 overflow-x-auto">
-            <h3 className="mb-6 text-center text-xl font-semibold text-gray-900 dark:text-white">
+          {/* When to Use Each - Redesigned as cards */}
+          <div className="mt-16">
+            <h3 className="mb-8 text-center text-xl font-semibold text-slate-900 dark:text-white">
               When to Use Each Engine
             </h3>
-            <table className="w-full text-sm">
-              <thead className="bg-gray-100 dark:bg-gray-800">
-                <tr>
-                  <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-white">
-                    Use Case
-                  </th>
-                  <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-white">
-                    Recommended
-                  </th>
-                  <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-white">
-                    Why
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {useCaseRecommendations.map((row) => (
-                  <tr
-                    key={row.useCase}
-                    className="bg-white transition-colors hover:bg-gray-50 dark:bg-gray-950 dark:hover:bg-gray-900"
+            <div className="grid gap-4 sm:grid-cols-2">
+              {useCaseRecommendations.map((row) => (
+                <div
+                  key={row.useCase}
+                  className={`rounded-xl border p-5 transition-all hover:shadow-md ${
+                    row.recommended === "opendataloader"
+                      ? "border-cyan-200 bg-gradient-to-br from-cyan-50 to-sky-50/30 dark:border-cyan-800/50 dark:from-cyan-950/30 dark:to-sky-950/10"
+                      : "border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800/50"
+                  }`}
+                >
+                  <div className="mb-2 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    {row.useCase}
+                  </div>
+                  <div
+                    className={`text-lg font-semibold ${
+                      row.recommended === "opendataloader"
+                        ? "text-cyan-700 dark:text-cyan-400"
+                        : "text-slate-900 dark:text-white"
+                    }`}
                   >
-                    <td className="px-4 py-3 text-gray-600 dark:text-gray-300">
-                      {row.useCase}
-                    </td>
-                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">
-                      {row.recommended}
-                    </td>
-                    <td className="px-4 py-3 text-gray-600 dark:text-gray-300">
-                      {row.reason}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    {row.recommended}
+                  </div>
+                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+                    {row.reason}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </AnimateOnScroll>
 
-        {/* Benchmark Link */}
-        <AnimateOnScroll animation="fade-in" className="mt-8 text-center">
+        {/* Benchmark Link - Enhanced */}
+        <AnimateOnScroll animation="fade-in" className="mt-12 text-center">
           <Link
             href="/docs/benchmark"
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+            className="group inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:bg-slate-700"
           >
-            <BarChart3 className="h-4 w-4" />
-            See transparent benchmark methodology and results
-            <ArrowRight className="h-4 w-4" />
+            <BarChart3 className="h-4 w-4 text-violet-600 dark:text-violet-400" />
+            See transparent benchmark methodology
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </AnimateOnScroll>
       </div>

@@ -1,12 +1,6 @@
-import { Cloud, FileText, MapPin, Table2 } from "lucide-react";
+import { AlertTriangle, Cloud, FileText, MapPin, Table2 } from "lucide-react";
 
 import { AnimateOnScroll } from "@/components/ui/animate-on-scroll";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { LazyVideo } from "@/components/ui/lazy-video";
 
 const problemCards = [
@@ -14,7 +8,7 @@ const problemCards = [
     icon: FileText,
     title: "Scrambled Reading Order",
     description:
-      "Multi-column layouts read left-to-right across the page, mixing content from different columns and destroying context. Your LLM receives jumbled text that makes no sense.",
+      "Multi-column layouts read left-to-right across the page, mixing content from different columns. Your LLM receives jumbled text that makes no sense.",
   },
   {
     icon: Table2,
@@ -26,65 +20,85 @@ const problemCards = [
     icon: MapPin,
     title: "No Source Coordinates",
     description:
-      "Can't cite where information came from. No way to highlight or reference the original PDF location. Users can't verify your AI's answers.",
+      "No way to cite where information came from or highlight the original PDF location. Users can't verify your AI's answers.",
   },
   {
     icon: Cloud,
     title: "Privacy & Cost Trade-offs",
     description:
-      "Cloud APIs leak sensitive data (HIPAA/SOC2 violations). Commercial services charge $0.01-0.10 per page — costs add up fast at scale.",
+      "Cloud APIs leak sensitive data (HIPAA/SOC2 violations). Commercial services charge $0.01-0.10 per page at scale.",
   },
 ];
 
 export default function ProblemSection() {
   return (
-    <section id="problem" className="bg-white py-16 dark:bg-gray-950">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section
+      id="problem"
+      className="relative overflow-hidden bg-slate-50 py-20 dark:bg-slate-900"
+    >
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 bg-dot-pattern opacity-50" />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <AnimateOnScroll className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
-            Building RAG Pipelines? PDFs Are Harder Than They Look.
+          {/* Section label */}
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-rose-200 bg-rose-50 px-3 py-1 text-sm font-medium text-rose-700 dark:border-rose-800/50 dark:bg-rose-950/50 dark:text-rose-300">
+            <AlertTriangle className="h-3.5 w-3.5" />
+            The Problem
+          </div>
+
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl dark:text-white">
+            PDFs Break RAG Pipelines
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-300">
+          <p className="mx-auto mt-4 max-w-2xl text-balance text-lg text-slate-600 dark:text-slate-300">
             Most PDF parsers weren&apos;t designed for LLMs. The parsing tool
             you choose determines 90% of your RAG pipeline&apos;s accuracy.
           </p>
         </AnimateOnScroll>
 
-        {/* Key Message Callout */}
-        <AnimateOnScroll className="mx-auto mb-12 mt-8 max-w-3xl rounded-lg border border-amber-200 bg-amber-50 p-4 text-center dark:border-amber-800 dark:bg-amber-900/20">
-          <p className="text-amber-800 dark:text-amber-200">
-            &quot;If the data isn&apos;t parsed properly, your RAG system will
-            never retrieve accurate answers. No matter how powerful the LLM you
-            use, garbage in = garbage out.&quot;
-          </p>
+        {/* Key Message Callout - More distinctive */}
+        <AnimateOnScroll className="mx-auto mb-16 mt-10 max-w-3xl">
+          <div className="relative rounded-2xl border border-amber-200/50 bg-gradient-to-br from-amber-50 to-orange-50/50 p-6 dark:border-amber-800/30 dark:from-amber-950/30 dark:to-orange-950/20">
+            <div className="absolute -left-3 top-6 h-12 w-1 rounded-full bg-gradient-to-b from-amber-400 to-orange-500" />
+            <p className="text-lg font-medium italic text-amber-900 dark:text-amber-100">
+              &quot;If the data isn&apos;t parsed properly, your RAG system will
+              never retrieve accurate answers. Garbage in = garbage out.&quot;
+            </p>
+          </div>
         </AnimateOnScroll>
 
-        {/* Problem Cards Grid */}
-        <div className="grid gap-6 md:grid-cols-2">
+        {/* Problem Cards Grid - Horizontal cards */}
+        <div className="grid gap-4 md:grid-cols-2">
           {problemCards.map((card, index) => (
             <AnimateOnScroll key={card.title} delay={30 * index}>
-              <Card className="h-full">
-                <CardHeader>
-                  <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-red-100 dark:bg-red-900/30">
-                    <card.icon className="h-5 w-5 text-red-600 dark:text-red-400" />
-                  </div>
-                  <CardTitle className="text-lg">{card.title}</CardTitle>
-                  <CardDescription className="text-sm leading-relaxed">
+              <div className="group flex h-full gap-4 rounded-xl border border-slate-200 bg-white p-5 transition-all hover:border-slate-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-800/50 dark:hover:border-slate-600">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-rose-100 to-rose-50 ring-1 ring-rose-200/50 dark:from-rose-900/30 dark:to-rose-800/20 dark:ring-rose-800/30">
+                  <card.icon className="h-5 w-5 text-rose-600 dark:text-rose-400" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-900 dark:text-white">
+                    {card.title}
+                  </h3>
+                  <p className="mt-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
                     {card.description}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
+                  </p>
+                </div>
+              </div>
             </AnimateOnScroll>
           ))}
         </div>
 
-        {/* Problem/Solution Comparison Video */}
-        <AnimateOnScroll className="mt-12">
-          <LazyVideo
-            src="/figures/problem-solution.mp4"
-            poster="/figures/problem-solution-poster.webp"
-            className="mx-auto w-full max-w-2xl rounded-xl shadow-lg"
-          />
+        {/* Problem/Solution Comparison Video with frame */}
+        <AnimateOnScroll className="mt-16">
+          <div className="mx-auto max-w-3xl">
+            <div className="rounded-2xl bg-gradient-to-b from-slate-200 to-slate-100 p-1 shadow-xl ring-1 ring-slate-900/5 dark:from-slate-700 dark:to-slate-800 dark:ring-white/5">
+              <LazyVideo
+                src="/figures/problem-solution.mp4"
+                poster="/figures/problem-solution-poster.webp"
+                className="w-full rounded-xl"
+              />
+            </div>
+          </div>
         </AnimateOnScroll>
       </div>
     </section>
