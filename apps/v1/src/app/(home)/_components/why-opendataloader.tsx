@@ -12,22 +12,27 @@ import {
 } from "lucide-react";
 
 import { AnimateOnScroll } from "@/components/ui/animate-on-scroll";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 const benchmarkData = [
   {
     engine: "opendataloader",
+    mode: "local" as const,
     speed: 0.05,
     readingOrder: 0.91,
     table: 0.49,
     heading: 0.65,
   },
   {
+    engine: "opendataloader",
+    mode: "hybrid" as const,
+    speed: 0.45,
+    readingOrder: 0.93,
+    table: 0.93,
+    heading: 0.78,
+  },
+  {
     engine: "docling",
+    mode: null,
     speed: 0.73,
     readingOrder: 0.9,
     table: 0.89,
@@ -35,6 +40,7 @@ const benchmarkData = [
   },
   {
     engine: "pymupdf4llm",
+    mode: null,
     speed: 0.09,
     readingOrder: 0.89,
     table: 0.4,
@@ -42,6 +48,7 @@ const benchmarkData = [
   },
   {
     engine: "markitdown",
+    mode: null,
     speed: 0.04,
     readingOrder: 0.88,
     table: 0,
@@ -49,7 +56,7 @@ const benchmarkData = [
   },
 ];
 
-type SortKey = "speed" | "readingOrder" | "table" | "heading";
+type SortKey = "readingOrder" | "table" | "heading";
 type SortDirection = "asc" | "desc";
 
 // Column definitions for sortable headers
@@ -57,14 +64,7 @@ const columns: {
   key: SortKey;
   label: string;
   color: string;
-  inverted?: boolean;
 }[] = [
-  {
-    key: "speed",
-    label: "Speed (s/page)",
-    color: "bg-cyan-400",
-    inverted: true,
-  },
   { key: "readingOrder", label: "Reading Order", color: "bg-blue-400" },
   { key: "table", label: "Table", color: "bg-orange-400" },
   { key: "heading", label: "Heading", color: "bg-green-400" },
@@ -94,75 +94,59 @@ function MiniBar({
   value,
   max,
   color,
-  inverted = false,
-  label,
 }: {
   value: number;
   max: number;
   color: string;
-  inverted?: boolean;
-  label: string;
 }) {
-  // For inverted (speed), lower is better so we invert the percentage
-  const percentage = inverted
-    ? ((max - value) / max) * 100
-    : (value / max) * 100;
+  const percentage = (value / max) * 100;
+  const displayValue = Math.round(value * 100);
+  const isSmall = percentage < 25;
+  const barWidth = Math.max(percentage, 8);
+
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <div className="mx-auto mt-1 h-3 w-20 cursor-pointer rounded-full bg-gray-200 dark:bg-gray-700">
-          <div
-            className={`h-3 rounded-full ${color}`}
-            style={{ width: `${Math.max(percentage, 2)}%` }}
-          />
-        </div>
-      </TooltipTrigger>
-      <TooltipContent>
-        <span>
-          {label}: {value.toFixed(2)}
+    <div className="relative mx-auto h-6 w-32 rounded-md bg-gray-200 dark:bg-gray-700">
+      <div
+        className={`absolute inset-y-0 left-0 flex items-center justify-end rounded-md ${color}`}
+        style={{ width: `${barWidth}%` }}
+      >
+        {!isSmall && (
+          <span className="pr-2 text-xs font-semibold text-white drop-shadow-sm">
+            {displayValue}%
+          </span>
+        )}
+      </div>
+      {isSmall && (
+        <span
+          className="absolute top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-700 dark:text-slate-300"
+          style={{ left: `calc(${barWidth}% + 4px)` }}
+        >
+          {displayValue}%
         </span>
-      </TooltipContent>
-    </Tooltip>
+      )}
+    </div>
   );
 }
-
-const useCaseRecommendations = [
-  {
-    useCase: "Best overall balance",
-    recommended: "opendataloader",
-    reason: "Fast with highest reading order accuracy",
-  },
-  {
-    useCase: "Maximum accuracy",
-    recommended: "docling",
-    reason: "Highest scores for tables and headings, but significantly slower",
-  },
-  {
-    useCase: "PyMuPDF ecosystem",
-    recommended: "pymupdf4llm",
-    reason: "Good balance if already using PyMuPDF",
-  },
-  {
-    useCase: "Speed-critical pipelines",
-    recommended: "markitdown",
-    reason: "Fastest, but no table/heading extraction",
-  },
-];
 
 export default function WhyOpenDataLoader() {
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
   const sortedData = useMemo(() => {
-    if (!sortKey) return benchmarkData;
+    if (!sortKey) {
+      // Default: sort by total score (readingOrder + table + heading) descending
+      return [...benchmarkData].sort((a, b) => {
+        const aTotal = a.readingOrder + a.table + a.heading;
+        const bTotal = b.readingOrder + b.table + b.heading;
+        return bTotal - aTotal;
+      });
+    }
 
     return [...benchmarkData].sort((a, b) => {
       const aVal = a[sortKey];
       const bVal = b[sortKey];
-      const isInverted = sortKey === "speed";
       const multiplier = sortDirection === "asc" ? 1 : -1;
-      const invertMultiplier = isInverted ? -1 : 1;
-      return (aVal - bVal) * multiplier * invertMultiplier;
+      return (aVal - bVal) * multiplier;
     });
   }, [sortKey, sortDirection]);
 
@@ -201,9 +185,10 @@ export default function WhyOpenDataLoader() {
           <div className="relative rounded-2xl border border-cyan-200/50 bg-gradient-to-br from-cyan-50 to-sky-50/50 p-6 dark:border-cyan-800/30 dark:from-cyan-950/30 dark:to-sky-950/20">
             <div className="absolute -left-3 top-6 h-12 w-1 rounded-full bg-gradient-to-b from-cyan-400 to-sky-500" />
             <p className="text-lg text-cyan-900 dark:text-cyan-100">
-              Built specifically for RAG pipelines. Highest reading order
-              accuracy, fast processing, and bounding boxes for every element —
-              all running <strong>100% locally</strong> on your CPU.
+              Built specifically for RAG pipelines.{" "}
+              <strong>91% accuracy</strong> in local mode at 0.05s/page, or{" "}
+              <strong>93% with hybrid mode</strong> for complex documents.
+              Bounding boxes for every element — 100% local by default.
             </p>
           </div>
         </AnimateOnScroll>
@@ -220,13 +205,13 @@ export default function WhyOpenDataLoader() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
-                    <th className="w-1/5 px-5 py-4 text-left font-semibold text-slate-900 dark:text-white">
+                    <th className="w-1/4 px-5 py-4 text-left font-semibold text-slate-900 dark:text-white">
                       Engine
                     </th>
                     {columns.map((col) => (
                       <th
                         key={col.key}
-                        className="w-1/5 cursor-pointer select-none px-5 py-4 text-center font-semibold text-slate-900 transition-colors hover:bg-slate-100 dark:text-white dark:hover:bg-slate-700"
+                        className="w-1/4 cursor-pointer select-none px-5 py-4 text-center font-semibold text-slate-900 transition-colors hover:bg-slate-100 dark:text-white dark:hover:bg-slate-700"
                         onClick={() => handleSort(col.key)}
                       >
                         <span className="inline-flex items-center gap-1">
@@ -242,84 +227,65 @@ export default function WhyOpenDataLoader() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
-                  {sortedData.map((row) => (
-                    <tr
-                      key={row.engine}
-                      className={`transition-colors hover:bg-slate-50 dark:hover:bg-slate-800 ${
-                        row.engine === "opendataloader"
-                          ? "bg-cyan-50/50 dark:bg-cyan-950/20"
-                          : ""
-                      }`}
-                    >
-                      <td className="w-1/5 px-5 py-4">
-                        <span
-                          className={`font-medium ${
-                            row.engine === "opendataloader"
-                              ? "text-cyan-700 dark:text-cyan-400"
-                              : "text-slate-900 dark:text-white"
-                          }`}
-                        >
-                          {row.engine}
-                        </span>
-                      </td>
-                      {columns.map((col) => (
-                        <td key={col.key} className="w-1/5 px-5 py-4">
-                          <MiniBar
-                            value={row[col.key]}
-                            max={col.key === "speed" ? 0.8 : 1}
-                            color={col.color}
-                            inverted={col.inverted}
-                            label={col.label}
-                          />
+                  {sortedData.map((row) => {
+                    const isLocal =
+                      row.engine === "opendataloader" && row.mode === "local";
+                    const isHybrid =
+                      row.engine === "opendataloader" && row.mode === "hybrid";
+
+                    let rowBgClass = "";
+                    let textColorClass = "text-slate-900 dark:text-white";
+
+                    if (isLocal) {
+                      rowBgClass = "bg-cyan-50/50 dark:bg-cyan-950/20";
+                      textColorClass = "text-cyan-700 dark:text-cyan-400";
+                    } else if (isHybrid) {
+                      rowBgClass = "bg-amber-50/50 dark:bg-amber-950/20";
+                      textColorClass = "text-amber-700 dark:text-amber-400";
+                    }
+
+                    return (
+                      <tr
+                        key={`${row.engine}-${row.mode}`}
+                        className={`transition-colors hover:bg-slate-50 dark:hover:bg-slate-800 ${rowBgClass}`}
+                      >
+                        <td className="w-1/4 px-5 py-4">
+                          <span className={`font-medium ${textColorClass}`}>
+                            {row.engine}
+                          </span>
+                          {isLocal && (
+                            <span className="ml-1.5 rounded bg-cyan-100 px-1.5 py-0.5 text-[10px] font-medium text-cyan-700 dark:bg-cyan-900/50 dark:text-cyan-300">
+                              local
+                            </span>
+                          )}
+                          {isHybrid && (
+                            <span className="ml-1.5 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">
+                              hybrid
+                            </span>
+                          )}
                         </td>
-                      ))}
-                    </tr>
-                  ))}
+                        {columns.map((col) => (
+                          <td key={col.key} className="w-1/4 px-5 py-4">
+                            <MiniBar
+                              value={row[col.key]}
+                              max={1}
+                              color={col.color}
+                            />
+                          </td>
+                        ))}
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
             <div className="border-t border-slate-200 bg-slate-50 px-5 py-3 dark:border-slate-700 dark:bg-slate-800">
               <p className="text-center text-xs text-slate-500 dark:text-slate-400">
-                Scores normalized to [0,1]. Higher is better for accuracy; lower
-                for speed.
+                Scores normalized to [0,1]. Higher is better.
               </p>
             </div>
           </div>
 
-          {/* When to Use Each - Redesigned as cards */}
-          <div className="mt-16">
-            <h3 className="mb-8 text-center text-xl font-semibold text-slate-900 dark:text-white">
-              When to Use Each Engine
-            </h3>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {useCaseRecommendations.map((row) => (
-                <div
-                  key={row.useCase}
-                  className={`rounded-xl border p-5 transition-all hover:shadow-md ${
-                    row.recommended === "opendataloader"
-                      ? "border-cyan-200 bg-gradient-to-br from-cyan-50 to-sky-50/30 dark:border-cyan-800/50 dark:from-cyan-950/30 dark:to-sky-950/10"
-                      : "border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800/50"
-                  }`}
-                >
-                  <div className="mb-2 text-sm font-medium text-slate-500 dark:text-slate-400">
-                    {row.useCase}
-                  </div>
-                  <div
-                    className={`text-lg font-semibold ${
-                      row.recommended === "opendataloader"
-                        ? "text-cyan-700 dark:text-cyan-400"
-                        : "text-slate-900 dark:text-white"
-                    }`}
-                  >
-                    {row.recommended}
-                  </div>
-                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-                    {row.reason}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
         </AnimateOnScroll>
 
         {/* Benchmark Link - Enhanced */}
