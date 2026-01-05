@@ -56,7 +56,7 @@ const benchmarkData = [
   },
 ];
 
-type SortKey = "readingOrder" | "table" | "heading";
+type SortKey = "readingOrder" | "table" | "heading" | "speed";
 type SortDirection = "asc" | "desc";
 
 // Column definitions for sortable headers
@@ -128,6 +128,38 @@ function MiniBar({
   );
 }
 
+// Speed bar component (pages/sec - higher is better)
+function SpeedBar({ speed }: { speed: number }) {
+  const pagesPerSec = 1 / speed;
+  const maxPagesPerSec = 25; // 0.04s = 25 pages/sec
+  const percentage = (pagesPerSec / maxPagesPerSec) * 100;
+  const barWidth = Math.max(percentage, 8);
+  const isSmall = percentage < 25;
+
+  return (
+    <div className="relative mx-auto h-6 w-32 rounded-md bg-gray-200 dark:bg-gray-700">
+      <div
+        className="absolute inset-y-0 left-0 flex items-center justify-end rounded-md bg-cyan-400"
+        style={{ width: `${barWidth}%` }}
+      >
+        {!isSmall && (
+          <span className="pr-2 text-xs font-semibold text-white drop-shadow-sm">
+            {pagesPerSec.toFixed(0)}
+          </span>
+        )}
+      </div>
+      {isSmall && (
+        <span
+          className="absolute top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-700 dark:text-slate-300"
+          style={{ left: `calc(${barWidth}% + 4px)` }}
+        >
+          {pagesPerSec.toFixed(0)}
+        </span>
+      )}
+    </div>
+  );
+}
+
 export default function WhyOpenDataLoader() {
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
@@ -143,8 +175,18 @@ export default function WhyOpenDataLoader() {
     }
 
     return [...benchmarkData].sort((a, b) => {
-      const aVal = a[sortKey];
-      const bVal = b[sortKey];
+      let aVal: number;
+      let bVal: number;
+
+      if (sortKey === "speed") {
+        // Convert to pages/sec (higher is better)
+        aVal = 1 / a.speed;
+        bVal = 1 / b.speed;
+      } else {
+        aVal = a[sortKey];
+        bVal = b[sortKey];
+      }
+
       const multiplier = sortDirection === "asc" ? 1 : -1;
       return (aVal - bVal) * multiplier;
     });
@@ -205,13 +247,13 @@ export default function WhyOpenDataLoader() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
-                    <th className="w-1/4 px-5 py-4 text-left font-semibold text-slate-900 dark:text-white">
+                    <th className="w-1/5 px-5 py-4 text-left font-semibold text-slate-900 dark:text-white">
                       Engine
                     </th>
                     {columns.map((col) => (
                       <th
                         key={col.key}
-                        className="w-1/4 cursor-pointer select-none px-5 py-4 text-center font-semibold text-slate-900 transition-colors hover:bg-slate-100 dark:text-white dark:hover:bg-slate-700"
+                        className="w-1/5 cursor-pointer select-none px-5 py-4 text-center font-semibold text-slate-900 transition-colors hover:bg-slate-100 dark:text-white dark:hover:bg-slate-700"
                         onClick={() => handleSort(col.key)}
                       >
                         <span className="inline-flex items-center gap-1">
@@ -224,6 +266,19 @@ export default function WhyOpenDataLoader() {
                         </span>
                       </th>
                     ))}
+                    <th
+                      className="w-1/5 cursor-pointer select-none px-5 py-4 text-center font-semibold text-slate-900 transition-colors hover:bg-slate-100 dark:text-white dark:hover:bg-slate-700"
+                      onClick={() => handleSort("speed")}
+                    >
+                      <span className="inline-flex items-center gap-1">
+                        Pages/sec
+                        <SortIcon
+                          sortKey="speed"
+                          currentSort={sortKey}
+                          direction={sortDirection}
+                        />
+                      </span>
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
@@ -249,7 +304,7 @@ export default function WhyOpenDataLoader() {
                         key={`${row.engine}-${row.mode}`}
                         className={`transition-colors hover:bg-slate-50 dark:hover:bg-slate-800 ${rowBgClass}`}
                       >
-                        <td className="w-1/4 px-5 py-4">
+                        <td className="w-1/5 px-5 py-4">
                           <span className={`font-medium ${textColorClass}`}>
                             {row.engine}
                           </span>
@@ -265,7 +320,7 @@ export default function WhyOpenDataLoader() {
                           )}
                         </td>
                         {columns.map((col) => (
-                          <td key={col.key} className="w-1/4 px-5 py-4">
+                          <td key={col.key} className="w-1/5 px-5 py-4">
                             <MiniBar
                               value={row[col.key]}
                               max={1}
@@ -273,6 +328,9 @@ export default function WhyOpenDataLoader() {
                             />
                           </td>
                         ))}
+                        <td className="w-1/5 px-5 py-4">
+                          <SpeedBar speed={row.speed} />
+                        </td>
                       </tr>
                     );
                   })}
@@ -281,7 +339,7 @@ export default function WhyOpenDataLoader() {
             </div>
             <div className="border-t border-slate-200 bg-slate-50 px-5 py-3 dark:border-slate-700 dark:bg-slate-800">
               <p className="text-center text-xs text-slate-500 dark:text-slate-400">
-                Scores normalized to [0,1]. Higher is better.
+                All metrics: higher is better. Speed shown in pages/second.
               </p>
             </div>
           </div>
