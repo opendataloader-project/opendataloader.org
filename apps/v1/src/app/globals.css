@@ -232,4 +232,18 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  /* PDF annotation layer dark mode text color */
+  .dark .react-pdf__Page__annotations .annotationLayer {
+    --annotation-unfocused-field-background: oklch(0.95 0 0);
+    color: oklch(0.2 0 0);
+  }
+
+  .dark .react-pdf__Page__annotations .annotationLayer a {
+    color: oklch(0.3 0.1 240);
+  }
+
+  .dark .react-pdf__Page__annotations section {
+    color: oklch(0.2 0 0);
+  }
 }
