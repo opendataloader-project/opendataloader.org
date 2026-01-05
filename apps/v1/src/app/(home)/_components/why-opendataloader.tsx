@@ -111,7 +111,7 @@ function MiniBar({
         style={{ width: `${barWidth}%` }}
       >
         {!isSmall && (
-          <span className="pr-2 text-xs font-semibold text-white drop-shadow-sm">
+          <span className="pr-2 text-xs font-semibold text-white drop-shadow-sm dark:text-slate-900">
             {displayValue}%
           </span>
         )}
@@ -143,7 +143,7 @@ function SpeedBar({ speed }: { speed: number }) {
         style={{ width: `${barWidth}%` }}
       >
         {!isSmall && (
-          <span className="pr-2 text-xs font-semibold text-white drop-shadow-sm">
+          <span className="pr-2 text-xs font-semibold text-white drop-shadow-sm dark:text-slate-900">
             {pagesPerSec.toFixed(0)}
           </span>
         )}
