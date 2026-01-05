@@ -20,9 +20,10 @@ const FinalCTA = dynamic(() => import("./_components/final-cta"));
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://opendataloader.org"),
-  title: "OpenDataLoader PDF - Fast Local PDF Parser for RAG | No GPU Required",
+  title:
+    "OpenDataLoader PDF - Fast Local PDF Parser for RAG | Hybrid Mode Available",
   description:
-    "Convert PDFs to LLM-ready Markdown and JSON. 91% reading order accuracy, bounding boxes for citations. 100% local, deterministic, open source (MPL-2.0).",
+    "Convert PDFs to LLM-ready Markdown and JSON. 91% accuracy local, 93% with hybrid mode. Bounding boxes for citations. 100% local by default, open source (MPL-2.0).",
   keywords: [
     "PDF parser for RAG",
     "PDF to markdown",
@@ -33,6 +34,7 @@ export const metadata: Metadata = {
     "reading order extraction",
     "RAG pipeline",
     "document extraction",
+    "hybrid mode",
   ],
   authors: [{ name: "OpenDataLoader" }],
   icons: {
@@ -44,7 +46,7 @@ export const metadata: Metadata = {
     siteName: "OpenDataLoader PDF",
     title: "OpenDataLoader PDF - PDF Parsing for RAG",
     description:
-      "Convert PDFs to LLM-ready Markdown and JSON. 91% reading order accuracy. 100% local, no GPU required.",
+      "Convert PDFs to LLM-ready Markdown and JSON. Local: 91% accuracy at 0.05s/page. Hybrid: 93% accuracy. 100% local by default.",
     images: [
       {
         url: "https://opendataloader.org/og-image.webp",
@@ -59,7 +61,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "OpenDataLoader PDF",
-    description: "PDF Parsing for RAG — 100% Local, No GPU Required",
+    description: "PDF Parsing for RAG — 91% Local, 93% Hybrid, No GPU Required",
   },
 };
 

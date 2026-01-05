@@ -7,21 +7,11 @@ import {
   Sparkles,
   Table2,
   Target,
-  Zap,
 } from "lucide-react";
 
 import { AnimateOnScroll } from "@/components/ui/animate-on-scroll";
 
 const features = [
-  {
-    icon: Zap,
-    title: "No GPU Required",
-    description:
-      "Rule-based extraction runs on any CPU. Process 100+ pages per second.",
-    link: "/docs/benchmark/speed",
-    linkText: "Speed benchmarks",
-    color: "cyan",
-  },
   {
     icon: Target,
     title: "XY-Cut++ Reading Order",
@@ -32,6 +22,15 @@ const features = [
     color: "emerald",
   },
   {
+    icon: Sparkles,
+    title: "Hybrid OCR & AI",
+    description:
+      "Optional LLM enhancement for OCR and complex tables. 93% table accuracy when enabled.",
+    link: "/docs/hybrid-mode",
+    linkText: "Enable hybrid",
+    color: "amber",
+  },
+  {
     icon: MapPin,
     title: "Bounding Boxes",
     description:
@@ -39,15 +38,6 @@ const features = [
     link: "/docs/json-schema",
     linkText: "JSON schema",
     color: "violet",
-  },
-  {
-    icon: Shield,
-    title: "AI Safety Built-in",
-    description:
-      "Filters hidden text, off-page content, and prompt injection attempts.",
-    link: "/docs/ai-safety",
-    linkText: "Safety docs",
-    color: "amber",
   },
   {
     icon: Table2,
@@ -60,11 +50,21 @@ const features = [
   },
   {
     icon: Lock,
-    title: "100% Local Processing",
+    title: "100% Local by Default",
     description:
-      "No network calls. Documents never leave your machine. HIPAA-friendly.",
-    link: null,
+      "No network calls required. Enable hybrid mode only when you need maximum accuracy.",
+    link: "/docs/hybrid-mode",
+    linkText: "Hybrid mode docs",
     color: "sky",
+  },
+  {
+    icon: Shield,
+    title: "AI Safety Built-in",
+    description:
+      "Filters hidden text, off-page content, and prompt injection attempts.",
+    link: "/docs/ai-safety",
+    linkText: "Safety docs",
+    color: "cyan",
   },
 ];
 

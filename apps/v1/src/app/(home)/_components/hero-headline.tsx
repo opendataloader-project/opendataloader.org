@@ -1,4 +1,4 @@
-import { Shield, Target, Zap } from "lucide-react";
+import { Sparkles, Target, Zap } from "lucide-react";
 
 export default function HeroHeadline() {
   return (
@@ -11,11 +11,11 @@ export default function HeroHeadline() {
         </span>
         <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50/80 px-3 py-1 text-xs font-medium text-emerald-700 backdrop-blur-sm dark:border-emerald-800/50 dark:bg-emerald-950/50 dark:text-emerald-300">
           <Target className="h-3 w-3" />
-          91% Accuracy
+          93% Accuracy
         </span>
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-200 bg-violet-50/80 px-3 py-1 text-xs font-medium text-violet-700 backdrop-blur-sm dark:border-violet-800/50 dark:bg-violet-950/50 dark:text-violet-300">
-          <Shield className="h-3 w-3" />
-          100% Local
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50/80 px-3 py-1 text-xs font-medium text-amber-700 backdrop-blur-sm dark:border-amber-800/50 dark:bg-amber-950/50 dark:text-amber-300">
+          <Sparkles className="h-3 w-3" />
+          Hybrid OCR & AI
         </span>
       </div>
 
