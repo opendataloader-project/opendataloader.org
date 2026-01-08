@@ -5,10 +5,6 @@ description: Route complex pages to AI backends while keeping simple pages fast 
 
 ## Overview
 
-<Callout type="info">
-**Available in v1.6.0+** — OCR for scanned PDFs and Table AI are now available through hybrid mode.
-</Callout>
-
 Hybrid mode combines the speed of local Java processing with the accuracy of AI backends. Instead of sending every page to an AI service, OpenDataLoader intelligently routes only complex pages (tables, OCR) to the backend while processing simple text pages locally.
 
 **Results**: Table accuracy jumps from 0.49 → 0.93 (+90%) with acceptable speed trade-off.
@@ -136,10 +132,10 @@ opendataloader-pdf \
 
 ## Supported Backends
 
-| Backend | Status | Features |
-|:--------|:-------|:---------|
+| Backend | Status | Description |
+|:--------|:-------|:------------|
 | `off` | Default | Java-only, no external calls |
-| `docling-fast` | Available | OCR, Table AI, layout analysis (local/Docker) |
+| `docling-fast` | Available | Docling-serve backend (local/Docker) |
 | `hancom` | Planned | Hancom Document AI |
 | `azure` | Planned | Azure Document Intelligence |
 | `google` | Planned | Google Document AI |
