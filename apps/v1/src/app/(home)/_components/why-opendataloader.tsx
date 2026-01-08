@@ -1,23 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import Link from "next/link";
-import {
-  ArrowRight,
-  ArrowUpDown,
-  BarChart3,
-  ChevronDown,
-  ChevronUp,
-  Trophy,
-} from "lucide-react";
+import { ArrowRight, BarChart3, Trophy } from "lucide-react";
 
 import { AnimateOnScroll } from "@/components/ui/animate-on-scroll";
 
 const benchmarkData = [
   {
     engine: "opendataloader",
-    mode: "local" as const,
-    speed: 0.05,
+    mode: "heuristic" as const,
     readingOrder: 0.91,
     table: 0.49,
     heading: 0.65,
@@ -25,7 +16,6 @@ const benchmarkData = [
   {
     engine: "opendataloader",
     mode: "hybrid" as const,
-    speed: 0.45,
     readingOrder: 0.93,
     table: 0.93,
     heading: 0.78,
@@ -33,15 +23,27 @@ const benchmarkData = [
   {
     engine: "docling",
     mode: null,
-    speed: 0.73,
     readingOrder: 0.9,
     table: 0.89,
     heading: 0.8,
   },
   {
+    engine: "marker",
+    mode: null,
+    readingOrder: 0.89,
+    table: 0.81,
+    heading: 0.8,
+  },
+  {
+    engine: "mineru",
+    mode: null,
+    readingOrder: 0.86,
+    table: 0.87,
+    heading: 0.74,
+  },
+  {
     engine: "pymupdf4llm",
     mode: null,
-    speed: 0.09,
     readingOrder: 0.89,
     table: 0.4,
     heading: 0.41,
@@ -49,158 +51,175 @@ const benchmarkData = [
   {
     engine: "markitdown",
     mode: null,
-    speed: 0.04,
     readingOrder: 0.88,
     table: 0,
     heading: 0,
   },
 ];
 
-type SortKey = "readingOrder" | "table" | "heading" | "speed";
-type SortDirection = "asc" | "desc";
+// Bar variant types for different engine types
+type BarVariant = "heuristic" | "hybrid" | "other";
 
-// Column definitions for sortable headers
-const columns: {
-  key: SortKey;
-  label: string;
-  color: string;
-}[] = [
-  { key: "readingOrder", label: "Reading Order", color: "bg-blue-400" },
-  { key: "table", label: "Table", color: "bg-orange-400" },
-  { key: "heading", label: "Heading", color: "bg-green-400" },
+// Color styles based on variant
+function getBarStyle(variant: BarVariant) {
+  switch (variant) {
+    case "heuristic":
+      return "bg-slate-400";
+    case "hybrid":
+      return "bg-gradient-to-r from-cyan-400/85 to-teal-500/85";
+    case "other":
+    default:
+      return "bg-indigo-400";
+  }
+}
+
+// Get bar variant for a row
+function getBarVariant(row: (typeof benchmarkData)[0]): BarVariant {
+  if (row.engine === "opendataloader" && row.mode === "heuristic")
+    return "heuristic";
+  if (row.engine === "opendataloader" && row.mode === "hybrid") return "hybrid";
+  return "other";
+}
+
+// Get display name for engine
+function getEngineName(row: (typeof benchmarkData)[0]): string {
+  if (row.engine === "opendataloader") {
+    return row.mode === "heuristic"
+      ? "opendataloader (heuristic)"
+      : "opendataloader (hybrid)";
+  }
+  return row.engine;
+}
+
+// Get text color class for engine
+function getTextColorClass(variant: BarVariant): string {
+  switch (variant) {
+    case "heuristic":
+      return "text-slate-600 dark:text-slate-400";
+    case "hybrid":
+      return "text-cyan-700 dark:text-cyan-400";
+    default:
+      return "text-slate-500 dark:text-slate-400";
+  }
+}
+
+// Metric card data structure
+interface MetricData {
+  key: string;
+  title: string;
+  subtitle: string;
+  getValue: (row: (typeof benchmarkData)[0]) => number;
+}
+
+const metricCards: MetricData[] = [
+  {
+    key: "average",
+    title: "Average Score",
+    subtitle: "(NID + TEDS + MHS) / 3",
+    getValue: (row) => (row.readingOrder + row.table + row.heading) / 3,
+  },
+  {
+    key: "readingOrder",
+    title: "Reading Order (NID)",
+    subtitle: "Text sequence accuracy",
+    getValue: (row) => row.readingOrder,
+  },
+  {
+    key: "table",
+    title: "Table Score (TEDS)",
+    subtitle: "Table extraction accuracy",
+    getValue: (row) => row.table,
+  },
+  {
+    key: "heading",
+    title: "Heading Score (MHS)",
+    subtitle: "Heading detection accuracy",
+    getValue: (row) => row.heading,
+  },
 ];
 
-function SortIcon({
-  sortKey,
-  currentSort,
-  direction,
-}: {
-  sortKey: SortKey;
-  currentSort: SortKey | null;
-  direction: SortDirection;
-}) {
-  if (currentSort !== sortKey) {
-    return <ArrowUpDown className="ml-1 inline h-3 w-3 opacity-50" />;
-  }
-  return direction === "asc" ? (
-    <ChevronUp className="ml-1 inline h-3 w-3" />
-  ) : (
-    <ChevronDown className="ml-1 inline h-3 w-3" />
-  );
-}
-
-// Mini bar component for benchmark table
-function MiniBar({
-  value,
-  max,
-  color,
-}: {
-  value: number;
-  max: number;
-  color: string;
-}) {
-  const percentage = (value / max) * 100;
-  const displayValue = Math.round(value * 100);
-  const isSmall = percentage < 25;
-  const barWidth = Math.max(percentage, 8);
+// Metric Card Component
+function MetricCard({ metric }: { metric: MetricData }) {
+  const maxValue = 1;
 
   return (
-    <div className="relative mx-auto h-6 w-32 rounded-md bg-gray-200 dark:bg-gray-700">
-      <div
-        className={`absolute inset-y-0 left-0 flex items-center justify-end rounded-md ${color}`}
-        style={{ width: `${barWidth}%` }}
-      >
-        {!isSmall && (
-          <span className="pr-2 text-xs font-semibold text-white drop-shadow-sm dark:text-slate-900">
-            {displayValue}%
-          </span>
-        )}
+    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800/50">
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+          {metric.title}
+        </h3>
+        <p className="text-xs text-slate-500 dark:text-slate-400">
+          {metric.subtitle}
+        </p>
       </div>
-      {isSmall && (
-        <span
-          className="absolute top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-700 dark:text-slate-300"
-          style={{ left: `calc(${barWidth}% + 4px)` }}
-        >
-          {displayValue}%
-        </span>
-      )}
+
+      <div className="space-y-2.5">
+        {benchmarkData.map((row) => {
+          const value = metric.getValue(row);
+          const variant = getBarVariant(row);
+          const percentage = (value / maxValue) * 100;
+          const barWidth = Math.max(percentage, 5);
+          const isSmall = percentage < 20;
+          const displayValue = Math.round(value * 100);
+
+          return (
+            <div
+              key={`${row.engine}-${row.mode}`}
+              className="flex items-center gap-3"
+            >
+              <div className="w-40 shrink-0">
+                <span
+                  className={`block truncate text-xs font-medium ${getTextColorClass(variant)}`}
+                  title={getEngineName(row)}
+                >
+                  {getEngineName(row)}
+                </span>
+              </div>
+              <div className="relative h-7 flex-1 overflow-hidden rounded-md bg-slate-100 dark:bg-slate-700">
+                <div
+                  className={`absolute inset-y-0 left-0 flex items-center justify-end rounded-md pr-2 ${getBarStyle(variant)}`}
+                  style={{ width: `${barWidth}%` }}
+                >
+                  {!isSmall && (
+                    <span className="text-xs font-semibold text-white drop-shadow-sm">
+                      {displayValue}%
+                    </span>
+                  )}
+                </div>
+                {isSmall && (
+                  <span
+                    className="absolute top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-600 dark:text-slate-300"
+                    style={{ left: `calc(${barWidth}% + 6px)` }}
+                  >
+                    {displayValue}%
+                  </span>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="mt-4 flex items-center gap-4 border-t border-slate-200 pt-3 text-xs text-slate-500 dark:border-slate-700 dark:text-slate-400">
+        <div className="flex items-center gap-1.5">
+          <div className="h-2 w-2 rounded-sm bg-gradient-to-r from-cyan-400 to-teal-500" />
+          <span>hybrid</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="h-2 w-2 rounded-sm bg-slate-400" />
+          <span>heuristic</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="h-2 w-2 rounded-sm bg-indigo-400" />
+          <span>others</span>
+        </div>
+      </div>
     </div>
   );
 }
 
-// Speed bar component (pages/sec - higher is better)
-function SpeedBar({ speed }: { speed: number }) {
-  const pagesPerSec = 1 / speed;
-  const maxPagesPerSec = 25; // 0.04s = 25 pages/sec
-  const percentage = (pagesPerSec / maxPagesPerSec) * 100;
-  const barWidth = Math.max(percentage, 8);
-  const isSmall = percentage < 25;
-
-  return (
-    <div className="relative mx-auto h-6 w-32 rounded-md bg-gray-200 dark:bg-gray-700">
-      <div
-        className="absolute inset-y-0 left-0 flex items-center justify-end rounded-md bg-cyan-400"
-        style={{ width: `${barWidth}%` }}
-      >
-        {!isSmall && (
-          <span className="pr-2 text-xs font-semibold text-white drop-shadow-sm dark:text-slate-900">
-            {pagesPerSec.toFixed(0)}
-          </span>
-        )}
-      </div>
-      {isSmall && (
-        <span
-          className="absolute top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-700 dark:text-slate-300"
-          style={{ left: `calc(${barWidth}% + 4px)` }}
-        >
-          {pagesPerSec.toFixed(0)}
-        </span>
-      )}
-    </div>
-  );
-}
 
 export default function WhyOpenDataLoader() {
-  const [sortKey, setSortKey] = useState<SortKey | null>(null);
-  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
-
-  const sortedData = useMemo(() => {
-    if (!sortKey) {
-      // Default: sort by total score (readingOrder + table + heading) descending
-      return [...benchmarkData].sort((a, b) => {
-        const aTotal = a.readingOrder + a.table + a.heading;
-        const bTotal = b.readingOrder + b.table + b.heading;
-        return bTotal - aTotal;
-      });
-    }
-
-    return [...benchmarkData].sort((a, b) => {
-      let aVal: number;
-      let bVal: number;
-
-      if (sortKey === "speed") {
-        // Convert to pages/sec (higher is better)
-        aVal = 1 / a.speed;
-        bVal = 1 / b.speed;
-      } else {
-        aVal = a[sortKey];
-        bVal = b[sortKey];
-      }
-
-      const multiplier = sortDirection === "asc" ? 1 : -1;
-      return (aVal - bVal) * multiplier;
-    });
-  }, [sortKey, sortDirection]);
-
-  const handleSort = (key: SortKey) => {
-    if (sortKey === key) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortKey(key);
-      setSortDirection("desc");
-    }
-  };
-
   return (
     <section
       id="why-opendataloader"
@@ -235,115 +254,17 @@ export default function WhyOpenDataLoader() {
           </div>
         </AnimateOnScroll>
 
-        {/* Benchmark Comparison - Redesigned */}
+        {/* Benchmark Comparison - 2x2 Card Grid */}
         <AnimateOnScroll className="mt-16">
           <h3 className="mb-8 text-center text-xl font-semibold text-slate-900 dark:text-white">
             Benchmark Comparison
           </h3>
 
-          {/* Enhanced Benchmark Table */}
-          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800/50">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
-                    <th className="w-1/5 px-5 py-4 text-left font-semibold text-slate-900 dark:text-white">
-                      Engine
-                    </th>
-                    {columns.map((col) => (
-                      <th
-                        key={col.key}
-                        className="w-1/5 cursor-pointer select-none px-5 py-4 text-center font-semibold text-slate-900 transition-colors hover:bg-slate-100 dark:text-white dark:hover:bg-slate-700"
-                        onClick={() => handleSort(col.key)}
-                      >
-                        <span className="inline-flex items-center gap-1">
-                          {col.label}
-                          <SortIcon
-                            sortKey={col.key}
-                            currentSort={sortKey}
-                            direction={sortDirection}
-                          />
-                        </span>
-                      </th>
-                    ))}
-                    <th
-                      className="w-1/5 cursor-pointer select-none px-5 py-4 text-center font-semibold text-slate-900 transition-colors hover:bg-slate-100 dark:text-white dark:hover:bg-slate-700"
-                      onClick={() => handleSort("speed")}
-                    >
-                      <span className="inline-flex items-center gap-1">
-                        Pages/sec
-                        <SortIcon
-                          sortKey="speed"
-                          currentSort={sortKey}
-                          direction={sortDirection}
-                        />
-                      </span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
-                  {sortedData.map((row) => {
-                    const isLocal =
-                      row.engine === "opendataloader" && row.mode === "local";
-                    const isHybrid =
-                      row.engine === "opendataloader" && row.mode === "hybrid";
-
-                    let rowBgClass = "";
-                    let textColorClass = "text-slate-900 dark:text-white";
-
-                    if (isLocal) {
-                      rowBgClass = "bg-cyan-50/50 dark:bg-cyan-950/20";
-                      textColorClass = "text-cyan-700 dark:text-cyan-400";
-                    } else if (isHybrid) {
-                      rowBgClass = "bg-amber-50/50 dark:bg-amber-950/20";
-                      textColorClass = "text-amber-700 dark:text-amber-400";
-                    }
-
-                    return (
-                      <tr
-                        key={`${row.engine}-${row.mode}`}
-                        className={`transition-colors hover:bg-slate-50 dark:hover:bg-slate-800 ${rowBgClass}`}
-                      >
-                        <td className="w-1/5 px-5 py-4">
-                          <span className={`font-medium ${textColorClass}`}>
-                            {row.engine}
-                          </span>
-                          {isLocal && (
-                            <span className="ml-1.5 rounded bg-cyan-100 px-1.5 py-0.5 text-[10px] font-medium text-cyan-700 dark:bg-cyan-900/50 dark:text-cyan-300">
-                              local
-                            </span>
-                          )}
-                          {isHybrid && (
-                            <span className="ml-1.5 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">
-                              hybrid
-                            </span>
-                          )}
-                        </td>
-                        {columns.map((col) => (
-                          <td key={col.key} className="w-1/5 px-5 py-4">
-                            <MiniBar
-                              value={row[col.key]}
-                              max={1}
-                              color={col.color}
-                            />
-                          </td>
-                        ))}
-                        <td className="w-1/5 px-5 py-4">
-                          <SpeedBar speed={row.speed} />
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-            <div className="border-t border-slate-200 bg-slate-50 px-5 py-3 dark:border-slate-700 dark:bg-slate-800">
-              <p className="text-center text-xs text-slate-500 dark:text-slate-400">
-                All metrics: higher is better. Speed shown in pages/second.
-              </p>
-            </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {metricCards.map((metric) => (
+              <MetricCard key={metric.key} metric={metric} />
+            ))}
           </div>
-
         </AnimateOnScroll>
 
         {/* Benchmark Link - Enhanced */}
