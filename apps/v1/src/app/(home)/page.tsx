@@ -8,6 +8,9 @@ import SolutionSection from "./_components/solution-section";
 
 // Below-the-fold components loaded dynamically
 const HowItWorks = dynamic(() => import("./_components/how-it-works"));
+const HybridArchitecture = dynamic(
+  () => import("./_components/hybrid-architecture")
+);
 const QuickStart = dynamic(() => import("./_components/quick-start"));
 const OutputPreview = dynamic(() => import("./_components/output-preview"));
 const WhyOpenDataLoader = dynamic(
@@ -72,6 +75,7 @@ export default function HomePage() {
       <ProblemSection />
       <SolutionSection />
       <HowItWorks />
+      <HybridArchitecture />
       <QuickStart />
       <OutputPreview />
       <WhyOpenDataLoader />
